@@ -10,6 +10,8 @@ class LoginScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(backgroundColor: Colors.blue),
       body: Center(child: Text("LOGIN SCREEN")),
+
+
     );
   }
 }
