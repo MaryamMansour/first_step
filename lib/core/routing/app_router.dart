@@ -3,7 +3,7 @@ import 'package:first_step/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../features/login/login_screen.dart';
+import '../../features/login/ui/login_screen.dart';
 
 class AppRouter {
   Route generateRoutes(RouteSettings routeSettings) {
