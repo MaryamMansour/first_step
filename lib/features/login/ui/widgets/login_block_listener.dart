@@ -60,7 +60,7 @@ class LoginBlocListener extends StatelessWidget {
               context.pop();
             },
             child: Text(
-              'Got it',
+              'OK',
               style: AppTextStyles.font16PrimaryLight,
             ),
           ),

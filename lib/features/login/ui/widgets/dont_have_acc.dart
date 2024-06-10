@@ -28,6 +28,7 @@ class DontHaveAccount extends StatelessWidget {
                 style: AppTextStyles.font15PrimaryBold,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
+                  //TODO signup
                     // context.pushReplacementNamed(Routes.signUpScreen);
                   },
               ),
@@ -38,12 +39,4 @@ class DontHaveAccount extends StatelessWidget {
     );
   }
 
-  // void validateAndLogin(BuildContext context) {
-  //
-  //   print("YARAB");
-  //   if (context.read<LoginCubit>().formKey.currentState!.validate()) {
-  //     context.read<LoginCubit>().emitLoginStates();
-  //   }
-  //
-  // }
 }

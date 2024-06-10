@@ -19,6 +19,6 @@ class SplashScreen  extends StatelessWidget {
     duration: 3050,
     splashIconSize: 800,
     backgroundColor:  AppColors.primaryColor,);
-    //TODO add color to colors file
+
   }
 }

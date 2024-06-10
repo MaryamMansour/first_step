@@ -76,7 +76,8 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
                 )),
             controller: context.read<LoginCubit>().passwordController,
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              if (value == null || value.isEmpty||
+                  !AppRegex.hasMinLength(value)|| !AppRegex.hasSpecialCharacter(value)|| !AppRegex.hasNumber(value)) {
 
                 return 'Please enter a valid password';
               }

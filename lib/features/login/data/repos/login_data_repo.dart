@@ -10,7 +10,7 @@ abstract class LoginDomainRepo
   Future<ApiResult<LoginResponse>>login(LoginRequestBody loginRequestBody);
 }
 
-class LoginApiRepo{
+class LoginApiRepo implements LoginDomainRepo{
 
   final ApiService _apiService;
   LoginApiRepo(this._apiService);
