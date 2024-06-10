@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../core/helper/spacing.dart';
-import '../../../core/theming/colors.dart';
+import '../../../../core/helper/spacing.dart';
+import '../../../../core/theming/colors.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -23,8 +23,6 @@ class LoginScreen extends StatelessWidget {
               Image.asset('assets/images/logo3.png'),
               verticalSpace(20),
               LoginContainerWidget(),
-
-
             ],
           ),
         ),

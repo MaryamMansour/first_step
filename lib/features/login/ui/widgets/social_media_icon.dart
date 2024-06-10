@@ -9,12 +9,12 @@ class SocialMediaIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        horizontalSpace(82),
-        Image.asset('assets/images/facebook.png'),
+        horizontalSpace(130),
+        Image.asset(width: 30,height: 30,'assets/images/facebook.png'),
         horizontalSpace(40),
-        Image.asset('assets/images/google.png'),
+        Image.asset(width: 25,height: 25,'assets/images/google.png'),
         horizontalSpace(30),
-        Image.asset('assets/images/apple.png'),
+        Image.asset(width: 30,height: 30,'assets/images/apple.png'),
       ],
     );
   }

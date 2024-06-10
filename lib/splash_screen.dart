@@ -1,6 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:first_step/core/theming/colors.dart';
-import 'package:first_step/features/login/ui/login_screen.dart';
+import 'package:first_step/features/login/ui/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 

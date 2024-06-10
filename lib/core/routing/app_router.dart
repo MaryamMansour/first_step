@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../features/login/logic/cubit/login_cubit.dart';
-import '../../features/login/ui/login_screen.dart';
+import '../../features/login/ui/screen/login_screen.dart';
 import '../di/depndency_injection.dart';
 
 class AppRouter {
@@ -18,8 +18,13 @@ class AppRouter {
             child: const LoginScreen(),
           ),
         );
-    case Routes.splashScreen:
+      case Routes.splashScreen:
         return MaterialPageRoute(builder: (_) => SplashScreen());
+      case Routes.homeScreen:
+        return MaterialPageRoute(
+            builder: (_) => const Scaffold(
+                  body: Center(child: Text("HOME")),
+                ));
       default:
         return MaterialPageRoute(
             builder: (_) => const Scaffold(
