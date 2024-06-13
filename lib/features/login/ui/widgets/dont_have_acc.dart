@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/helper/spacing.dart';
 import '../../../../core/theming/styles.dart';
+import '../../logic/cubit/login_cubit.dart';
 
 class DontHaveAccount extends StatelessWidget {
   const DontHaveAccount({super.key});
@@ -26,6 +28,7 @@ class DontHaveAccount extends StatelessWidget {
                 style: AppTextStyles.font15PrimaryBold,
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
+                  //TODO signup
                     // context.pushReplacementNamed(Routes.signUpScreen);
                   },
               ),
@@ -35,4 +38,5 @@ class DontHaveAccount extends StatelessWidget {
       ],
     );
   }
+
 }

@@ -26,9 +26,9 @@ class AppTextButton extends StatelessWidget {
         fixedSize: MaterialStateProperty.all(Size(250.w, 51.h)),
         backgroundColor: MaterialStatePropertyAll(AppColors.primaryColor),
       ),
-      onPressed: () {
-        onPressed;
-      },
+      onPressed:
+        onPressed,
+
       child: Text(
         buttonText,
         style: AppTextStyles.font20WhiteBold,
