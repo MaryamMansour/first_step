@@ -4,6 +4,9 @@ import 'package:first_step/features/login/ui/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+import 'core/routing/routes.dart';
+import 'main.dart';
+
 class SplashScreen  extends StatelessWidget {
   const SplashScreen({super.key});
 
@@ -15,7 +18,10 @@ class SplashScreen  extends StatelessWidget {
             'assets/animation/splah_screen.json'
           ),
         ),
-        nextScreen: LoginScreen(),
+        nextScreen: isUserLogged? const Scaffold(
+          body: Center(child: Text("HOME")),
+        ):
+        LoginScreen(),
     duration: 3050,
     splashIconSize: 800,
     backgroundColor:  AppColors.primaryColor,);
