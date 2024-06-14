@@ -9,12 +9,14 @@ import 'core/routing/app_router.dart';
 
 bool isUserLogged=false;
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   setupGetIt();
   await ScreenUtil.ensureScreenSize();
   await checkIfUseLoggedIn();
   runApp(FirstStep(appRouter:
   AppRouter()));
+
 }
 
 checkIfUseLoggedIn() async{
@@ -26,4 +28,5 @@ checkIfUseLoggedIn() async{
   else{
     isUserLogged=false;
   }
+
   }

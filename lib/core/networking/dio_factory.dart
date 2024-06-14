@@ -11,7 +11,7 @@ class DioFactory {
   static Dio? dio;
 
   static Dio getDio() { /// (Singleton)
-    Duration timeOut = const Duration(seconds: 40);
+    Duration timeOut = const Duration(seconds: 100);
 
     if (dio == null) {
       dio = Dio();
@@ -30,7 +30,7 @@ class DioFactory {
     dio?.options.headers = {
       'Accept': 'application/json',
       'Authorization':
-      'Bearer ${await SharedPrefHelper.getString(SharedPrefKeys.userToken) }',
+      'Bearer ${await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken) }',
     };
   }
 

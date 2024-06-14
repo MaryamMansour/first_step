@@ -3,6 +3,7 @@ import 'package:retrofit/http.dart';
 
 import '../../features/login/data/models/login_request_body.dart';
 import '../../features/login/data/models/login_response.dart';
+import '../../features/profile/data/models/profile_response.dart';
 import 'api_constants.dart';
 
 
@@ -17,5 +18,6 @@ abstract class ApiService {
       @Body() LoginRequestBody loginRequestBody,
       );
 
-
+  @GET(ApiConstants.profile)
+  Future<ProfileResponse> getProfile();
 }
