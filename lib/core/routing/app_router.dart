@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../features/login/logic/cubit/login_cubit.dart';
 import '../../features/login/ui/screen/login_screen.dart';
+import '../../features/profile/ui/screens/change_password.dart';
 import '../../features/profile/ui/screens/profile_details.dart';
 import '../di/depndency_injection.dart';
 
@@ -34,6 +35,11 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => BlocProvider(
           create: (context) => getIt<ProfileCubit>()..getProfile(),
           child:  ProfileDetailsScreen(),
+        ),);
+        case Routes.changePasswordScreen:
+        return MaterialPageRoute(builder: (_) => BlocProvider(
+          create: (context) => getIt<ProfileCubit>(),
+          child:  ChangePasswordScreen(),
         ),);
       case Routes.homeScreen:
         return MaterialPageRoute(

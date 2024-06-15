@@ -1,34 +1,39 @@
+import 'package:first_step/core/helper/extensions.dart';
+import 'package:first_step/core/helper/spacing.dart';
+import 'package:first_step/core/theming/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:first_step/features/profile/data/models/profile_response.dart'; // Import your profile response model
+import 'package:first_step/features/profile/data/models/profile_response.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProfileDetailsForm extends StatelessWidget {
+import '../../../../core/routing/routes.dart';
+import '../../logic/profile_cubit.dart';
+
+class ProfileDetailsForm extends StatefulWidget {
   final ProfileResponse profileResponse;
 
   const ProfileDetailsForm({
     required this.profileResponse,
   });
 
+  @override
+  State<ProfileDetailsForm> createState() => _ProfileDetailsFormState();
+}
+
+class _ProfileDetailsFormState extends State<ProfileDetailsForm> {
+
+  @override
   void initState(){
-    print("HIIIIII");
-    print(profileResponse.data?.lastName);
+    super.initState();
+    context.read<ProfileCubit>().firstNameController = TextEditingController(text: widget.profileResponse.data?.firstName);
+    context.read<ProfileCubit>().lastNameController = TextEditingController(text: widget.profileResponse.data?.lastName);
+    context.read<ProfileCubit>().userNameController = TextEditingController(text: widget.profileResponse.data?.userName);
+    context.read<ProfileCubit>().emailController = TextEditingController(text: widget.profileResponse.data?.email);
   }
+
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _firstNameController = TextEditingController(text: profileResponse.data?.firstName);
-    final TextEditingController _lastNameController = TextEditingController(text: profileResponse.data?.lastName);
-    final TextEditingController _usernameController = TextEditingController(text: profileResponse.data?.userName);
-    final TextEditingController _emailController = TextEditingController(text: profileResponse.data?.email);
 
-    void _updateProfile() {
-      // Implement profile update logic
-    }
-
-    void _navigateToChangePassword() {
-      // Navigator.of(context).push(MaterialPageRoute(
-      //   builder: (context) => ChangePasswordScreen(),
-      // ));
-    }
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20.0),
@@ -54,16 +59,16 @@ class ProfileDetailsForm extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 10),
+          verticalSpace(10),
           TextButton(
             onPressed: () {
-              // Implement edit image logic
+              // Todo Implement edit image logic
             },
             child: Text("Edit image"),
           ),
-          SizedBox(height: 20),
+          verticalSpace(20),
           TextField(
-            controller: _firstNameController,
+            controller: context.read<ProfileCubit>().firstNameController,
             decoration: InputDecoration(
               labelText: "First Name",
               prefixIcon: Icon(Icons.person),
@@ -72,9 +77,9 @@ class ProfileDetailsForm extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 20),
+          verticalSpace(20),
           TextField(
-            controller: _lastNameController,
+            controller: context.read<ProfileCubit>().lastNameController,
             decoration: InputDecoration(
               labelText:"Last Name",
               prefixIcon: Icon(Icons.person),
@@ -83,9 +88,9 @@ class ProfileDetailsForm extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 20),
+          verticalSpace(20),
           TextField(
-            controller: _usernameController,
+            controller: context.read<ProfileCubit>().userNameController,
             decoration: InputDecoration(
               labelText: "Username",
               prefixIcon: Icon(Icons.person),
@@ -94,9 +99,9 @@ class ProfileDetailsForm extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 20),
+          verticalSpace(20),
           TextField(
-            controller: _emailController,
+            controller: context.read<ProfileCubit>().emailController,
             decoration: InputDecoration(
               labelText:"Email",
               prefixIcon: Icon(Icons.email),
@@ -106,21 +111,33 @@ class ProfileDetailsForm extends StatelessWidget {
             ),
             readOnly: true,
           ),
-          SizedBox(height: 30),
-          ElevatedButton(
-            onPressed: _updateProfile,
-            child: Text("Save"),
-            style: ElevatedButton.styleFrom(
-              primary: Colors.black,
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 80),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+          verticalSpace(30),
+
+        ElevatedButton(
+          onPressed: () {
+            context.read<ProfileCubit>().updateProfile();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Profile updated successfully!'),
+                duration: Duration(seconds: 2),
               ),
+            );
+          },
+          child: Text("Save"),
+          style: ElevatedButton.styleFrom(
+            primary: AppColors.primaryColor,
+            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 80),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
-          SizedBox(height: 20),
+        ),
+
+          verticalSpace(20),
           TextButton(
-            onPressed: _navigateToChangePassword,
+            onPressed: (){
+               context.pushNamed(Routes.changePasswordScreen);
+            },
             child: Text("Change Password"),
           ),
         ],

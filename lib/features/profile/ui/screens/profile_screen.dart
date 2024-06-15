@@ -18,7 +18,7 @@ class ProfileScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-            verticalSpace(60),
+            verticalSpace(100),
             const CircleAvatar(
               radius: 50,
               backgroundColor: Colors.white,
@@ -28,16 +28,7 @@ class ProfileScreen extends StatelessWidget {
                     'https://static01.nyt.com/newsgraphics/2020/11/12/fake-people/4b806cf591a8a76adfc88d19e90c8c634345bf3d/fallbacks/mobile-07.jpg'),
               ),
             ),
-            verticalSpace(20),
-             Text(
-              'First Step',
-              style: AppTextStyles.font20WhiteBold,
-            ),
-             Text(
-              'FirstStep@example.com',
-              style:AppTextStyles.font16GrayLight
-            ),
-            verticalSpace(20),
+            verticalSpace(40),
             const ListTiles(),
 
           ],
