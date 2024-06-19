@@ -18,6 +18,14 @@ class ProfileState with _$ProfileState {
   const factory ProfileState.profileError(ErrorHandler errorHandler) =
       profileError;
 
+  const factory ProfileState.updateProfileLoading() = updateProfileLoading;
+
+  const factory ProfileState.updateProfileSuccess(ProfileResponse profileResponse) =
+  updateProfileSuccess;
+
+  const factory ProfileState.updateProfileError(ErrorHandler errorHandler) =
+  updateProfileError;
+
   const factory ProfileState.resetSuccess(
       ResetPasswordResponse resetPasswordResponse) = resetSuccess;
 }

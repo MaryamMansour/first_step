@@ -1,10 +1,10 @@
 import 'package:first_step/core/helper/extensions.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../core/helper/shared_pref.dart';
-import '../../../../core/helper/spacing.dart';
-import '../../../../core/routing/routes.dart';
-import '../../../../core/theming/colors.dart';
+import 'package:first_step/core/helper/shared_pref.dart';
+import 'package:first_step/core/helper/spacing.dart';
+import 'package:first_step/core/routing/routes.dart';
+import 'package:first_step/core/theming/colors.dart';
+import 'package:first_step/features/chat/ui/temp_chat.dart';
 
 class ListTiles extends StatelessWidget {
   const ListTiles({super.key});
@@ -32,7 +32,7 @@ class ListTiles extends StatelessWidget {
               leading: const Icon(Icons.settings, color: AppColors.primaryColor),
               title: const Text('Settings'),
               onTap: () {
-                //Todo Navigate to Settings
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen()));
               },
             ),
             ListTile(
@@ -52,9 +52,10 @@ class ListTiles extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.logout, color: AppColors.primaryColor),
               title: const Text('Log out'),
-              onTap: () {
-                SharedPrefHelper.clearAllSecuredData();
-                SharedPrefHelper.clearAllData();
+              onTap: () async {
+                await SharedPrefHelper.clearAllSecuredData();
+                await SharedPrefHelper.clearAllData();
+                print("Cleared all shared preferences data");
                 context.pushNamed(Routes.loginScreen);
               },
             ),
