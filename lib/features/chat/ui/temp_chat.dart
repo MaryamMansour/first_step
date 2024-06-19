@@ -6,6 +6,7 @@ import 'package:first_step/core/theming/colors.dart';
 import 'package:first_step/core/theming/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:async';
 
 import 'chat_page.dart';
 
@@ -18,6 +19,23 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   TextEditingController _searchController = TextEditingController();
+  late StreamController<String> _searchStreamController;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchStreamController = StreamController<String>.broadcast();
+    _searchController.addListener(() {
+      _searchStreamController.add(_searchController.text.toLowerCase());
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _searchStreamController.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,96 +45,96 @@ class _ChatScreenState extends State<ChatScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              SafeArea(
-                child: Container(
-                  height: 200,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    boxShadow: [BoxShadow(blurRadius: 8, color: AppColors.gray)],
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(35),
-                      bottomLeft: Radius.circular(35),
-                    ),
+              Container(
+                height: 200,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  boxShadow: [BoxShadow(blurRadius: 8, color: AppColors.gray)],
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(35),
+                    bottomLeft: Radius.circular(35),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 30.0),
-                        child: Row(
-                          children: [
-                            horizontalSpace(50),
-                            Text("Chats", style: AppTextStyles.font24PrimaryBold),
-                            horizontalSpace(MediaQuery.of(context).size.width - 140),
-                            Container(
-                              width: 50.w,
-                                height: 50.h,
-                                child: Image.asset('assets/images/logo_dark.png')),
-                          ],
-                        ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 25.0),
+                      child: Row(
+                        children: [
+                          horizontalSpace(50),
+                          Text("Chats", style: AppTextStyles.font24PrimaryBold),
+                          horizontalSpace(MediaQuery.of(context).size.width - 140),
+                          Container(
+                            width: 50.w,
+                            height: 50.h,
+                            child: Image.asset('assets/images/logo_dark.png'),
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 20),
-                        child: Container(
-                          height: 45.h,
-                          width: 300.w,
-                          child: TextField(
-                            controller: _searchController,
-                            maxLines: 1,
-                            decoration: InputDecoration(
-                              filled: true,
-                              contentPadding: EdgeInsets.all(0.0),
-                              fillColor: AppColors.lightGray,
-                              hintText: 'Search...',
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: AppColors.lightGray,
-                                  width: 1.3,
-                                ),
-                                borderRadius: BorderRadius.circular(40.0),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Container(
+                        height: 45.h,
+                        width: 300.w,
+                        child: TextField(
+                          controller: _searchController,
+                          maxLines: 1,
+                          decoration: InputDecoration(
+                            filled: true,
+                            contentPadding: EdgeInsets.all(0.0),
+                            fillColor: AppColors.lightGray,
+                            hintText: 'Search...',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: AppColors.lightGray,
+                                width: 1.3,
                               ),
-                              hintStyle: TextStyle(color: AppColors.white),
-                              prefixIcon: Icon(Icons.search),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(40),
-                              ),
+                              borderRadius: BorderRadius.circular(40.0),
+                            ),
+                            hintStyle: TextStyle(color: AppColors.white),
+                            prefixIcon: Icon(Icons.search),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(40),
                             ),
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                        child: TabBar(
-                          indicatorColor: AppColors.primaryColor,
-                          labelColor: AppColors.primaryColor,
-                          unselectedLabelColor: Colors.grey,
-                          tabs: [
-                            Tab(text: 'ALL'),
-                            Tab(text: 'Groups'),
-                            Tab(text: 'Channels'),
-                          ],
-                        ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                      child: TabBar(
+                        indicatorColor: AppColors.primaryColor,
+                        labelColor: AppColors.primaryColor,
+                        unselectedLabelColor: Colors.grey,
+                        tabs: [
+                          Tab(text: 'ALL'),
+                          Tab(text: 'Groups'),
+                          Tab(text: 'Channels'),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               Container(
-                height: MediaQuery.of(context).size.height -
-                    300, // Adjust height as needed
+                height: MediaQuery.of(context).size.height - 300, // Adjust height as needed
                 child: TabBarView(
                   children: [
                     UserList(
-                        collection: 'users',
-                        searchController: _searchController),
+                      collection: 'users',
+                      searchStream: _searchStreamController.stream,
+                    ),
                     UserList(
-                        collection: 'groups',
-                        searchController: _searchController),
+                      collection: 'groups',
+                      searchStream: _searchStreamController.stream,
+                    ),
                     UserList(
-                        collection: 'channels',
-                        searchController: _searchController),
+                      collection: 'channels',
+                      searchStream: _searchStreamController.stream,
+                    ),
                   ],
                 ),
               ),
@@ -127,9 +145,10 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget UserList(
-      {required String collection,
-      required TextEditingController searchController}) {
+  Widget UserList({
+    required String collection,
+    required Stream<String> searchStream,
+  }) {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance.collection(collection).snapshots(),
       builder: (context, snapshot) {
@@ -140,15 +159,27 @@ class _ChatScreenState extends State<ChatScreen> {
           return const Center(child: CircularProgressIndicator());
         }
 
-        String searchQuery = searchController.text.toLowerCase();
-        var docs = snapshot.data!.docs.where((doc) {
-          Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
-          String fullName = "${data['fNAme']} ${data['lNAme']}".toLowerCase();
-          return fullName.contains(searchQuery);
-        }).toList();
+        return StreamBuilder<String>(
+          stream: searchStream,
+          initialData: '',
+          builder: (context, searchSnapshot) {
+            if (!searchSnapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-        return ListView(
-          children: docs.map<Widget>((doc) => buildUserItem(doc)).toList(),
+            String searchQuery = searchSnapshot.data!.toLowerCase();
+            var docs = snapshot.data!.docs.where((doc) {
+              Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+              String firstName = (data['fNAme'] ?? '').toLowerCase();
+              String lastName = (data['lNAme'] ?? '').toLowerCase();
+              String fullName = "$firstName $lastName";
+              return fullName.contains(searchQuery);
+            }).toList();
+
+            return ListView(
+              children: docs.map<Widget>((doc) => buildUserItem(doc)).toList(),
+            );
+          },
         );
       },
     );
@@ -181,14 +212,13 @@ class _ChatScreenState extends State<ChatScreen> {
                     builder: (context) => ChatRoomScreen(
                       receiverUserEmail: data['email'],
                       receiverUserID: data['id'].toString(),
-                      receiverName:"${data['fNAme']} ${data['lNAme']}",
+                      receiverName: "${data['fNAme']} ${data['lNAme']}",
                     ),
                   ),
                 );
               },
             ),
             const Divider(
-
               height: 2,
               thickness: 2,
             ),
