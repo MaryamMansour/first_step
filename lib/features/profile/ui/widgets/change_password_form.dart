@@ -94,21 +94,5 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
     );
   }
 
-  Widget _buildPasswordTextField({
-    required TextEditingController controller,
-    required String labelText,
-    required IconData icon,
-  }) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: labelText,
-        prefixIcon: Icon(icon),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-      obscureText: true,
-    );
-  }
+
 }

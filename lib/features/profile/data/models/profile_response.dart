@@ -19,9 +19,10 @@ class Data{
   String? firstName;
   String? lastName;
   String? email;
+  int? id;
   String? userName;
 
-  Data(this.firstName,this.lastName, this.email, this.userName);
+  Data(this.firstName,this.lastName, this.email, this.userName, this.id);
 
   factory Data.fromJson(Map<String, dynamic> json) =>
       _$DataFromJson(json);

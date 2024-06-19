@@ -1,4 +1,5 @@
 import 'package:first_step/core/routing/routes.dart';
+import 'package:first_step/features/chat/ui/temp_chat.dart';
 import 'package:first_step/features/profile/logic/profile_cubit.dart';
 import 'package:first_step/features/profile/ui/screens/profile_screen.dart';
 import 'package:first_step/splash_screen.dart';
@@ -41,6 +42,8 @@ class AppRouter {
           create: (context) => getIt<ProfileCubit>(),
           child:  ChangePasswordScreen(),
         ),);
+        case Routes.chatScreen:
+        return MaterialPageRoute(builder: (_) => ChatScreen(),);
       case Routes.homeScreen:
         return MaterialPageRoute(
             builder: (_) => const Scaffold(
