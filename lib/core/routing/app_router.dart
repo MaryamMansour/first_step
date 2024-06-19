@@ -1,5 +1,7 @@
 import 'package:first_step/core/routing/routes.dart';
 import 'package:first_step/features/chat/ui/temp_chat.dart';
+import 'package:first_step/features/home/logic/home_cubit.dart';
+import 'package:first_step/features/home/ui/home_layout_screen.dart';
 import 'package:first_step/features/profile/logic/profile_cubit.dart';
 import 'package:first_step/features/profile/ui/screens/profile_screen.dart';
 import 'package:first_step/splash_screen.dart';
@@ -46,9 +48,10 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => ChatScreen(),);
       case Routes.homeScreen:
         return MaterialPageRoute(
-            builder: (_) => const Scaffold(
-                  body: Center(child: Text("HOME")),
-                ));
+            builder: (_) =>  BlocProvider(
+              create: (context) => getIt<HomeCubit>(),
+              child:  HomeScreen(),
+            ));
       default:
         return MaterialPageRoute(
             builder: (_) => const Scaffold(

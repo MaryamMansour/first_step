@@ -32,21 +32,21 @@ class ListTiles extends StatelessWidget {
               leading: const Icon(Icons.settings, color: AppColors.primaryColor),
               title: const Text('Settings'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen()));
+                //TODO
               },
             ),
             ListTile(
               leading: const Icon(Icons.share, color: AppColors.primaryColor),
               title: const Text('Share with friends'),
               onTap: () {
-                // Share app with friends
+                // TODO Share app with friends
               },
             ),
             ListTile(
               leading: const Icon(Icons.help, color: AppColors.primaryColor),
               title: const Text('Help and support'),
               onTap: () {
-                // Navigate to Help and Support
+                // TODO Navigate to Help and Support
               },
             ),
             ListTile(
