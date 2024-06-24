@@ -9,6 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../features/SignUp/logic/cubit/sign_up_cubit.dart';
+import '../../features/SignUp/ui/screen/signup_screen.dart';
 import '../../features/login/logic/cubit/login_cubit.dart';
 import '../../features/login/ui/screen/login_screen.dart';
 import '../../features/profile/ui/screens/change_password.dart';
@@ -28,6 +30,13 @@ class AppRouter {
         );
       case Routes.splashScreen:
         return MaterialPageRoute(builder: (_) => SplashScreen());
+      case Routes.signupScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<SignupCubit>(),
+            child: const SignupScreen(),
+          ),
+        );
       case Routes.profileScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -60,6 +69,6 @@ class AppRouter {
             builder: (_) => const Scaffold(
                   body: Text("ERROR"),
                 ));
-    }
+     }
   }
 }
