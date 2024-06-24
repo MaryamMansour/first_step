@@ -12,6 +12,7 @@ class AppTextFormField extends StatelessWidget {
   final TextStyle? inputTextStyle;
   final TextStyle? hintStyle;
   final String hintText;
+  final String? labelText;
   final bool? isObscureText;
   final Widget? suffixIcon;
   final Color? backgroundColor;
@@ -24,6 +25,7 @@ class AppTextFormField extends StatelessWidget {
     this.enabledBorder,
     this.inputTextStyle,
     this.hintStyle,
+    this.labelText,
     required this.hintText,
     this.isObscureText,
     this.suffixIcon,
@@ -76,6 +78,7 @@ class AppTextFormField extends StatelessWidget {
           ),
           hintStyle: hintStyle ?? AppTextStyles.font16GrayLight,
           hintText: hintText,
+          labelText: labelText,
           suffixIcon: suffixIcon,
           fillColor: backgroundColor ??AppColors.white,
           filled: true,
