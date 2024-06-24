@@ -13,8 +13,10 @@ class AppTextFormField extends StatelessWidget {
   final TextStyle? hintStyle;
   final String hintText;
   final String? labelText;
+  final double? width;
   final bool? isObscureText;
   final Widget? suffixIcon;
+
   final Color? backgroundColor;
   final TextEditingController? controller;
   final Function(String?) validator;
@@ -31,13 +33,15 @@ class AppTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.backgroundColor,
     this.controller,
+    this.width,
     required this.validator,
+
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+      padding:  EdgeInsets.symmetric(horizontal: width?.w??30),
       child: TextFormField(
 
         controller: controller,

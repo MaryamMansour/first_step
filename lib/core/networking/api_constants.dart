@@ -2,6 +2,10 @@ class ApiConstants {
   static const String apiBaseUrl = "https://first-step.azurewebsites.net/rest/";
   static const String login = "auth/login";
   static const String signup = "auth/signup";
+  static const String profile = "profile";
+  static const String resetPassword = "profile/reset-password";
+  static const String openAiBaseUrl = 'https://chatgpt-api.shn.hk/v1/';
+  static const String openAiCompletion = '';
 }
 
 class ApiErrors {

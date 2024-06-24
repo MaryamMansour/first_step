@@ -37,6 +37,21 @@ class AppTextStyles{
      color: AppColors.primaryColor,
      fontWeight: FontWeightHelper.bold,
    );
+   static TextStyle font12BlackBold = TextStyle(
+    fontSize: 14.sp,
+     color: Colors.black,
+     fontWeight: FontWeightHelper.bold,
+   );
+   static TextStyle font12Blacklight = TextStyle(
+    fontSize: 14.sp,
+     color: Colors.black,
+     fontWeight: FontWeightHelper.light,
+   );
+   static TextStyle font20BlackThin = TextStyle(
+    fontSize: 25.sp,
+     color:Colors.black,
+     fontWeight: FontWeightHelper.thin,
+   );
 
 
 }
