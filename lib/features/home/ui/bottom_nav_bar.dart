@@ -22,9 +22,10 @@ class BottomNavBar extends StatelessWidget {
               label: 'Chats',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.add_circle),
+              icon: Icon(Icons.add),
               label: 'Add',
             ),
+
             BottomNavigationBarItem(
               icon: Icon(Icons.adb_outlined),
               label: 'Chatbot',

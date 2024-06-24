@@ -1,16 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:first_step/core/helper/constants.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-
+import '../helper/constants.dart';
 import '../helper/shared_pref.dart';
+import 'api_constants.dart';
 
 class DioFactory {
-  /// private constructor
   DioFactory._();
 
   static Dio? dio;
 
-  static Dio getDio() { /// (Singleton)
+  static Dio getDio() {
     Duration timeOut = const Duration(seconds: 100);
 
     if (dio == null) {
@@ -30,7 +29,7 @@ class DioFactory {
     dio?.options.headers = {
       'Accept': 'application/json',
       'Authorization':
-      'Bearer ${await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken) }',
+      'Bearer ${await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken)}',
     };
   }
 
@@ -39,7 +38,6 @@ class DioFactory {
       'Authorization': 'Bearer $token',
     };
   }
-
 
   static void addDioInterceptor() {
     dio?.interceptors.add(
@@ -50,4 +48,5 @@ class DioFactory {
       ),
     );
   }
+
 }

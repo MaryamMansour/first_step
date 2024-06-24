@@ -6,6 +6,8 @@ import 'package:first_step/core/routing/routes.dart';
 import 'package:first_step/core/theming/colors.dart';
 import 'package:first_step/features/chat/ui/temp_chat.dart';
 
+import '../../../project/ui/screens/upload_screen.dart';
+
 class ListTiles extends StatelessWidget {
   const ListTiles({super.key});
 
@@ -26,6 +28,13 @@ class ListTiles extends StatelessWidget {
               title: const Text('My profile'),
               onTap: () {
                 context.pushNamed(Routes.profileDetailsScreen);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.computer_sharp, color: AppColors.primaryColor),
+              title: const Text('My Project'),
+              onTap: () {
+                context.pushNamed(Routes.uploadScreen);
               },
             ),
             ListTile(
