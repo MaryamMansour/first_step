@@ -65,7 +65,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         children: [
                           horizontalSpace(50),
                           Text("Chats", style: AppTextStyles.font24PrimaryBold),
-                          horizontalSpace(MediaQuery.of(context).size.width - 140),
+                          horizontalSpace(
+                              MediaQuery.of(context).size.width - 140),
                           Container(
                             width: 50.w,
                             height: 50.h,
@@ -94,8 +95,8 @@ class _ChatScreenState extends State<ChatScreen> {
                               ),
                               borderRadius: BorderRadius.circular(40.0),
                             ),
-                            hintStyle: TextStyle(color: AppColors.white),
-                            prefixIcon: Icon(Icons.search),
+                            hintStyle: const TextStyle(color: AppColors.white),
+                            prefixIcon: const Icon(Icons.search),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(40),
                             ),
@@ -103,8 +104,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 30.0),
                       child: TabBar(
                         indicatorColor: AppColors.primaryColor,
                         labelColor: AppColors.primaryColor,
@@ -120,7 +121,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
               ),
               Container(
-                height: MediaQuery.of(context).size.height - 300, // Adjust height as needed
+                height: MediaQuery.of(context).size.height -
+                    300, // Adjust height as needed
                 child: TabBarView(
                   children: [
                     UserList(
@@ -141,6 +143,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ],
           ),
         ),
+
       ),
     );
   }

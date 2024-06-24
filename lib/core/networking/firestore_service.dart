@@ -4,7 +4,6 @@ import 'package:first_step/core/helper/shared_pref.dart';
 import 'package:first_step/features/chat/data/model/message_model.dart';
 
 class FireStoreServices {
-
   static Future<void> addUser(String userId, String username, String email,
       String firstName, String lastName) async {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
@@ -13,9 +12,10 @@ class FireStoreServices {
       'email': email,
       'fNAme': firstName,
       'lNAme': lastName,
-      'id':userId,
+      'id': userId,
     }, SetOptions(merge: true));
   }
+
   static Future<void> updateUser(String userId, String username, String email,
       String firstName, String lastName) async {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
@@ -26,7 +26,6 @@ class FireStoreServices {
       'lNAme': lastName,
     });
   }
-
 
   static Future<void> sendMessage(String receiverId, String message) async {
     try {
@@ -66,11 +65,36 @@ class FireStoreServices {
     }
   }
 
+  static Future<void> createGroup(String userId, String name, String description) async {
+    CollectionReference groups = FirebaseFirestore.instance.collection('groups');
+    await groups.add({
+      'name': name,
+      'description': description,
+      'creator': userId,
+      'members': [userId],
+      'createdAt': Timestamp.now(),
+    });
+  }
 
+  static Future<void> createChannel(String userId, String name, String description) async {
+    CollectionReference channels = FirebaseFirestore.instance.collection('channels');
+    await channels.add({
+      'name': name,
+      'description': description,
+      'creator': userId,
+      'createdAt': Timestamp.now(),
+    });
+  }
 
+  static Future<void> addUsersToGroup(String groupId, List<String> userIds) async {
+    DocumentReference groupRef = FirebaseFirestore.instance.collection('groups').doc(groupId);
+    await groupRef.update({
+      'members': FieldValue.arrayUnion(userIds),
+    });
+  }
 
-  static Stream<QuerySnapshot> getMessages(String userId, String otherUsrId){
-    List<String> ids = [userId, otherUsrId];
+  static Stream<QuerySnapshot> getMessages(String userId, String otherUserId) {
+    List<String> ids = [userId, otherUserId];
     ids.sort();
     String chatRoomId = ids.join("_");
 
@@ -80,6 +104,6 @@ class FireStoreServices {
         .collection("messages")
         .orderBy("timestamp", descending: false)
         .snapshots();
-
   }
+
 }

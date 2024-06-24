@@ -13,6 +13,7 @@ import '../../features/login/logic/cubit/login_cubit.dart';
 import '../../features/login/ui/screen/login_screen.dart';
 import '../../features/profile/ui/screens/change_password.dart';
 import '../../features/profile/ui/screens/profile_details.dart';
+import '../../features/project/ui/screens/upload_screen.dart';
 import '../di/depndency_injection.dart';
 
 class AppRouter {
@@ -52,6 +53,8 @@ class AppRouter {
               create: (context) => getIt<HomeCubit>(),
               child:  HomeScreen(),
             ));
+      case Routes.uploadScreen:
+        return MaterialPageRoute(builder: (_) => UploadScreen());
       default:
         return MaterialPageRoute(
             builder: (_) => const Scaffold(

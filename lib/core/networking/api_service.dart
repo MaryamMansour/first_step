@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:first_step/features/profile/data/models/profile_request_body.dart';
 import 'package:retrofit/http.dart';
-
 import '../../features/login/data/models/login_request_body.dart';
 import '../../features/login/data/models/login_response.dart';
 import '../../features/profile/data/models/profile_response.dart';
@@ -34,3 +33,4 @@ abstract class ApiService {
       @Body() ResetPasswordRequestBody resetPasswordRequestBody
       );
 }
+
