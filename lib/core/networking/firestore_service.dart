@@ -29,16 +29,15 @@ class FireStoreServices {
 
   static Future<void> sendMessage(String receiverId, String message) async {
     try {
-      final String currentUserId = await SharedPrefHelper.getString(SharedPrefKeys.id);
-      final String currentUserEmail = await SharedPrefHelper.getString(SharedPrefKeys.email);
-      final String currentUserName = await SharedPrefHelper.getString(SharedPrefKeys.fName);
+      final String currentUserId =
+      await SharedPrefHelper.getString(SharedPrefKeys.id);
+      final String currentUserEmail =
+      await SharedPrefHelper.getString(SharedPrefKeys.email);
+      final String currentUserName =
+      await SharedPrefHelper.getString(SharedPrefKeys.fName);
       final Timestamp timestamp = Timestamp.now();
 
-      print("Current User ID: $currentUserId");
-      print("Current User Email: $currentUserEmail");
-
       if (currentUserId == null || currentUserEmail == null) {
-        print("Failed to get current user info from SharedPref");
         return;
       }
 
@@ -51,21 +50,55 @@ class FireStoreServices {
         message: message,
       );
 
-      print("Current User Name ${currentUserName}");
       List<String> ids = [currentUserId, receiverId];
       ids.sort();
       String chatRoomId = ids.join("_");
 
-      CollectionReference chats = FirebaseFirestore.instance.collection('chat_rooms');
-      await chats.doc(chatRoomId).collection('messages').add(newMessage.toMap());
-
-      print("Message sent successfully");
+      CollectionReference chats =
+      FirebaseFirestore.instance.collection('chat_rooms');
+      await chats
+          .doc(chatRoomId)
+          .collection('messages')
+          .add(newMessage.toMap());
     } catch (e) {
       print("Failed to send message: $e");
     }
   }
 
-  static Future<void> createGroup(String userId, String name, String description) async {
+  static Future<void> sendGroupMessage(
+      String groupId, String message) async {
+    try {
+      final String currentUserId =
+      await SharedPrefHelper.getString(SharedPrefKeys.id);
+      final String currentUserName =
+      await SharedPrefHelper.getString(SharedPrefKeys.fName);
+      final Timestamp timestamp = Timestamp.now();
+
+      if (currentUserId == null) {
+        return;
+      }
+
+      Message newMessage = Message(
+        senderName: currentUserName,
+        senderId: currentUserId,
+        receiverId: groupId,
+        timestamp: timestamp,
+        message: message, senderEmail: currentUserName,
+      );
+
+      CollectionReference groupChats =
+      FirebaseFirestore.instance.collection('groups');
+      await groupChats
+          .doc(groupId)
+          .collection('messages')
+          .add(newMessage.toMap());
+    } catch (e) {
+      print("Failed to send group message: $e");
+    }
+  }
+
+  static Future<void> createGroup(
+      String userId, String name, String description) async {
     CollectionReference groups = FirebaseFirestore.instance.collection('groups');
     await groups.add({
       'name': name,
@@ -76,8 +109,10 @@ class FireStoreServices {
     });
   }
 
-  static Future<void> createChannel(String userId, String name, String description) async {
-    CollectionReference channels = FirebaseFirestore.instance.collection('channels');
+  static Future<void> createChannel(
+      String userId, String name, String description) async {
+    CollectionReference channels =
+    FirebaseFirestore.instance.collection('channels');
     await channels.add({
       'name': name,
       'description': description,
@@ -86,8 +121,10 @@ class FireStoreServices {
     });
   }
 
-  static Future<void> addUsersToGroup(String groupId, List<String> userIds) async {
-    DocumentReference groupRef = FirebaseFirestore.instance.collection('groups').doc(groupId);
+  static Future<void> addUsersToGroup(
+      String groupId, List<String> userIds) async {
+    DocumentReference groupRef =
+    FirebaseFirestore.instance.collection('groups').doc(groupId);
     await groupRef.update({
       'members': FieldValue.arrayUnion(userIds),
     });
@@ -106,4 +143,12 @@ class FireStoreServices {
         .snapshots();
   }
 
+  static Stream<QuerySnapshot> getGroupMessages(String groupId) {
+    return FirebaseFirestore.instance
+        .collection("groups")
+        .doc(groupId)
+        .collection("messages")
+        .orderBy("timestamp", descending: false)
+        .snapshots();
+  }
 }

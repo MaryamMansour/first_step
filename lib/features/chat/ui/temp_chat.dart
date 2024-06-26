@@ -1,13 +1,17 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:first_step/core/helper/constants.dart';
+import 'package:first_step/core/helper/extensions.dart';
 import 'package:first_step/core/helper/shared_pref.dart';
 import 'package:first_step/core/helper/spacing.dart';
 import 'package:first_step/core/theming/colors.dart';
 import 'package:first_step/core/theming/styles.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'dart:async';
 
+import 'add_members.dart';
+import 'create_group.dart';
 import 'chat_page.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -20,6 +24,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   TextEditingController _searchController = TextEditingController();
   late StreamController<String> _searchStreamController;
+  String? userId;
 
   @override
   void initState() {
@@ -28,6 +33,13 @@ class _ChatScreenState extends State<ChatScreen> {
     _searchController.addListener(() {
       _searchStreamController.add(_searchController.text.toLowerCase());
     });
+    _loadUserId();
+  }
+
+  Future<void> _loadUserId() async {
+    userId = await SharedPrefHelper.getString(SharedPrefKeys.id);
+    print("Loaded User ID: $userId"); // Logging user ID
+    setState(() {});
   }
 
   @override
@@ -121,21 +133,21 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
               ),
               Container(
-                height: MediaQuery.of(context).size.height -
-                    300, // Adjust height as needed
+                height: MediaQuery.of(context).size.height - 300,
                 child: TabBarView(
                   children: [
                     UserList(
                       collection: 'users',
                       searchStream: _searchStreamController.stream,
+                      userId: userId,
                     ),
-                    UserList(
-                      collection: 'groups',
-                      searchStream: _searchStreamController.stream,
+                    GroupList(
+                      userId: userId,
                     ),
                     UserList(
                       collection: 'channels',
                       searchStream: _searchStreamController.stream,
+                      userId: userId,
                     ),
                   ],
                 ),
@@ -143,7 +155,15 @@ class _ChatScreenState extends State<ChatScreen> {
             ],
           ),
         ),
-
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.group_add),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CreateGroupScreen()),
+            );
+          },
+        ),
       ),
     );
   }
@@ -151,16 +171,30 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget UserList({
     required String collection,
     required Stream<String> searchStream,
+    String? userId,
   }) {
+    if (userId == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    Stream<QuerySnapshot> stream = FirebaseFirestore.instance.collection(collection).snapshots();
+
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection(collection).snapshots(),
+      stream: stream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
+          print("Error fetching data: ${snapshot.error}"); // Logging error
           return const Text("Error");
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
+
+        print("Fetched documents: ${snapshot.data?.docs.length}"); // Logging number of documents fetched
+
+        var docs = snapshot.data!.docs;
+
+        print("Documents: ${docs.map((doc) => doc.data()).toList()}"); // Logging documents data
 
         return StreamBuilder<String>(
           stream: searchStream,
@@ -171,16 +205,14 @@ class _ChatScreenState extends State<ChatScreen> {
             }
 
             String searchQuery = searchSnapshot.data!.toLowerCase();
-            var docs = snapshot.data!.docs.where((doc) {
+            var filteredDocs = docs.where((doc) {
               Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
-              String firstName = (data['fNAme'] ?? '').toLowerCase();
-              String lastName = (data['lNAme'] ?? '').toLowerCase();
-              String fullName = "$firstName $lastName";
-              return fullName.contains(searchQuery);
+              String name = (data['name'] ?? '').toLowerCase();
+              return name.contains(searchQuery);
             }).toList();
 
             return ListView(
-              children: docs.map<Widget>((doc) => buildUserItem(doc)).toList(),
+              children: filteredDocs.map<Widget>((doc) => buildUserItem(doc, collection)).toList(),
             );
           },
         );
@@ -188,48 +220,147 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget buildUserItem(DocumentSnapshot document) {
-    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-    if (SharedPrefHelper.getString(SharedPrefKeys.email) != data['email']) {
-      return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            ListTile(
-              leading: const CircleAvatar(
-                backgroundImage: NetworkImage(
-                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"),
-                radius: 20,
-              ),
-              title: Text(
-                "${data['fNAme'] + " " + data["lNAme"]}",
-                style: AppTextStyles.font12PrimaryRegular.copyWith(
-                  fontSize: 18,
-                  color: Colors.black,
-                ),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChatRoomScreen(
-                      receiverUserEmail: data['email'],
-                      receiverUserID: data['id'].toString(),
-                      receiverName: "${data['fNAme']} ${data['lNAme']}",
-                    ),
-                  ),
-                );
-              },
-            ),
-            const Divider(
-              height: 2,
-              thickness: 2,
-            ),
-          ],
-        ),
-      );
-    } else {
-      return Container();
+  Widget GroupList({
+    String? userId,
+  }) {
+    if (userId == null) {
+      return Center(child: CircularProgressIndicator());
     }
+
+    Stream<QuerySnapshot> stream = FirebaseFirestore.instance.collection('groups').snapshots();
+
+    return StreamBuilder<QuerySnapshot>(
+      stream: stream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          print("Error fetching data: ${snapshot.error}"); // Logging error
+          return const Text("Error");
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        print("Fetched documents: ${snapshot.data?.docs.length}"); // Logging number of documents fetched
+
+        var docs = snapshot.data!.docs;
+
+        print("Documents: ${docs.map((doc) => doc.data()).toList()}"); // Logging documents data
+
+        return ListView(
+          children: docs.map<Widget>((doc) => buildGroupItem(doc, userId)).toList(),
+        );
+      },
+    );
+  }
+
+  Widget buildUserItem(DocumentSnapshot document, String collection) {
+    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+
+    String? name;
+    String? email;
+
+    if (collection == 'users') {
+      name = "${data['fNAme'] ?? ''} ${data['lNAme'] ?? ''}";
+      email = data['email'];
+    } else if (collection == 'channels') {
+      name = data['name'];
+      email = null;
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          ListTile(
+            leading: const CircleAvatar(
+              backgroundImage: NetworkImage(
+                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"),
+              radius: 20,
+            ),
+            title: Text(
+              name ?? 'Unknown',
+              style: AppTextStyles.font12PrimaryRegular.copyWith(
+                fontSize: 18,
+                color: Colors.black,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatRoomScreen(
+                    receiverUserEmails: [email ?? 'email'],
+                    receiverUserID: data['id'].toString(),
+                    receiverName: name ?? 'Unknown',
+                    isGroup: false,
+                  ),
+                ),
+              );
+            },
+          ),
+          const Divider(
+            height: 2,
+            thickness: 2,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildGroupItem(DocumentSnapshot document, String userId) {
+    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+
+    String name = data['name'] ?? 'Unknown';
+    List<dynamic> members = data['members'] ?? [];
+
+    if (!members.contains(userId)) {
+      return Container(); // Skip groups where the user is not a member
+    }
+
+    List<String> emails = [];
+    if (data['email'] is String) {
+      emails = [data['email']];
+    } else if (data['email'] is List) {
+      emails = List<String>.from(data['email']);
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          ListTile(
+            leading: const CircleAvatar(
+              backgroundImage: NetworkImage(
+                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"),
+              radius: 20,
+            ),
+            title: Text(
+              name,
+              style: AppTextStyles.font12PrimaryRegular.copyWith(
+                fontSize: 18,
+                color: Colors.black,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatRoomScreen(
+                    receiverUserEmails: emails,
+                    receiverUserID: data['id'].toString(),
+                    receiverName: name,
+                    isGroup: true,
+                  ),
+                ),
+              );
+            },
+          ),
+          const Divider(
+            height: 2,
+            thickness: 2,
+          ),
+        ],
+      ),
+    );
   }
 }

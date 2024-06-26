@@ -7,20 +7,23 @@ import 'package:first_step/features/chat/ui/chat_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-
 import '../../../core/networking/firestore_service.dart';
 import '../../../core/widgets/text_form_field.dart';
+import 'add_members.dart';
 
 class ChatRoomScreen extends StatefulWidget {
-  final String receiverUserEmail;
+  final List<String> receiverUserEmails;
   final String receiverUserID;
   final String receiverName;
+  final bool isGroup;
 
-  const ChatRoomScreen(
-      {super.key,
-        required this.receiverUserEmail,
-        required this.receiverUserID,
-        required this.receiverName});
+  const ChatRoomScreen({
+    super.key,
+    required this.receiverUserEmails,
+    required this.receiverUserID,
+    required this.receiverName,
+    this.isGroup = false,
+  });
 
   @override
   State<ChatRoomScreen> createState() => _ChatRoomScreenState();
@@ -40,18 +43,19 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   Future<void> _loadUserId() async {
     userId = await SharedPrefHelper.getString(SharedPrefKeys.id);
     userName = await SharedPrefHelper.getString(SharedPrefKeys.fName);
-    print("Fetched userId: $userId");
-
     setState(() {});
   }
 
   void sendMessage() async {
     if (_messagesController.text.isNotEmpty && userId != null) {
-      print("Sending message: ${_messagesController.text}");
-      await FireStoreServices.sendMessage(widget.receiverUserID, _messagesController.text);
+      if (widget.isGroup) {
+        await FireStoreServices.sendGroupMessage(
+            widget.receiverUserID, _messagesController.text);
+      } else {
+        await FireStoreServices.sendMessage(
+            widget.receiverUserID, _messagesController.text);
+      }
       _messagesController.clear();
-    } else {
-      print("Message text is empty or userId is null");
     }
   }
 
@@ -59,13 +63,33 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         backgroundColor: AppColors.primaryColor,
         title: Text(widget.receiverName),
-        actions: [ Padding(
-          padding: const EdgeInsets.only(right: 20.0),
-          child: Container(height:25,width:25,child: Image.asset('assets/images/logo_light.png')),
-        )],
+        actions: [
+          if (widget.isGroup)
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddMembersInGroup(
+                      name: widget.receiverName,
+                      groupChatId: widget.receiverUserID,
+                      membersList: [], // Pass the actual members list
+                    ),
+                  ),
+                );
+              },
+            ),
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: Container(
+                height: 25,
+                width: 25,
+                child: Image.asset('assets/images/logo_light.png')),
+          ),
+        ],
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(20),
@@ -76,7 +100,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
       body: Column(
         children: [
           Expanded(
-            child: userId != null ? buildMessageList() : Center(child: CircularProgressIndicator()),
+            child: userId != null
+                ? buildMessageList()
+                : Center(child: CircularProgressIndicator()),
           ),
           buildMessageInput(),
           verticalSpace(20),
@@ -85,10 +111,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     );
   }
 
-
   Widget buildMessageList() {
     return StreamBuilder(
-      stream: FireStoreServices.getMessages(widget.receiverUserID, userId!),
+      stream: widget.isGroup
+          ? FireStoreServices.getGroupMessages(widget.receiverUserID)
+          : FireStoreServices.getMessages(widget.receiverUserID, userId!),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return Text("Error: ${snapshot.error}");
@@ -108,12 +135,15 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     );
   }
 
-
   Widget MessageItem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-    Color color = (data['senderId'] == userId) ? AppColors.primaryColor : AppColors.lightGray;
-    var alignment = (data['senderId'] == userId) ? Alignment.centerRight : Alignment.centerLeft;
+    Color color = (data['senderId'] == userId)
+        ? AppColors.primaryColor
+        : AppColors.lightGray;
+    var alignment = (data['senderId'] == userId)
+        ? Alignment.centerRight
+        : Alignment.centerLeft;
 
     Timestamp timestamp = data['timestamp'];
 
@@ -123,8 +153,12 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          crossAxisAlignment: (data['senderId'] == userId) ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-          mainAxisAlignment: (data['senderId'] == userId) ? MainAxisAlignment.end : MainAxisAlignment.start,
+          crossAxisAlignment: (data['senderId'] == userId)
+              ? CrossAxisAlignment.end
+              : CrossAxisAlignment.start,
+          mainAxisAlignment: (data['senderId'] == userId)
+              ? MainAxisAlignment.end
+              : MainAxisAlignment.start,
           children: [
             Text(data['senderName']),
             verticalSpace(5),
@@ -139,8 +173,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
       ),
     );
   }
-
-
 
   Widget buildMessageInput() {
     return Padding(
@@ -160,11 +192,10 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
               )),
           Container(
             decoration: const BoxDecoration(
-              color: AppColors.lightGray,
-              borderRadius:BorderRadius.all(
-                Radius.circular(50),
-              )
-            ),
+                color: AppColors.lightGray,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(50),
+                )),
             child: IconButton(
               icon: Icon(Icons.send, color: AppColors.white),
               onPressed: sendMessage,
