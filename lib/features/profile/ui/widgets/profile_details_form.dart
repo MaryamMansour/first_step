@@ -127,7 +127,7 @@ class _ProfileDetailsFormState extends State<ProfileDetailsForm> {
           },
           child: Text("Save"),
           style: ElevatedButton.styleFrom(
-            primary: AppColors.primaryColor,
+            backgroundColor: AppColors.primaryColor,
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 80),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),

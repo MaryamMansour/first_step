@@ -31,12 +31,8 @@ class GroupDetailsScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: _firestore
-                  .collection('groups')
-                  .doc(groupChatId)
-                  .collection('members')
-                  .snapshots(),
+            child: StreamBuilder<DocumentSnapshot>(
+              stream: _firestore.collection('groups').doc(groupChatId).snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Center(child: Text("Error: ${snapshot.error}"));
@@ -45,7 +41,8 @@ class GroupDetailsScreen extends StatelessWidget {
                   return Center(child: CircularProgressIndicator());
                 }
 
-                var members = snapshot.data!.docs;
+                var groupData = snapshot.data!.data() as Map<String, dynamic>;
+                var members = groupData['members'] as List<dynamic>;
 
                 if (members.isEmpty) {
                   return Center(child: Text("No members found"));
@@ -54,7 +51,7 @@ class GroupDetailsScreen extends StatelessWidget {
                 return ListView.builder(
                   itemCount: members.length,
                   itemBuilder: (context, index) {
-                    var member = members[index].data() as Map<String, dynamic>;
+                    var member = members[index] as Map<String, dynamic>;
                     return ListTile(
                       leading: const CircleAvatar(
                         backgroundImage: NetworkImage(

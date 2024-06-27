@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -75,10 +74,10 @@ class _ChatScreenState extends State<ChatScreen> {
                       padding: const EdgeInsets.only(bottom: 25.0),
                       child: Row(
                         children: [
-                          horizontalSpace(50),
+                          horizontalSpace(40),
                           Text("Chats", style: AppTextStyles.font24PrimaryBold),
                           horizontalSpace(
-                              MediaQuery.of(context).size.width - 140),
+                              MediaQuery.of(context).size.width - 200.w),
                           Container(
                             width: 50.w,
                             height: 50.h,
@@ -227,7 +226,7 @@ class _ChatScreenState extends State<ChatScreen> {
       return Center(child: CircularProgressIndicator());
     }
 
-    Stream<QuerySnapshot> stream = FirebaseFirestore.instance.collection('groups').snapshots();
+    Stream<QuerySnapshot> stream = FirebaseFirestore.instance.collection('groups').where('memberUIDs', arrayContains: userId).snapshots();
 
     return StreamBuilder<QuerySnapshot>(
       stream: stream,
@@ -315,6 +314,9 @@ class _ChatScreenState extends State<ChatScreen> {
     String description = data['description'] ?? 'No description available';
     List<dynamic> members;
 
+    print("HHHHHHHHHHHHHHHHHHHHH");
+    print(data['members']);
+
     if (data['members'] is String) {
       members = [data['members']];
     } else if (data['members'] is List) {
@@ -323,7 +325,7 @@ class _ChatScreenState extends State<ChatScreen> {
       members = [];
     }
 
-    if (!members.contains(userId)) {
+    if (!members.any((member) => member['uid'] == userId)) {
       return Container(); // Skip groups where the user is not a member
     }
 
@@ -357,7 +359,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 MaterialPageRoute(
                   builder: (context) => ChatRoomScreen(
                     description: description,
-                    receiverUserEmails: emails,
+                    receiverUserEmails: members,
                     receiverUserID: data['id'].toString(),
                     receiverName: name,
                     isGroup: true,

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -47,10 +46,12 @@ class _AddMembersInGroupState extends State<AddMembersInGroup> {
     if (userMap != null && !membersList.any((member) => member['uid'] == userMap['uid'])) {
       membersList.add(userMap);
 
+      // Update the members list in the Firestore group document
       await _firestore.collection('groups').doc(widget.groupChatId).update({
-        "members": membersList.map((member) => member['uid']).toList(),
+        "members": FieldValue.arrayUnion([userMap]),'memberUIDs':FieldValue.arrayUnion([userMap['uid']])
       });
 
+      // Add the group information to the user's document
       await _firestore
           .collection('users')
           .doc(userMap['uid'])
@@ -73,6 +74,7 @@ class _AddMembersInGroupState extends State<AddMembersInGroup> {
 
     String name = data['name'] ?? 'Unknown';
     String email = data['email'] ?? 'No Email';
+    String uid = document.id; // Get user id from document id
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -81,7 +83,7 @@ class _AddMembersInGroupState extends State<AddMembersInGroup> {
           ListTile(
             onTap: () {
               if (!isMember) {
-                onAddMembers(data);
+                onAddMembers({"uid": uid, "name": name, "email": email});
               }
             },
             leading: const CircleAvatar(

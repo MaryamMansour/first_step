@@ -28,19 +28,24 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     });
 
     String groupId = _firestore.collection('groups').doc().id;
+    String userId = await SharedPrefHelper.getString(SharedPrefKeys.id) ?? '';
+    String userName = await SharedPrefHelper.getString(SharedPrefKeys.fName) ?? 'Unknown';
+    String email = await SharedPrefHelper.getString(SharedPrefKeys.email) ?? 'Unknown';
 
     try {
       await _firestore.collection('groups').doc(groupId).set({
         "name": _groupName.text,
         "description": _groupDescription.text,
         "id": groupId,
-        "members": await SharedPrefHelper.getString(SharedPrefKeys.id),
+        "members": [{"uid": userId, "name": userName, "email": email}],
+        "memberUIDs":[userId],
         "createdAt": Timestamp.now(),
       });
 
       await _firestore.collection('groups').doc(groupId).collection('chats').add({
-        "message": "${await SharedPrefHelper.getString(SharedPrefKeys.fName)} Created This Group.",
+        "message": "$userName Created This Group.",
         "type": "notify",
+        "timestamp": Timestamp.now(),
       });
 
       Navigator.of(context).pushAndRemoveUntil(

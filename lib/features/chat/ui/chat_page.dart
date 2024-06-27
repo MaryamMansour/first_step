@@ -13,7 +13,7 @@ import 'add_members.dart';
 import 'grou_details.dart';
 
 class ChatRoomScreen extends StatefulWidget {
-  final List<String> receiverUserEmails;
+  final List<dynamic> receiverUserEmails;
   final String receiverUserID;
   final String receiverName;
   final bool isGroup;
