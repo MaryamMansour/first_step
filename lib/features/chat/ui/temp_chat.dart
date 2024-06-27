@@ -289,7 +289,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ChatRoomScreen(
-                    receiverUserEmails: [email ?? 'email'],
+                    description: "",
+                    receiverUserEmails: email != null ? [email] : [],
                     receiverUserID: data['id'].toString(),
                     receiverName: name ?? 'Unknown',
                     isGroup: false,
@@ -311,7 +312,16 @@ class _ChatScreenState extends State<ChatScreen> {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
     String name = data['name'] ?? 'Unknown';
-    List<dynamic> members = data['members'] ?? [];
+    String description = data['description'] ?? 'No description available';
+    List<dynamic> members;
+
+    if (data['members'] is String) {
+      members = [data['members']];
+    } else if (data['members'] is List) {
+      members = List<dynamic>.from(data['members']);
+    } else {
+      members = [];
+    }
 
     if (!members.contains(userId)) {
       return Container(); // Skip groups where the user is not a member
@@ -346,6 +356,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ChatRoomScreen(
+                    description: description,
                     receiverUserEmails: emails,
                     receiverUserID: data['id'].toString(),
                     receiverName: name,

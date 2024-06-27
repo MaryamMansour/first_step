@@ -10,12 +10,14 @@ import 'package:intl/intl.dart';
 import '../../../core/networking/firestore_service.dart';
 import '../../../core/widgets/text_form_field.dart';
 import 'add_members.dart';
+import 'grou_details.dart';
 
 class ChatRoomScreen extends StatefulWidget {
   final List<String> receiverUserEmails;
   final String receiverUserID;
   final String receiverName;
   final bool isGroup;
+  final String description;
 
   const ChatRoomScreen({
     super.key,
@@ -23,6 +25,7 @@ class ChatRoomScreen extends StatefulWidget {
     required this.receiverUserID,
     required this.receiverName,
     this.isGroup = false,
+    required this.description,
   });
 
   @override
@@ -64,7 +67,23 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
-        title: Text(widget.receiverName),
+        title: GestureDetector(
+          onTap: () {
+            if (widget.isGroup) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GroupDetailsScreen(
+                    groupChatId: widget.receiverUserID,
+                    groupName: widget.receiverName,
+                    description: widget.description,
+                  ),
+                ),
+              );
+            }
+          },
+          child: Text(widget.receiverName),
+        ),
         actions: [
           if (widget.isGroup)
             IconButton(
