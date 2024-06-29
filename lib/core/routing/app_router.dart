@@ -1,5 +1,5 @@
 import 'package:first_step/core/routing/routes.dart';
-import 'package:first_step/features/chat/ui/temp_chat.dart';
+import 'package:first_step/features/chat/ui/chat_screen.dart';
 import 'package:first_step/features/home/logic/home_cubit.dart';
 import 'package:first_step/features/home/ui/home_layout_screen.dart';
 import 'package:first_step/features/profile/logic/profile_cubit.dart';

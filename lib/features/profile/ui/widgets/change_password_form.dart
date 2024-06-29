@@ -82,7 +82,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
             },
             child: Text("Save",style: AppTextStyles.font20WhiteBold.copyWith(fontSize: 15),),
             style: ElevatedButton.styleFrom(
-              primary: AppColors.primaryColor,
+              backgroundColor: AppColors.primaryColor,
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 80),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
