@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:first_step/core/networking/firestore_service.dart';
+import 'package:first_step/core/theming/colors.dart';
 import 'package:flutter/material.dart';
 
 class AddMembersInGroup extends StatefulWidget {
@@ -42,37 +44,58 @@ class _AddMembersInGroupState extends State<AddMembersInGroup> {
     super.dispose();
   }
 
-  void onAddMembers(Map<String, dynamic> userMap) async {
-    if (userMap != null && !membersList.any((member) => member['uid'] == userMap['uid'])) {
-      membersList.add(userMap);
 
-      // Update the members list in the Firestore group document
-      await _firestore.collection('groups').doc(widget.groupChatId).update({
-        "members": FieldValue.arrayUnion([userMap]),'memberUIDs':FieldValue.arrayUnion([userMap['uid']])
-      });
 
-      // Add the group information to the user's document
-      await _firestore
-          .collection('users')
-          .doc(userMap['uid'])
-          .collection('groups')
-          .doc(widget.groupChatId)
-          .set({"name": widget.name, "id": widget.groupChatId});
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Member added successfully")),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Member already added or user not found")),
-      );
-    }
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
+        title: Text("Add Members"),
+      ),
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(height: size.height / 20),
+          Container(
+            height: size.height / 14,
+            width: size.width,
+            alignment: Alignment.center,
+            child: Container(
+              height: size.height / 14,
+              width: size.width / 1.15,
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: "Search..",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: size.height / 50),
+          Expanded(
+            child: UserList(
+              collection: 'users',
+              searchStream: _searchStreamController.stream,
+            ),
+          ),
+        ],
+      ),
+    );
   }
+
+
+
 
   Widget buildUserItem(DocumentSnapshot document, {bool isMember = false}) {
     Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
-    String name = data['name'] ?? 'Unknown';
+    String name = ("${data['fNAme']} ${data['lNAme']}") ??'Unknown';
     String email = data['email'] ?? 'No Email';
     String uid = document.id; // Get user id from document id
 
@@ -138,7 +161,7 @@ class _AddMembersInGroupState extends State<AddMembersInGroup> {
             String searchQuery = searchSnapshot.data!.toLowerCase();
             var filteredDocs = docs.where((doc) {
               Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
-              String name = (data['name'] ?? '').toLowerCase();
+              String name = (("${data['fNAme']} ${data['lNAme']}")?? '').toLowerCase();
               return name.contains(searchQuery);
             }).toList();
 
@@ -154,45 +177,26 @@ class _AddMembersInGroupState extends State<AddMembersInGroup> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Add Members"),
-      ),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(height: size.height / 20),
-          Container(
-            height: size.height / 14,
-            width: size.width,
-            alignment: Alignment.center,
-            child: Container(
-              height: size.height / 14,
-              width: size.width / 1.15,
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: "Search",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: size.height / 50),
-          Expanded(
-            child: UserList(
-              collection: 'users',
-              searchStream: _searchStreamController.stream,
-            ),
-          ),
-        ],
-      ),
-    );
+
+
+  void onAddMembers(Map<String, dynamic> userMap) async {
+    // If its already there
+    if (userMap != null &&
+        !membersList.any((member) => member['uid'] == userMap['uid'])) {
+      membersList.add(userMap);
+
+      // Update the members list in the Firestore group document
+
+      FireStoreServices.updateGroupMembers(userMap, widget.groupChatId) ;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Member added successfully")),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Member already added or user not found")),
+      );
+    }
   }
+
 }

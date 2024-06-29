@@ -8,10 +8,8 @@ import 'package:first_step/core/helper/shared_pref.dart';
 import 'package:first_step/core/helper/spacing.dart';
 import 'package:first_step/core/theming/colors.dart';
 import 'package:first_step/core/theming/styles.dart';
-
-import 'add_members.dart';
+import 'chat_room_screen.dart';
 import 'create_group.dart';
-import 'chat_page.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -25,6 +23,11 @@ class _ChatScreenState extends State<ChatScreen> {
   late StreamController<String> _searchStreamController;
   String? userId;
 
+  final List<Map<String, dynamic>> staticChannels = [
+    {'id': 'channel_1', 'name': 'Investors Talk', 'description': 'Discuss investments'},
+    {'id': 'channel_2', 'name': 'Entrepreneurs Talk', 'description': 'Discuss entrepreneurship'}
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -33,12 +36,53 @@ class _ChatScreenState extends State<ChatScreen> {
       _searchStreamController.add(_searchController.text.toLowerCase());
     });
     _loadUserId();
+    _initializeChannels();
+  }
+
+  Future<void> _initializeChannels() async {
+    for (var channel in staticChannels) {
+      DocumentSnapshot doc = await FirebaseFirestore.instance.collection('channels').doc(channel['id']).get();
+      if (!doc.exists) {
+        await FirebaseFirestore.instance.collection('channels').doc(channel['id']).set({
+          'name': channel['name'],
+          'description': channel['description'],
+          'members': []
+        });
+      }
+    }
   }
 
   Future<void> _loadUserId() async {
     userId = await SharedPrefHelper.getString(SharedPrefKeys.id);
     print("Loaded User ID: $userId"); // Logging user ID
     setState(() {});
+  }
+
+  Future<void> joinChannel(String channelId) async {
+    if (userId != null) {
+      await FirebaseFirestore.instance.collection('channels').doc(channelId).update({
+        'members': FieldValue.arrayUnion([userId])
+      });
+      setState(() {});
+    }
+  }
+
+  Future<void> leaveChannel(String channelId) async {
+    if (userId != null) {
+      await FirebaseFirestore.instance.collection('channels').doc(channelId).update({
+        'members': FieldValue.arrayRemove([userId])
+      });
+      setState(() {});
+    }
+  }
+
+  Future<bool> isMemberOfChannel(String channelId) async {
+    if (userId != null) {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('channels').doc(channelId).get();
+      List<dynamic> members = snapshot['members'] ?? [];
+      return members.contains(userId);
+    }
+    return false;
   }
 
   @override
@@ -141,12 +185,16 @@ class _ChatScreenState extends State<ChatScreen> {
                       userId: userId,
                     ),
                     GroupList(
-                      userId: userId,
-                    ),
-                    UserList(
-                      collection: 'channels',
                       searchStream: _searchStreamController.stream,
                       userId: userId,
+                    ),
+                    ChannelList(
+                      searchStream: _searchStreamController.stream,
+                      userId: userId,
+                      staticChannels: staticChannels,
+                      joinChannel: joinChannel,
+                      leaveChannel: leaveChannel,
+                      isMemberOfChannel: isMemberOfChannel,
                     ),
                   ],
                 ),
@@ -155,6 +203,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: AppColors.primaryColor,
           child: Icon(Icons.group_add),
           onPressed: () {
             Navigator.push(
@@ -206,7 +255,7 @@ class _ChatScreenState extends State<ChatScreen> {
             String searchQuery = searchSnapshot.data!.toLowerCase();
             var filteredDocs = docs.where((doc) {
               Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
-              String name = (data['name'] ?? '').toLowerCase();
+              String name = (data['fNAme'] ?? '').toLowerCase();
               return name.contains(searchQuery);
             }).toList();
 
@@ -220,13 +269,16 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget GroupList({
+    required Stream<String> searchStream,
     String? userId,
   }) {
     if (userId == null) {
       return Center(child: CircularProgressIndicator());
     }
 
-    Stream<QuerySnapshot> stream = FirebaseFirestore.instance.collection('groups').where('memberUIDs', arrayContains: userId).snapshots();
+    Stream<QuerySnapshot> stream = FirebaseFirestore.instance.collection('groups')
+        .where('memberUIDs', arrayContains: userId)
+        .snapshots();
 
     return StreamBuilder<QuerySnapshot>(
       stream: stream,
@@ -245,8 +297,70 @@ class _ChatScreenState extends State<ChatScreen> {
 
         print("Documents: ${docs.map((doc) => doc.data()).toList()}"); // Logging documents data
 
+        return StreamBuilder<String>(
+          stream: searchStream,
+          initialData: '',
+          builder: (context, searchSnapshot) {
+            if (!searchSnapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            String searchQuery = searchSnapshot.data!.toLowerCase();
+            var filteredDocs = docs.where((doc) {
+              Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+              String name = (data['name'] ?? '').toLowerCase();
+              return name.contains(searchQuery);
+            }).toList();
+
+            return ListView(
+              children: filteredDocs.map<Widget>((doc) => buildGroupItem(doc, userId)).toList(),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget ChannelList({
+    required Stream<String> searchStream,
+    required String? userId,
+    required List<Map<String, dynamic>> staticChannels,
+    required Function(String) joinChannel,
+    required Function(String) leaveChannel,
+    required Future<bool> Function(String) isMemberOfChannel,
+  }) {
+    if (userId == null) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    return StreamBuilder<String>(
+      stream: searchStream,
+      initialData: '',
+      builder: (context, searchSnapshot) {
+        if (!searchSnapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        String searchQuery = searchSnapshot.data!.toLowerCase();
+        var filteredChannels = staticChannels.where((channel) {
+          String name = (channel['name'] ?? '').toLowerCase();
+          return name.contains(searchQuery);
+        }).toList();
+
         return ListView(
-          children: docs.map<Widget>((doc) => buildGroupItem(doc, userId)).toList(),
+          children: filteredChannels.map<Widget>((channel) {
+            return FutureBuilder<bool>(
+              future: isMemberOfChannel(channel['id']),
+              builder: (context, membershipSnapshot) {
+                if (membershipSnapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                bool isMember = membershipSnapshot.data ?? false;
+
+                return buildChannelItem(channel, isMember, joinChannel, leaveChannel);
+              },
+            );
+          }).toList(),
         );
       },
     );
@@ -293,6 +407,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     receiverUserID: data['id'].toString(),
                     receiverName: name ?? 'Unknown',
                     isGroup: false,
+                    isChannel: false,
                   ),
                 ),
               );
@@ -313,9 +428,6 @@ class _ChatScreenState extends State<ChatScreen> {
     String name = data['name'] ?? 'Unknown';
     String description = data['description'] ?? 'No description available';
     List<dynamic> members;
-
-    print("HHHHHHHHHHHHHHHHHHHHH");
-    print(data['members']);
 
     if (data['members'] is String) {
       members = [data['members']];
@@ -358,15 +470,79 @@ class _ChatScreenState extends State<ChatScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ChatRoomScreen(
-                    description: description,
                     receiverUserEmails: members,
                     receiverUserID: data['id'].toString(),
                     receiverName: name,
+                    description: description,
                     isGroup: true,
                   ),
                 ),
               );
             },
+          ),
+          const Divider(
+            height: 2,
+            thickness: 2,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildChannelItem(Map<String, dynamic> channel, bool isMember, Function(String) joinChannel, Function(String) leaveChannel) {
+    String name = channel['name'] ?? 'Unknown';
+    String description = channel['description'] ?? 'No description available';
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          ListTile(
+            leading: const CircleAvatar(
+              backgroundImage: NetworkImage(
+                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"),
+              radius: 20,
+            ),
+            title: Text(
+              name,
+              style: AppTextStyles.font12PrimaryRegular.copyWith(
+                fontSize: 18,
+                color: Colors.black,
+              ),
+            ),
+            subtitle: Text(description),
+            trailing: isMember
+                ? ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryColor
+              ),
+              onPressed: () => leaveChannel(channel['id']),
+              child: Text('Leave'),
+            )
+                : ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.gray
+              ),
+              onPressed: () => joinChannel(channel['id']),
+              child: Text('Join'),
+            ),
+            onTap: isMember
+                ? () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatRoomScreen(
+                    receiverUserEmails: [],
+                    receiverUserID: channel['id'].toString(),
+                    receiverName: name,
+                    description: description,
+                    isGroup: false,
+                    isChannel: true,
+                  ),
+                ),
+              );
+            }
+                : null,
           ),
           const Divider(
             height: 2,

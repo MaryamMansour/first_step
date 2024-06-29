@@ -9,14 +9,15 @@ import 'package:intl/intl.dart';
 
 import '../../../core/networking/firestore_service.dart';
 import '../../../core/widgets/text_form_field.dart';
-import 'add_members.dart';
-import 'grou_details.dart';
+import 'add_members_screen.dart';
+import 'group_details.dart';
 
 class ChatRoomScreen extends StatefulWidget {
   final List<dynamic> receiverUserEmails;
   final String receiverUserID;
   final String receiverName;
   final bool isGroup;
+  final bool isChannel;
   final String description;
 
   const ChatRoomScreen({
@@ -25,6 +26,7 @@ class ChatRoomScreen extends StatefulWidget {
     required this.receiverUserID,
     required this.receiverName,
     this.isGroup = false,
+    this.isChannel = false,
     required this.description,
   });
 
@@ -52,13 +54,20 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   void sendMessage() async {
     if (_messagesController.text.isNotEmpty && userId != null) {
       if (widget.isGroup) {
+
         await FireStoreServices.sendGroupMessage(
+            widget.receiverUserID, _messagesController.text);
+      } else if (widget.isChannel) {
+        print("HIIII");
+        await FireStoreServices.sendChannelMessage(
             widget.receiverUserID, _messagesController.text);
       } else {
         await FireStoreServices.sendMessage(
             widget.receiverUserID, _messagesController.text);
       }
       _messagesController.clear();
+    } else {
+      print("Message controller is empty or user ID is null");
     }
   }
 
@@ -80,6 +89,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                   ),
                 ),
               );
+            } else if (widget.isChannel) {
+              // Implement channel details screen if needed
             }
           },
           child: Text(widget.receiverName),
@@ -95,7 +106,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                     builder: (context) => AddMembersInGroup(
                       name: widget.receiverName,
                       groupChatId: widget.receiverUserID,
-                      membersList: [], // Pass the actual members list
+                      membersList: widget.receiverUserEmails, // Pass the actual members list
                     ),
                   ),
                 );
@@ -134,6 +145,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     return StreamBuilder(
       stream: widget.isGroup
           ? FireStoreServices.getGroupMessages(widget.receiverUserID)
+          : widget.isChannel
+          ? FireStoreServices.getChannelMessages(widget.receiverUserID)
           : FireStoreServices.getMessages(widget.receiverUserID, userId!),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {

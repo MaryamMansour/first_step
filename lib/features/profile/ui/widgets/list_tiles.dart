@@ -4,7 +4,7 @@ import 'package:first_step/core/helper/shared_pref.dart';
 import 'package:first_step/core/helper/spacing.dart';
 import 'package:first_step/core/routing/routes.dart';
 import 'package:first_step/core/theming/colors.dart';
-import 'package:first_step/features/chat/ui/temp_chat.dart';
+import 'package:first_step/features/chat/ui/chat_screen.dart';
 
 import '../../../project/ui/screens/upload_screen.dart';
 

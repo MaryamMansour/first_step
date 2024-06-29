@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_step/core/helper/constants.dart';
 import 'package:first_step/core/helper/shared_pref.dart';
-import 'package:first_step/features/chat/ui/temp_chat.dart';
+import 'package:first_step/core/helper/spacing.dart';
+import 'package:first_step/core/theming/colors.dart';
+import 'package:first_step/core/widgets/text_form_field.dart';
+import 'package:first_step/features/chat/ui/chat_screen.dart';
 import 'package:flutter/material.dart';
 
 class CreateGroupScreen extends StatefulWidget {
@@ -55,7 +58,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error occurred while creating group")),
+        const SnackBar(content: Text("Error occurred while creating group")),
       );
     }
   }
@@ -66,6 +69,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
         title: Text("Create Group"),
       ),
       body: isLoading
@@ -85,18 +89,14 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
             child: Container(
               height: size.height / 14,
               width: size.width / 1.15,
-              child: TextField(
+              child: AppTextFormField(
                 controller: _groupName,
-                decoration: InputDecoration(
-                  hintText: "Enter Group Name",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+                hintText: 'Group Name',
+                validator: (value) {  },
               ),
             ),
           ),
-          SizedBox(height: size.height / 50),
+          verticalSpace(size.height / 12),
           Container(
             height: size.height / 14,
             width: size.width,
@@ -104,21 +104,17 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
             child: Container(
               height: size.height / 14,
               width: size.width / 1.15,
-              child: TextField(
+              child: AppTextFormField(
                 controller: _groupDescription,
-                decoration: InputDecoration(
-                  hintText: "Enter Group Description",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
+                hintText: "Group Description", validator: (value) {  },
               ),
             ),
           ),
-          SizedBox(height: size.height / 50),
+          verticalSpace( size.height / 16),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: AppColors.gray),
             onPressed: createGroup,
-            child: Text("Create Group"),
+            child: const Text("Create Group"),
           ),
         ],
       ),
