@@ -11,24 +11,22 @@ import '../../features/profile/data/models/reset_password_response.dart';
 import '../../features/project/data/models/project_response.dart';
 import 'api_constants.dart';
 
-
 part 'api_service.g.dart';
 
-@RestApi(baseUrl: ApiConstants.apiBaseUrl) //retrofit annotation
+@RestApi(baseUrl: ApiConstants.apiBaseUrl)
 abstract class ApiService {
-  factory ApiService(Dio dio, {String baseUrl}) = _ApiService; // inject dio
+  factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 
   @POST(ApiConstants.login)
   Future<LoginResponse> login(
       @Body() LoginRequestBody loginRequestBody,
       );
-  
+
   @POST(ApiConstants.signup)
   Future<SignupResponse> signup(
       @Body() SignupRequestBody signupRequestBody,
       );
 
-  // PROFILE
   @GET(ApiConstants.profile)
   Future<ProfileResponse> getProfile();
 
@@ -36,16 +34,15 @@ abstract class ApiService {
   Future<ProfileResponse> updateProfile(
       @Body() ProfileRequestBody profileRequestBody
       );
+
   @PUT(ApiConstants.resetPassword)
   Future<ResetPasswordResponse> resetPassword(
       @Body() ResetPasswordRequestBody resetPasswordRequestBody
       );
 
-
-
-
-  // Project
   @GET(ApiConstants.getAllProjects)
   Future<List<ProjectResponse>> getAllProjects();
-}
 
+  @GET("project/search/{query}")
+  Future<List<ProjectResponse>> searchProjects(@Path("query") String query);
+}

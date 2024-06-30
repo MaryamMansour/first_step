@@ -1,4 +1,3 @@
-// projects_list_view.dart
 import 'package:flutter/material.dart';
 import 'package:first_step/features/project/data/models/project_response.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +20,7 @@ class ProjectsListView extends StatefulWidget {
 
 class _ProjectsListViewState extends State<ProjectsListView> {
   late ScrollController _scrollController;
-  Set<int> _expandedProjects = {}; // Track which projects are expanded
+  Set<int> _expandedProjects = {};
 
   @override
   void initState() {
@@ -104,7 +103,6 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                         child: _buildImage(project?.imageURL),
                       ),
                       verticalSpace(10),
-                      // Display tags with "More" if there are more than 3
                       if (project?.tags != null && project!.tags.isNotEmpty)
                         Wrap(
                           spacing: 2.0,
@@ -136,7 +134,6 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                         overflow: TextOverflow.ellipsis,
                         maxLines: isExpanded ? null : 3,
                       ),
-
                     ],
                   ),
                 ),
@@ -151,7 +148,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
   Widget _buildImage(String? url) {
     if (url == null || url.isEmpty || !Uri.parse(url).hasAbsolutePath) {
       return Image.network(
-        'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg', // Path to your default image
+        'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg',
         height: 120.h,
         width: 180.w,
         fit: BoxFit.cover,
@@ -165,7 +162,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
       fit: BoxFit.cover,
       errorBuilder: (context, error, stackTrace) {
         return Image.network(
-          'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg', // Path to your default image
+          'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg',
           height: 120.h,
           width: 180.w,
           fit: BoxFit.cover,

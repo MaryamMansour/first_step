@@ -1,4 +1,3 @@
-// home_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -13,18 +12,15 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(
-        width: double.infinity,
-        child: Column(
+    return BlocProvider(
+      create: (context) => ProjectCubit(GetIt.instance<ProjectRepo>())..getAllProjects(),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const HomeTopBar(),
-            BlocProvider(
-              create: (context) => ProjectCubit(GetIt.instance<ProjectRepo>())..getAllProjects(),
-              child: const ProjectsBlocBuilder(),
-            ),
+            HomeTopBar(),
+            Expanded(child: ProjectsBlocBuilder()),
           ],
         ),
       ),

@@ -1,4 +1,3 @@
-// project_repo.dart
 import 'package:first_step/core/networking/api_service.dart';
 import 'package:first_step/core/networking/api_result.dart';
 import 'package:first_step/core/networking/api_error_handler.dart';
@@ -12,6 +11,15 @@ class ProjectRepo {
   Future<ApiResult<List<ProjectResponse>>> getAllProjects() async {
     try {
       final response = await _apiService.getAllProjects();
+      return ApiResult.success(response);
+    } catch (error) {
+      return ApiResult.failure(ErrorHandler.handle(error));
+    }
+  }
+
+  Future<ApiResult<List<ProjectResponse>>> searchProjects(String query) async {
+    try {
+      final response = await _apiService.searchProjects(query);
       return ApiResult.success(response);
     } catch (error) {
       return ApiResult.failure(ErrorHandler.handle(error));
