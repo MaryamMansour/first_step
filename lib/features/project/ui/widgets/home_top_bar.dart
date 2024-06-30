@@ -1,8 +1,7 @@
 import 'package:first_step/core/helper/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../../core/theming/colors.dart';
+import 'package:first_step/core/theming/colors.dart';
 
 class HomeTopBar extends StatelessWidget {
   const HomeTopBar({super.key});
@@ -10,7 +9,6 @@ class HomeTopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       width: 453.w,
       height: 220.h,
       decoration: const BoxDecoration(
@@ -33,9 +31,8 @@ class HomeTopBar extends StatelessWidget {
                 ),
               ),
             ],
-
           ),
-          verticalSpace(35),
+          verticalSpace(42),
           FilterButtons(),
           verticalSpace(20),
         ],
@@ -43,21 +40,24 @@ class HomeTopBar extends StatelessWidget {
     );
   }
 }
+
 class FilterButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
+    return SizedBox(
+      height: 42.h,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
         children: [
           FilterButton(text: 'All'),
           FilterButton(text: 'Graduation projects'),
           FilterButton(text: 'Start Ups'),
+
           IconButton(
-            icon: Icon(Icons.tune, color: AppColors.white,),
+            icon: Icon(Icons.tune, color: AppColors.white),
             onPressed: () {},
           ),
-        ]
-
+        ],
       ),
     );
   }
@@ -71,17 +71,21 @@ class FilterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Container(
-        child: ElevatedButton(
-          onPressed: () {},
-          child: Text(text),
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.black, backgroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: InkWell(
+        onTap: (){print("HII object");},
+        child: Container(
+          height: 3.h,
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Center(
+            child: Text(
+              text,
+              style: TextStyle(color: Colors.black),
             ),
-            padding: EdgeInsets.symmetric(horizontal: 8),
           ),
         ),
       ),

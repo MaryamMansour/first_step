@@ -8,6 +8,7 @@ import '../../features/login/data/models/login_response.dart';
 import '../../features/profile/data/models/profile_response.dart';
 import '../../features/profile/data/models/reset_password_request_body.dart';
 import '../../features/profile/data/models/reset_password_response.dart';
+import '../../features/project/data/models/project_response.dart';
 import 'api_constants.dart';
 
 
@@ -39,5 +40,12 @@ abstract class ApiService {
   Future<ResetPasswordResponse> resetPassword(
       @Body() ResetPasswordRequestBody resetPasswordRequestBody
       );
+
+
+
+
+  // Project
+  @GET(ApiConstants.getAllProjects)
+  Future<List<ProjectResponse>> getAllProjects();
 }
 

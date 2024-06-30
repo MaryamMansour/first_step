@@ -1,8 +1,12 @@
-
-import 'package:first_step/features/project/ui/widgets/project_list_view.dart';
+// home_page.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
+import '../../data/repo/project_repo.dart';
+import '../../logic/project_cubit.dart';
 import '../widgets/home_top_bar.dart';
+import '../widgets/pojects_bloc_builder.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,12 +17,14 @@ class HomePage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Container(
         width: double.infinity,
-        child:
-        const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const HomeTopBar(),
-            ProjectsListView(),
+            BlocProvider(
+              create: (context) => ProjectCubit(GetIt.instance<ProjectRepo>())..getAllProjects(),
+              child: const ProjectsBlocBuilder(),
+            ),
           ],
         ),
       ),
