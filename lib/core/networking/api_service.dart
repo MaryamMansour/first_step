@@ -9,6 +9,7 @@ import '../../features/profile/data/models/profile_response.dart';
 import '../../features/profile/data/models/reset_password_request_body.dart';
 import '../../features/profile/data/models/reset_password_response.dart';
 import '../../features/project/data/models/project_response.dart';
+import '../../features/project/data/models/comment_model.dart';
 import 'api_constants.dart';
 
 part 'api_service.g.dart';
@@ -32,12 +33,12 @@ abstract class ApiService {
 
   @PUT(ApiConstants.profile)
   Future<ProfileResponse> updateProfile(
-      @Body() ProfileRequestBody profileRequestBody
+      @Body() ProfileRequestBody profileRequestBody,
       );
 
   @PUT(ApiConstants.resetPassword)
   Future<ResetPasswordResponse> resetPassword(
-      @Body() ResetPasswordRequestBody resetPasswordRequestBody
+      @Body() ResetPasswordRequestBody resetPasswordRequestBody,
       );
 
   @GET(ApiConstants.getAllProjects)
@@ -45,4 +46,10 @@ abstract class ApiService {
 
   @GET("project/search/{query}")
   Future<List<ProjectResponse>> searchProjects(@Path("query") String query);
+
+  @GET("/rest/project/getComments/{projectId}")
+  Future<List<CommentResponse>> getComments(@Path("projectId") int projectId);
+
+  @POST("/rest/project/addComment/{projectId}")
+  Future<CommentResponse> addComment(@Path("projectId") int projectId, @Body() AddCommentRequest addCommentRequest);
 }

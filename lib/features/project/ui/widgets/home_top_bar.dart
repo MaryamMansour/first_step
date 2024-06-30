@@ -1,3 +1,4 @@
+import 'package:first_step/core/theming/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:first_step/core/helper/spacing.dart';
@@ -38,7 +39,7 @@ class HomeTopBar extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                   width: 250.w,
-                  height: 40.h,
+                  height: 50.h,
                   child: TextField(
                     controller: _searchController,
                     decoration: InputDecoration(
@@ -47,7 +48,9 @@ class HomeTopBar extends StatelessWidget {
                       ),
                       fillColor: AppColors.white,
                       filled: true,
+                      contentPadding: EdgeInsets.all(8),
                       hintText: 'Search projects...',
+                      hintStyle: AppTextStyles.font20BlackThin.copyWith(fontSize: 12),
                       enabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
                           color: AppColors.lightGray,
