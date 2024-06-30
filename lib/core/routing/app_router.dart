@@ -18,6 +18,8 @@ import '../../features/profile/ui/screens/profile_details.dart';
 import '../../features/project/ui/screens/upload_screen.dart';
 import '../di/depndency_injection.dart';
 
+
+//TODO add the rest of the screens
 class AppRouter {
   Route generateRoutes(RouteSettings routeSettings) {
     switch (routeSettings.name) {
