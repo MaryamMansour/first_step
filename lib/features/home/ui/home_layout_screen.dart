@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../core/di/depndency_injection.dart';
 import '../../chat/ui/chat_screen.dart';
 import '../../profile/ui/screens/profile_screen.dart';
+import '../../project/logic/project_cubit.dart';
 import '../../project/ui/screens/home_page.dart';
 import '../../project/ui/screens/project_details.dart';
 import '../../project/ui/screens/upload_screen.dart';
@@ -22,7 +24,10 @@ class HomeScreen extends StatelessWidget {
               case HomeTab.chats:
                 return ChatScreen();
               case HomeTab.add:
-                return  UploadScreen();
+                return BlocProvider(
+                  create: (context) => getIt<ProjectCubit>(),
+                  child: UploadProjectScreen(),
+                );
               case HomeTab.chatbot:
                 return ChatbotPage();
               case HomeTab.account:

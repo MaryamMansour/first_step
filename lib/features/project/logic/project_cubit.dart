@@ -3,6 +3,8 @@ import 'package:first_step/features/project/data/models/project_response.dart';
 import 'package:first_step/features/project/data/repo/project_repo.dart';
 import 'package:first_step/features/project/logic/project_state.dart';
 
+import '../data/models/project_upload_request_body.dart';
+
 class ProjectCubit extends Cubit<ProjectState> {
   final ProjectRepo _projectRepo;
   bool isDataLoaded = false;
@@ -65,4 +67,24 @@ class ProjectCubit extends Cubit<ProjectState> {
       },
     );
   }
+
+
+
+
+  void uploadProject(ProjectUploadRequestBody projectRequestBody) async {
+    emit(const ProjectState.projectsLoading());
+    final response = await _projectRepo.uploadProject(projectRequestBody);
+    response.when(
+      success: (projectResponse) {
+        emit(ProjectState.projectUploadSuccess(projectResponse));
+        // Show a snackbar or any other indication of success
+        print("UPLOADEDDDD");
+      },
+      failure: (errorHandler) {
+        emit(ProjectState.projectsError(errorHandler));
+      },
+    );
+  }
+
+
 }

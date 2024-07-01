@@ -1,246 +1,351 @@
-import 'package:first_step/core/helper/spacing.dart';
-import 'package:first_step/core/theming/colors.dart';
-import 'package:first_step/core/theming/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:first_step/features/project/data/models/project_upload_request_body.dart';
+import 'package:first_step/features/project/logic/project_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:file_picker/file_picker.dart';
-import 'dart:io';
+import '../../../../core/helper/spacing.dart';
+import '../../../../core/theming/colors.dart';
+import '../../../../core/theming/styles.dart';
+import '../../logic/project_state.dart';
 
-import '../../../../core/helper/shared_pref.dart';
-import '../widgets/file_upload_button.dart';
-import '../widgets/image_upload_button.dart';
-
-class UploadScreen extends StatefulWidget {
+class UploadProjectScreen extends StatefulWidget {
   @override
-  _UploadScreenState createState() => _UploadScreenState();
+  _UploadProjectScreenState createState() => _UploadProjectScreenState();
 }
 
-class _UploadScreenState extends State<UploadScreen> {
-  final picker = ImagePicker();
-  File? slideshowFile;
-  XFile? logoImage;
-
-  final TextEditingController projectDescriptionController = TextEditingController();
-  final TextEditingController aboutController = TextEditingController();
-  final TextEditingController sloganController = TextEditingController();
-  final TextEditingController typeController = TextEditingController();
-  final TextEditingController yearController = TextEditingController();
-  final TextEditingController amountController = TextEditingController();
-  final TextEditingController serialNameController = TextEditingController();
-  final TextEditingController raisedWhereController = TextEditingController();
-
-  String? industry;
-  String? businessModel;
-  String? customerModel;
-  String? stage;
-
-  List<String> industryOptions = [
-    'Select Industry',
-    'Option 1',
-    'Option 2',
-    'Option 3'
-  ];
-  List<String> businessModelOptions = [
-    'Select Business Model',
-    'Option 1',
-    'Option 2',
-    'Option 3'
-  ];
-  List<String> customerModelOptions = [
-    'Select Customer Model',
-    'Option 1',
-    'Option 2',
-    'Option 3'
-  ];
-  List<String> stageOptions = [
-    'Select Stage',
-    'Option 1',
-    'Option 2',
-    'Option 3'
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    industry = industryOptions[0];
-    businessModel = businessModelOptions[0];
-    customerModel = customerModelOptions[0];
-    stage = stageOptions[0];
-    _loadSavedData();
-  }
-
-  Future<void> pickImage(ImageSource source) async {
-    final pickedFile = await picker.pickImage(source: source);
-
-    setState(() {
-      logoImage = pickedFile;
-    });
-  }
-
-  Future<void> pickPDF() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf'],
-    );
-
-    if (result != null) {
-      setState(() {
-        slideshowFile = File(result.files.single.path!);
-      });
-    }
-  }
-
-  Future<void> _loadSavedData() async {
-    projectDescriptionController.text =
-        await SharedPrefHelper.getString('projectDescription') ?? '';
-    aboutController.text = await SharedPrefHelper.getString('about') ?? '';
-    sloganController.text = await SharedPrefHelper.getString('slogan') ?? '';
-    typeController.text = await SharedPrefHelper.getString('type') ?? '';
-    yearController.text = await SharedPrefHelper.getString('year') ?? '';
-    amountController.text = await SharedPrefHelper.getString('amount') ?? '';
-    serialNameController.text = await SharedPrefHelper.getString('serialName') ?? '';
-    raisedWhereController.text = await SharedPrefHelper.getString('raisedWhere') ?? '';
-  }
-
-  Future<void> _saveDraft() async {
-    await SharedPrefHelper.setData('projectDescription', projectDescriptionController.text);
-    await SharedPrefHelper.setData('about', aboutController.text);
-    await SharedPrefHelper.setData('slogan', sloganController.text);
-    await SharedPrefHelper.setData('type', typeController.text);
-    await SharedPrefHelper.setData('year', yearController.text);
-    await SharedPrefHelper.setData('amount', amountController.text);
-    await SharedPrefHelper.setData('serialName', serialNameController.text);
-    await SharedPrefHelper.setData('raisedWhere', raisedWhereController.text);
-  }
+class _UploadProjectScreenState extends State<UploadProjectScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _companyNameController = TextEditingController();
+  final TextEditingController _sloganController = TextEditingController();
+  final TextEditingController _amountRaisedController = TextEditingController();
+  final TextEditingController _yearController = TextEditingController();
+  final TextEditingController _stageController = TextEditingController();
+  final TextEditingController _businessModelController = TextEditingController();
+  final TextEditingController _imageURLController = TextEditingController();
+  final TextEditingController _fullDescriptionController = TextEditingController();
+  final TextEditingController _pdfURLController = TextEditingController();
+  final TextEditingController _investorsController = TextEditingController();
+  final TextEditingController _aboutController = TextEditingController();
+  final TextEditingController _industryController = TextEditingController();
+  final TextEditingController _tagsController = TextEditingController();
+  final TextEditingController _customerModelController = TextEditingController();
+  final TextEditingController _websiteController = TextEditingController();
+  final TextEditingController _legalNameController = TextEditingController();
+  final TextEditingController _typeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              verticalSpace(15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                      width: 45,
-                      height: 45,
-                      child: Image.asset("assets/images/logo_dark.png")),
-                ],
-              ),
-              verticalSpace(20),
-              Divider(
-                color: AppColors.lightGray,
-                thickness: 0.5,
-              ),
-              verticalSpace(20),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: BuildFileUploadButton(
-                        label: 'Slideshow',
-                        file: slideshowFile,
-                        onPressed: pickPDF),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: BuildImageUploadButton(
-                        label: 'Logo',
-                        image: logoImage,
-                        onPressed: () => pickImage(ImageSource.gallery)),
-                  ),
-                ],
-              ),
-              verticalSpace(20),
-              _buildTextField('Project Description', projectDescriptionController),
-              _buildTextField('About', aboutController),
-              _buildTextField('Slogan', sloganController),
-              _buildDropdownField('Industry', industry, industryOptions, (String? newValue) {
-                setState(() {
-                  industry = newValue;
-                });
-              }),
-              _buildDropdownField('Business Model', businessModel, businessModelOptions, (String? newValue) {
-                setState(() {
-                  businessModel = newValue;
-                });
-              }),
-              _buildDropdownField('Customer Model', customerModel, customerModelOptions, (String? newValue) {
-                setState(() {
-                  customerModel = newValue;
-                });
-              }),
-              _buildDropdownField('Stage', stage, stageOptions, (String? newValue) {
-                setState(() {
-                  stage = newValue;
-                });
-              }),
-              _buildTextField('Founding Year', yearController),
-              _buildTextField('Type', typeController),
-              _buildTextField('Amount', amountController),
-              _buildTextField('Legal Name', serialNameController),
-              _buildTextField('Raised Funds', raisedWhereController),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(onPressed: _saveDraft, child: Text('Save Draft')),
-                  ElevatedButton(onPressed: () {}, child: Text('Upload')),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(String label, TextEditingController controller) {
-    return Container(
-      height: 80.h,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            labelStyle: AppTextStyles.font12PrimaryRegular.copyWith(color: AppColors.gray),
-            fillColor: Colors.grey.shade100,
-            filled: true,
-            border: OutlineInputBorder(),
-            labelText: label,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDropdownField(String label, String? value, List<String> options, ValueChanged<String?> onChanged) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: InputDecorator(
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: label,
-        ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String?>(
-            value: value,
-            isDense: true,
-            onChanged: onChanged,
-            items: options.map<DropdownMenuItem<String?>>((String? value) {
-              return DropdownMenuItem<String?>(
-                value: value,
-                child: Text(value!),
+      appBar: AppBar(title: Text('Upload Project')),
+      body: BlocListener<ProjectCubit, ProjectState>(
+        listener: (context, state) {
+          state.maybeWhen(
+            projectUploadSuccess: (project) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Project uploaded successfully!')),
               );
-            }).toList(),
+            },
+            orElse: () {},
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                TextFormField(
+                  controller: _companyNameController,
+                  decoration: InputDecoration(labelText: 'Company Name'),
+                ),
+                TextFormField(
+                  controller: _sloganController,
+                  decoration: InputDecoration(labelText: 'Slogan'),
+                ),
+                TextFormField(
+                  controller: _amountRaisedController,
+                  decoration: InputDecoration(labelText: 'Amount Raised'),
+                ),
+                TextFormField(
+                  controller: _yearController,
+                  decoration: InputDecoration(labelText: 'Year'),
+                ),
+                TextFormField(
+                  controller: _stageController,
+                  decoration: InputDecoration(labelText: 'Stage'),
+                ),
+                TextFormField(
+                  controller: _businessModelController,
+                  decoration: InputDecoration(labelText: 'Business Model'),
+                ),
+                BuildImageUploadButton(
+                  label: 'Image URL',
+                  onPressed: () async {
+                    String? url = await showUrlInputDialog(context, 'Image');
+                    if (url != null && url.isNotEmpty) {
+                      _imageURLController.text = url;
+                    }
+                  },
+                ),
+                TextFormField(
+                  controller: _fullDescriptionController,
+                  decoration: InputDecoration(labelText: 'Full Description'),
+                ),
+                BuildFileUploadButton(
+                  label: 'PDF URL',
+                  onPressed: () async {
+                    String? url = await showUrlInputDialog(context, 'PDF');
+                    if (url != null && url.isNotEmpty) {
+                      _pdfURLController.text = url;
+                    }
+                  },
+                ),
+                TextFormField(
+                  controller: _investorsController,
+                  decoration: InputDecoration(labelText: 'Investors'),
+                ),
+                TextFormField(
+                  controller: _aboutController,
+                  decoration: InputDecoration(labelText: 'About'),
+                ),
+                TextFormField(
+                  controller: _industryController,
+                  decoration: InputDecoration(labelText: 'Industry'),
+                ),
+                TextFormField(
+                  controller: _tagsController,
+                  decoration: InputDecoration(labelText: 'Tags'),
+                ),
+                TextFormField(
+                  controller: _customerModelController,
+                  decoration: InputDecoration(labelText: 'Customer Model'),
+                ),
+                TextFormField(
+                  controller: _websiteController,
+                  decoration: InputDecoration(labelText: 'Website'),
+                ),
+                TextFormField(
+                  controller: _legalNameController,
+                  decoration: InputDecoration(labelText: 'Legal Name'),
+                ),
+                TextFormField(
+                  controller: _typeController,
+                  decoration: InputDecoration(labelText: 'Type'),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      final projectRequestBody = ProjectUploadRequestBody(
+                        companyName: _companyNameController.text,
+                        slogan: _sloganController.text,
+                        amountRaised: _amountRaisedController.text,
+                        year: _yearController.text,
+                        stage: _stageController.text,
+                        businessModel: _businessModelController.text,
+                        imageURL: _imageURLController.text,
+                        fullDescription: _fullDescriptionController.text,
+                        pdfURL: _pdfURLController.text,
+                        investors: _investorsController.text,
+                        about: _aboutController.text,
+                        industry: _industryController.text,
+                        tags: _tagsController.text,
+                        customerModel: _customerModelController.text,
+                        website: _websiteController.text,
+                        legalName: _legalNameController.text,
+                        type: _typeController.text,
+                      );
+
+                      context.read<ProjectCubit>().uploadProject(projectRequestBody);
+                    }
+                  },
+                  child: Text('Upload Project'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+}
+
+Future<String?> showUrlInputDialog(BuildContext context, String label) async {
+  TextEditingController urlController = TextEditingController();
+  return showDialog<String>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Enter $label URL'),
+        content: TextField(
+          controller: urlController,
+          decoration: InputDecoration(hintText: 'Enter URL here'),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop(urlController.text);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+class BuildFileUploadButton extends StatefulWidget {
+  final String label;
+  final VoidCallback onPressed;
+
+
+  const BuildFileUploadButton({super.key, required this.label, required this.onPressed});
+
+  @override
+  _BuildFileUploadButtonState createState() => _BuildFileUploadButtonState();
+}
+
+class _BuildFileUploadButtonState extends State<BuildFileUploadButton> {
+  String? fileUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: () async {
+            String? url = await showUrlInputDialog(context, widget.label);
+            if (url != null && url.isNotEmpty) {
+              setState(() {
+                fileUrl = url;
+              });
+            }
+          },
+          child: Container(
+            width: 180.w,
+            height: 250.h,
+            decoration: BoxDecoration(
+              boxShadow: [BoxShadow(blurRadius: 2, color: AppColors.gray)],
+              color: AppColors.white,
+              border: Border.all(color: AppColors.lightGray),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 40),
+              child: fileUrl == null
+                  ? Column(
+                children: [
+                  Icon(Icons.file_copy, size: 30),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+                    child: Text(
+                      widget.label,
+                      style: AppTextStyles.font15PrimaryBold,
+                    ),
+                  ),
+                  Text(
+                    "Upload High Quality visuals",
+                    style: AppTextStyles.font16GrayLight.copyWith(fontSize: 10),
+                  ),
+                  verticalSpace(10),
+                  Icon(Icons.file_upload_outlined, size: 20),
+                ],
+              )
+                  : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.picture_as_pdf, size: 50, color: Colors.red),
+                  Text(
+                    "File URL:",
+                    style: AppTextStyles.font16GrayLight,
+                  ),
+                  Text(
+                    fileUrl!,
+                    style: AppTextStyles.font15PrimaryBold.copyWith(fontSize: 12),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class BuildImageUploadButton extends StatefulWidget {
+  final String label;
+  final VoidCallback onPressed;
+
+
+  const BuildImageUploadButton({super.key, required this.label, required this.onPressed});
+
+  @override
+  _BuildImageUploadButtonState createState() => _BuildImageUploadButtonState();
+}
+
+class _BuildImageUploadButtonState extends State<BuildImageUploadButton> {
+  String? imageUrl;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: () async {
+            String? url = await showUrlInputDialog(context, widget.label);
+            if (url != null && url.isNotEmpty) {
+              setState(() {
+                imageUrl = url;
+              });
+            }
+          },
+          child: Container(
+            width: 180.w,
+            height: 250.h,
+            decoration: BoxDecoration(
+              boxShadow: [BoxShadow(blurRadius: 2, color: AppColors.gray)],
+              color: AppColors.white,
+              border: Border.all(color: AppColors.lightGray),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: imageUrl == null
+                ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 40),
+              child: Column(
+                children: [
+                  const ImageIcon(
+                    AssetImage("assets/images/logo.png"),
+                    size: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+                    child: Text(
+                      widget.label,
+                      style: AppTextStyles.font15PrimaryBold,
+                    ),
+                  ),
+                  Text(
+                    "Upload High Quality Logo Image",
+                    style: AppTextStyles.font16GrayLight.copyWith(fontSize: 10),
+                  ),
+                  verticalSpace(10),
+                  Icon(Icons.file_upload_outlined, size: 20),
+                ],
+              ),
+            )
+                : Image.network(imageUrl!, fit: BoxFit.cover),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -12,4 +12,6 @@ class ProjectState with _$ProjectState {
   const factory ProjectState.projectsSuccess(List<ProjectResponse?>? projects) = _ProjectsSuccess;
   const factory ProjectState.projectsError(ErrorHandler errorHandler) = _ProjectsError;
   const factory ProjectState.projectsLoadingMore(List<ProjectResponse?>? projects) = _ProjectsLoadingMore;
+  const factory ProjectState.projectUploadSuccess(ProjectResponse project) = _ProjectUploadSuccess;
+
 }

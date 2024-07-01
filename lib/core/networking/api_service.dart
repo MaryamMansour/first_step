@@ -10,6 +10,7 @@ import '../../features/profile/data/models/reset_password_request_body.dart';
 import '../../features/profile/data/models/reset_password_response.dart';
 import '../../features/project/data/models/project_response.dart';
 import '../../features/project/data/models/comment_model.dart';
+import '../../features/project/data/models/project_upload_request_body.dart';
 import 'api_constants.dart';
 
 part 'api_service.g.dart';
@@ -52,4 +53,8 @@ abstract class ApiService {
 
   @POST("/rest/project/addComment/{projectId}")
   Future<CommentResponse> addComment(@Path("projectId") int projectId, @Body() AddCommentRequest addCommentRequest);
+
+
+  @POST("/rest/project/upload")
+  Future<ProjectResponse> uploadProject(@Body() ProjectUploadRequestBody projectRequestBody);
 }

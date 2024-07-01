@@ -1,4 +1,3 @@
-// app_router.dart
 import 'package:first_step/core/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,7 +70,11 @@ class AppRouter {
               child: HomeScreen(),
             ));
       case Routes.uploadScreen:
-        return MaterialPageRoute(builder: (_) => UploadScreen());
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+              create: (context) => getIt<ProjectCubit>(),
+              child: UploadProjectScreen(),
+            ));
       case Routes.homeProjectScreen:
         return MaterialPageRoute(
             builder: (_) => BlocProvider(

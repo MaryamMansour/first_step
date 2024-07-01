@@ -1,4 +1,3 @@
-// setup_get_it.dart
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:first_step/core/networking/api_service.dart';

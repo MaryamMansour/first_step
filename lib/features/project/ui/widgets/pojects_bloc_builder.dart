@@ -12,7 +12,7 @@ class ProjectsBlocBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProjectCubit, ProjectState>(
       builder: (context, state) {
-        return state.when(
+        return state.maybeWhen(
           initial: () => const SizedBox.shrink(),
           projectsLoading: () => const ProjectsShimmerLoading(),
           projectsSuccess: (projectList) => Expanded(child: ProjectsListView(projectList: projectList)),
@@ -28,6 +28,7 @@ class ProjectsBlocBuilder extends StatelessWidget {
             ),
           ),
           projectsError: (errorHandler) => const Center(child: Text("Failed to load projects")),
+          orElse: () => Center(child: Text("OR ELSE"),),
         );
       },
     );
