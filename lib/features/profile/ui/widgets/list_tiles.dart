@@ -30,13 +30,13 @@ class ListTiles extends StatelessWidget {
                 context.pushNamed(Routes.profileDetailsScreen);
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.computer_sharp, color: AppColors.primaryColor),
-              title: const Text('My Project'),
-              onTap: () {
-                context.pushNamed(Routes.uploadScreen);
-              },
-            ),
+            // ListTile(
+            //   leading: const Icon(Icons.computer_sharp, color: AppColors.primaryColor),
+            //   title: const Text('My Project'),
+            //   onTap: () {
+            //     context.pushNamed(Routes.uploadScreen);
+            //   },
+            // ),
             ListTile(
               leading: const Icon(Icons.settings, color: AppColors.primaryColor),
               title: const Text('Settings'),

@@ -8,6 +8,7 @@ class Routes {
   static const String profileDetailsScreen='/profileDetailsScreen';
   static const String changePasswordScreen='/changePasswordScreen';
   static const String uploadScreen='/uploadScreen';
+  static const String homeProjectScreen='/homeProjectScreen';
 
   static const String chatScreen='/chatScreen';
   static const String chatGptScreen='/chatGptScreen';
