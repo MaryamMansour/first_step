@@ -1,10 +1,27 @@
+// file path: lib/features/project/data/models/project_response.dart
+
 import 'package:json_annotation/json_annotation.dart';
 
-part 'project_response.g.dart';
+part 'project_upload_response.g.dart';
 
 @JsonSerializable()
-class ProjectResponse {
-  final int? projectID;
+class ProjectUploadResponse {
+  final String? status;
+  final String? message;
+  final ProjectData? data;
+
+  ProjectUploadResponse({
+    required this.status,
+    required this.message,
+    required this.data,
+  });
+
+  factory ProjectUploadResponse.fromJson(Map<String, dynamic> json) => _$ProjectUploadResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$ProjectUploadResponseToJson(this);
+}
+
+@JsonSerializable()
+class ProjectData {
   final User? user;
   final String? companyName;
   final String? slogan;
@@ -14,8 +31,7 @@ class ProjectResponse {
   final String? businessModel;
   final String? fullDescription;
   final String? imageURL;
-  @JsonKey(name: 'pdf_URL')
-  final String? pdfURL;
+  final String? pdf_URL;
   final String? investors;
   final String? about;
   final String? industry;
@@ -24,12 +40,11 @@ class ProjectResponse {
   final String? website;
   final String? legalName;
   final String? type;
-  @JsonKey(name: 'likes')
-  final List<String?> comments;
+  final int? projectID;
   final int? numberOfLikes;
+  final List<String?> likes;  // Change the type as needed based on your data
 
-  ProjectResponse({
-    required this.projectID,
+  ProjectData({
     required this.user,
     required this.companyName,
     required this.slogan,
@@ -39,7 +54,7 @@ class ProjectResponse {
     required this.businessModel,
     required this.fullDescription,
     required this.imageURL,
-    required this.pdfURL,
+    required this.pdf_URL,
     required this.investors,
     required this.about,
     required this.industry,
@@ -48,35 +63,33 @@ class ProjectResponse {
     required this.website,
     required this.legalName,
     required this.type,
-    required this.comments,
+    required this.projectID,
     required this.numberOfLikes,
+    required this.likes,
   });
 
-  factory ProjectResponse.fromJson(Map<String, dynamic> json) =>
-      _$ProjectResponseFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ProjectResponseToJson(this);
+  factory ProjectData.fromJson(Map<String, dynamic> json) => _$ProjectDataFromJson(json);
+  Map<String, dynamic> toJson() => _$ProjectDataToJson(this);
 }
-
 
 @JsonSerializable()
 class User {
   final int id;
   final String email;
+  final String password;
   final String firstName;
   final String lastName;
   final String userName;
+
   User({
-   required this.id,
-   required this.email,
-   required this.firstName,
-   required this.lastName,
-   required this.userName,
+    required this.id,
+    required this.email,
+    required this.password,
+    required this.firstName,
+    required this.lastName,
+    required this.userName,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) =>
-      _$UserFromJson(json);
-
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
 }
-

@@ -28,7 +28,7 @@ class ProjectsBlocBuilder extends StatelessWidget {
             ),
           ),
           projectsError: (errorHandler) => const Center(child: Text("Failed to load projects")),
-          orElse: () => Center(child: Text("OR ELSE"),),
+          orElse: () => Center(child: Text("Unknown state")),
         );
       },
     );

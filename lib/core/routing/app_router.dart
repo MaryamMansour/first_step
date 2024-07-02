@@ -78,7 +78,7 @@ class AppRouter {
       case Routes.homeProjectScreen:
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
-              create: (context) => ProjectCubit(getIt<ProjectRepo>())..getAllProjects(),
+              create: (context) => getIt<ProjectCubit>()..getAllProjects(),
               child: HomePage(),
             ));
       default:

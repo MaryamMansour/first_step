@@ -88,7 +88,6 @@ class HomeTopBar extends StatelessWidget {
     );
   }
 }
-
 class FilterButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -97,9 +96,8 @@ class FilterButtons extends StatelessWidget {
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: [
-          FilterButton(text: 'All'),
-          FilterButton(text: 'Graduation projects'),
-          FilterButton(text: 'Start Ups'),
+          FilterButton(text: 'Graduation projects', type: 'GP'),
+          FilterButton(text: 'Start Ups', type: 'ST'),
           IconButton(
             icon: Icon(Icons.tune, color: AppColors.white),
             onPressed: () {},
@@ -112,8 +110,9 @@ class FilterButtons extends StatelessWidget {
 
 class FilterButton extends StatelessWidget {
   final String text;
+  final String type;
 
-  const FilterButton({required this.text});
+  const FilterButton({required this.text, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +120,7 @@ class FilterButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: InkWell(
         onTap: () {
-          print("HII object");
+          BlocProvider.of<ProjectCubit>(context).filterProjectsByType(type);
         },
         child: Container(
           height: 3.h,
@@ -140,4 +139,6 @@ class FilterButton extends StatelessWidget {
       ),
     );
   }
+
+
 }

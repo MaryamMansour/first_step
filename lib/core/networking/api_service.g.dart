@@ -280,22 +280,22 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<ProjectResponse> uploadProject(
+  Future<ProjectUploadResponse> uploadProject(
       ProjectUploadRequestBody projectRequestBody) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(projectRequestBody.toJson());
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<ProjectResponse>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ProjectUploadResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/rest/project/upload',
+              'project/upload',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -304,7 +304,7 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ProjectResponse.fromJson(_result.data!);
+    final value = ProjectUploadResponse.fromJson(_result.data!);
     return value;
   }
 

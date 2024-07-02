@@ -79,10 +79,10 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                 legalName: project?.legalName ?? '',
                 slideshowFile: project?.pdfURL,
                 logoImage: project?.imageURL,
-                tags: project?.tags.split(',').map((tag) => tag.trim()).toList() ?? [],
+                tags: project?.tags?.split(',').map((tag) => tag.trim()).toList() ?? [],
                 website: project?.website ?? '',
                 raisedAmount: project?.amountRaised ?? '',
-                investors: project?.investors.split(',').map((investor) => investor.trim()).toList() ?? [],
+                investors: project?.investors?.split(',').map((investor) => investor.trim()).toList() ?? [],
               ),
             ),
           ),
@@ -103,12 +103,12 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                         child: _buildImage(project?.imageURL),
                       ),
                       verticalSpace(10),
-                      if (project?.tags != null && project!.tags.isNotEmpty)
+                      if (project?.tags != null && project!.tags!.isNotEmpty)
                         Wrap(
                           spacing: 2.0,
                           runSpacing: 3.0,
                           children: [
-                            ...project.tags.split(',').take(2).map((tag) {
+                            ...?project.tags?.split(',').take(2).map((tag) {
                               return TagItem(text: tag.trim());
                             }).toList(),
                           ],

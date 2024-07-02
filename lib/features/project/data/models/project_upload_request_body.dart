@@ -4,23 +4,23 @@ part 'project_upload_request_body.g.dart';
 
 @JsonSerializable()
 class ProjectUploadRequestBody {
-  final String companyName;
-  final String slogan;
-  final String amountRaised;
-  final String year;
-  final String stage;
-  final String businessModel;
-  final String imageURL;
-  final String fullDescription;
-  final String pdfURL;
-  final String investors;
-  final String about;
-  final String industry;
-  final String tags;
-  final String customerModel;
-  final String website;
-  final String legalName;
-  final String type;
+  final String? companyName;
+  final String? slogan;
+  final String? amountRaised;
+  final String? year;
+  final String? stage;
+  final String? businessModel;
+  final String? imageURL;
+  final String? fullDescription;
+  final String? pdfURL;
+  final String? investors;
+  final String? about;
+  final String? industry;
+  final String? tags;
+  final String? customerModel;
+  final String? website;
+  final String? legalName;
+  final String? type;
 
   ProjectUploadRequestBody({
     required this.companyName,

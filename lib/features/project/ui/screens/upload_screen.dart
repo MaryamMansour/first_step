@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:first_step/features/project/data/models/project_upload_request_body.dart';
 import 'package:first_step/features/project/logic/project_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/helper/constants.dart';
 import '../../../../core/helper/spacing.dart';
+import '../../../../core/networking/dio_factory.dart';
 import '../../../../core/theming/colors.dart';
 import '../../../../core/theming/styles.dart';
 import '../../logic/project_state.dart';
@@ -65,6 +67,7 @@ class _UploadProjectScreenState extends State<UploadProjectScreen> {
   }
 
   Future<void> _saveDraft() async {
+  print("DRAFT");
     await SharedPrefHelper.setData('companyName', _companyNameController.text);
     await SharedPrefHelper.setData('slogan', _sloganController.text);
     await SharedPrefHelper.setData('amountRaised', _amountRaisedController.text);
@@ -235,30 +238,31 @@ class _UploadProjectScreenState extends State<UploadProjectScreen> {
                         child: Text('Save Draft'),
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState?.validate() ?? false) {
-                            final projectRequestBody = ProjectUploadRequestBody(
-                              companyName: _companyNameController.text,
-                              slogan: _sloganController.text,
-                              amountRaised: _amountRaisedController.text,
-                              year: _yearController.text,
-                              stage: _stageController.text,
-                              businessModel: _businessModelController.text,
-                              imageURL: _imageURLController.text,
-                              fullDescription: _fullDescriptionController.text,
-                              pdfURL: _pdfURLController.text,
-                              investors: _investorsController.text,
-                              about: _aboutController.text,
-                              industry: _industryController.text,
-                              tags: _tagsController.text,
-                              customerModel: _customerModelController.text,
-                              website: _websiteController.text,
-                              legalName: _legalNameController.text,
-                              type: _typeController.text,
-                            );
+                        onPressed: () async{
+                          DioFactory.setTokenIntoHeaderAfterLogin(await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken));
+                          print("KOKOOOO ${await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken)}");
+                          print("JJJJJJJJJJJJ");
+                          final projectRequestBody = ProjectUploadRequestBody(
+                            companyName: _companyNameController.text,
+                            slogan: _sloganController.text,
+                            amountRaised: _amountRaisedController.text,
+                            year: _yearController.text,
+                            stage: _stageController.text,
+                            businessModel: _businessModelController.text,
+                            imageURL: _imageURLController.text,
+                            fullDescription: _fullDescriptionController.text,
+                            pdfURL: _pdfURLController.text,
+                            investors: _investorsController.text,
+                            about: _aboutController.text,
+                            industry: _industryController.text,
+                            tags: _tagsController.text,
+                            customerModel: _customerModelController.text,
+                            website: _websiteController.text,
+                            legalName: _legalNameController.text,
+                            type: _typeController.text,
+                          );
 
-                            context.read<ProjectCubit>().uploadProject(projectRequestBody);
-                          }
+                          context.read<ProjectCubit>().uploadProject(projectRequestBody);
                         },
                         child: Text('Upload Project'),
                       ),

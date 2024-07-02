@@ -8,7 +8,6 @@ import 'package:first_step/features/project/data/repo/project_repo.dart';
 import 'package:first_step/features/login/logic/cubit/login_cubit.dart';
 import 'package:first_step/features/profile/logic/profile_cubit.dart';
 import 'package:first_step/features/project/logic/project_cubit.dart';
-
 import '../../features/SignUp/data/repos/sign_up_repo.dart';
 import '../../features/SignUp/logic/cubit/sign_up_cubit.dart';
 
@@ -16,7 +15,8 @@ final getIt = GetIt.instance;
 
 Future<void> setupGetIt() async {
   // Dio & ApiService
-  Dio dio = DioFactory.getDio();
+  Dio dio = await DioFactory.getDio();  // Ensure async initialization
+  getIt.registerLazySingleton<Dio>(() => dio);
   getIt.registerLazySingleton<ApiService>(() => ApiService(dio));
 
   // login
