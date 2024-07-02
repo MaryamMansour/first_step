@@ -14,6 +14,7 @@ class ProjectCubit extends Cubit<ProjectState> {
   List<ProjectResponse?>? displayedProjects = [];
   final int _pageSize = 20;
   int _currentPage = 0;
+  bool _isLoadingMore = false;
 
   void getAllProjects() async {
     if (isDataLoaded) {
@@ -38,12 +39,17 @@ class ProjectCubit extends Cubit<ProjectState> {
   }
 
   void _loadNextPage() {
+    if (_isLoadingMore) return;
+    _isLoadingMore = true;
+
     if (allProjects != null && allProjects!.isNotEmpty) {
       final nextPageItems = allProjects!.skip(_currentPage * _pageSize).take(_pageSize).toList();
       displayedProjects = [...displayedProjects!, ...nextPageItems];
       _currentPage++;
       emit(ProjectState.projectsSuccess(displayedProjects));
     }
+
+    _isLoadingMore = false;
   }
 
   void loadMoreProjects() {
@@ -80,7 +86,6 @@ class ProjectCubit extends Cubit<ProjectState> {
       },
     );
   }
-
 
   void filterProjectsByType(String type) {
     emit(const ProjectState.projectsLoading());
