@@ -49,10 +49,10 @@ abstract class ApiService {
   @GET("project/search/{query}")
   Future<List<ProjectResponse>> searchProjects(@Path("query") String query);
 
-  @GET("/rest/project/getComments/{projectId}")
+  @GET("project/getComments/{projectId}")
   Future<List<CommentResponse>> getComments(@Path("projectId") int projectId);
 
-  @POST("/rest/project/addComment/{projectId}")
+  @POST("project/addComment/{projectId}")
   Future<CommentResponse> addComment(@Path("projectId") int projectId, @Body() AddCommentRequest addCommentRequest);
 
 

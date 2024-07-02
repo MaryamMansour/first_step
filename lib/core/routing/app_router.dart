@@ -75,6 +75,12 @@ class AppRouter {
               create: (context) => getIt<ProjectCubit>(),
               child: UploadProjectScreen(),
             ));
+        case Routes.profileDetailsScreen:
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+              create: (context) => getIt<ProjectCubit>(),
+              child: ProfileDetailsScreen(),
+            ));
       case Routes.homeProjectScreen:
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
