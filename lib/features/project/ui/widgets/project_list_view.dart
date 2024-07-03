@@ -16,7 +16,8 @@ import 'tag_item.dart';
 class ProjectsListView extends StatefulWidget {
   final List<ProjectResponse?>? projectList;
 
-  const ProjectsListView({Key? key, required this.projectList}) : super(key: key);
+  const ProjectsListView({Key? key, required this.projectList})
+      : super(key: key);
 
   @override
   _ProjectsListViewState createState() => _ProjectsListViewState();
@@ -41,7 +42,8 @@ class _ProjectsListViewState extends State<ProjectsListView> {
   }
 
   void _onScroll() {
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent * 0.9 &&
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent * 0.9 &&
         !_scrollController.position.outOfRange) {
       BlocProvider.of<ProjectCubit>(context).loadMoreProjects();
     }
@@ -59,12 +61,13 @@ class _ProjectsListViewState extends State<ProjectsListView> {
 
   void _navigateToCommentsScreen(int projectId) {
     Navigator.push(
-      context,
-         MaterialPageRoute(
-        builder: (_) => BlocProvider(
-      create: (context) => getIt<ProjectCubit>(),
-      child: CommentsScreen(projectId: projectId,),
-    ))
+        context,
+        MaterialPageRoute(
+            builder: (_) =>
+                BlocProvider(
+                  create: (context) => getIt<ProjectCubit>(),
+                  child: CommentsScreen(projectId: projectId,),
+                ))
     );
   }
 
@@ -80,32 +83,37 @@ class _ProjectsListViewState extends State<ProjectsListView> {
         return Column(
           children: [
             GestureDetector(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BlocProvider(
-                    create: (context) => getIt<ProjectCubit>(),
-                    child: ProjectDetailsScreen(
-                      projectName: project?.companyName ?? '',
-                      projectDescription: project?.slogan ?? '',
-                      about: project?.about ?? '',
-                      industry: project?.industry ?? '',
-                      businessModel: project?.businessModel ?? '',
-                      customerModel: project?.customerModel ?? '',
-                      stage: project?.stage ?? '',
-                      year: project?.year ?? '',
-                      type: project?.type ?? '',
-                      legalName: project?.legalName ?? '',
-                      slideshowFile: project?.pdfURL,
-                      logoImage: project?.imageURL,
-                      tags: project?.tags?.split(',').map((tag) => tag.trim()).toList() ?? [],
-                      website: project?.website ?? '',
-                      raisedAmount: project?.amountRaised ?? '',
-                      investors: project?.investors?.split(',').map((investor) => investor.trim()).toList() ?? [],
+              onTap: () =>
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          BlocProvider(
+                            create: (context) => getIt<ProjectCubit>(),
+                            child: ProjectDetailsScreen(
+                              projectName: project?.companyName ?? '',
+                              projectDescription: project?.slogan ?? '',
+                              about: project?.about ?? '',
+                              industry: project?.industry ?? '',
+                              businessModel: project?.businessModel ?? '',
+                              customerModel: project?.customerModel ?? '',
+                              stage: project?.stage ?? '',
+                              year: project?.year ?? '',
+                              type: project?.type ?? '',
+                              legalName: project?.legalName ?? '',
+                              slideshowFile: project?.pdfURL,
+                              logoImage: project?.imageURL,
+                              tags: project?.tags?.split(',').map((tag) =>
+                                  tag.trim()).toList() ?? [],
+                              website: project?.website ?? '',
+                              raisedAmount: project?.amountRaised ?? '',
+                              investors: project?.investors?.split(',').map((
+                                  investor) => investor.trim()).toList() ?? [],
+                              userId: project?.user?.id.toString() ?? '', userName: project?.user?.firstName ?? '',
+                            ),
+                          ),
                     ),
                   ),
-                ),
-              ),
               child: Container(
                 margin: EdgeInsets.only(bottom: 16.h),
                 decoration: BoxDecoration(
@@ -123,7 +131,8 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                             child: _buildImage(project?.imageURL),
                           ),
                           verticalSpace(10),
-                          if (project?.tags != null && project!.tags!.isNotEmpty)
+                          if (project?.tags != null && project!.tags!
+                              .isNotEmpty)
                             Wrap(
                               spacing: 2.0,
                               runSpacing: 3.0,
@@ -135,11 +144,15 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                             ),
                           verticalSpace(20),
                           InkWell(
-                            onTap: () => _navigateToCommentsScreen(project?.projectID ?? 0),
+                            onTap: () =>
+                                _navigateToCommentsScreen(
+                                    project?.projectID ?? 0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Text("Comments", style: AppTextStyles.font12Blacklight.copyWith(fontSize: 8)),
+                                Text("Comments",
+                                    style: AppTextStyles.font12Blacklight
+                                        .copyWith(fontSize: 8)),
                               ],
                             ),
                           )
@@ -153,7 +166,8 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                         children: [
                           Text(
                             project?.companyName ?? '',
-                            style: AppTextStyles.font20BlackThin.copyWith(fontWeight: FontWeight.w400),
+                            style: AppTextStyles.font20BlackThin.copyWith(
+                                fontWeight: FontWeight.w400),
                             overflow: TextOverflow.ellipsis,
                           ),
                           verticalSpace(15),
@@ -171,7 +185,8 @@ class _ProjectsListViewState extends State<ProjectsListView> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0, vertical: 10),
               child: Divider(
                 height: 0.7,
                 thickness: 0.5,
@@ -184,7 +199,9 @@ class _ProjectsListViewState extends State<ProjectsListView> {
   }
 
   Widget _buildImage(String? url) {
-    if (url == null || url.isEmpty || !Uri.parse(url).hasAbsolutePath) {
+    if (url == null || url.isEmpty || !Uri
+        .parse(url)
+        .hasAbsolutePath) {
       return Image.network(
         'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg',
         height: 120.h,

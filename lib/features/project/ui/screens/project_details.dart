@@ -11,9 +11,12 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../core/helper/spacing.dart';
 import '../../../../core/theming/colors.dart';
+import '../../../chat/ui/chat_room_screen.dart';
 
 class ProjectDetailsScreen extends StatefulWidget {
   final String projectName;
+  final String userId;
+  final String userName;
   final String projectDescription;
   final String about;
   final String industry;
@@ -46,7 +49,7 @@ class ProjectDetailsScreen extends StatefulWidget {
     required this.tags,
     required this.website,
     required this.raisedAmount,
-    required this.investors,
+    required this.investors, required this.userId, required this.userName,
   });
 
   @override
@@ -206,7 +209,10 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
               richText('Stage', widget.stage),
               verticalSpace(5),
               richTextList('Investors', widget.investors),
-              verticalSpace(100),
+              verticalSpace(5),
+              richText('Username', widget.userName),
+              verticalSpace(100)
+
             ],
           ),
         ),
@@ -214,9 +220,22 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Add your onPressed code here!
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatRoomScreen(
+                description: "",
+                receiverUserEmails:  [],
+                receiverUserID: widget.userId,
+                receiverName: widget.userName?? 'Unknown',
+                isGroup: false,
+                isChannel: false,
+              ),
+            ),
+          );
         },
         backgroundColor: AppColors.primaryColor,
-        child: const Icon(Icons.chat),
+        child: const Icon(Icons.chat,color: AppColors.white,),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
