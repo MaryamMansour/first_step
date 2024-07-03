@@ -8,7 +8,7 @@ part of 'sign_up_response.dart';
 
 SignupResponse _$SignupResponseFromJson(Map<String, dynamic> json) =>
     SignupResponse(
-      status: json['status'] as bool?,
+      status: json['status'] as String?,
       message: json['message'] as String?,
       userData: json['data'] == null
           ? null
