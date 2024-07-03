@@ -8,35 +8,54 @@ import '../../features/login/data/models/login_response.dart';
 import '../../features/profile/data/models/profile_response.dart';
 import '../../features/profile/data/models/reset_password_request_body.dart';
 import '../../features/profile/data/models/reset_password_response.dart';
+import '../../features/project/data/models/project_response.dart';
+import '../../features/project/data/models/comment_model.dart';
+import '../../features/project/data/models/project_upload_request_body.dart';
+import '../../features/project/data/models/project_upload_response.dart';
 import 'api_constants.dart';
-
 
 part 'api_service.g.dart';
 
-@RestApi(baseUrl: ApiConstants.apiBaseUrl) //retrofit annotation
+@RestApi(baseUrl: ApiConstants.apiBaseUrl)
 abstract class ApiService {
-  factory ApiService(Dio dio, {String baseUrl}) = _ApiService; // inject dio
+  factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 
   @POST(ApiConstants.login)
   Future<LoginResponse> login(
       @Body() LoginRequestBody loginRequestBody,
       );
-  
+
   @POST(ApiConstants.signup)
   Future<SignupResponse> signup(
       @Body() SignupRequestBody signupRequestBody,
       );
-  // PROFILE
+
   @GET(ApiConstants.profile)
   Future<ProfileResponse> getProfile();
 
   @PUT(ApiConstants.profile)
   Future<ProfileResponse> updateProfile(
-      @Body() ProfileRequestBody profileRequestBody
+      @Body() ProfileRequestBody profileRequestBody,
       );
+
   @PUT(ApiConstants.resetPassword)
   Future<ResetPasswordResponse> resetPassword(
-      @Body() ResetPasswordRequestBody resetPasswordRequestBody
+      @Body() ResetPasswordRequestBody resetPasswordRequestBody,
       );
-}
 
+  @GET(ApiConstants.getAllProjects)
+  Future<List<ProjectResponse>> getAllProjects();
+
+  @GET("project/search/{query}")
+  Future<List<ProjectResponse>> searchProjects(@Path("query") String query);
+
+  @GET("project/getComments/{projectId}")
+  Future<List<CommentResponse>> getComments(@Path("projectId") int projectId);
+
+  @POST("project/addComment/{projectId}")
+  Future<CommentResponse> addComment(@Path("projectId") int projectId, @Body() AddCommentRequest addCommentRequest);
+
+
+  @POST("project/upload")
+  Future<ProjectUploadResponse> uploadProject(@Body() ProjectUploadRequestBody projectRequestBody);
+}

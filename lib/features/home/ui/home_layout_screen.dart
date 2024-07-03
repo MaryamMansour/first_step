@@ -1,9 +1,12 @@
 import 'package:first_step/features/chatbot/ui/screen/selection_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../core/di/depndency_injection.dart';
 import '../../chat/ui/chat_screen.dart';
 import '../../chatbot/ui/screen/chatbot_screen.dart';
 import '../../profile/ui/screens/profile_screen.dart';
+import '../../project/logic/project_cubit.dart';
+import '../../project/ui/screens/home_page.dart';
 import '../../project/ui/screens/project_details.dart';
 import '../../project/ui/screens/upload_screen.dart';
 import '../logic/home_cubit.dart';
@@ -23,27 +26,9 @@ class HomeScreen extends StatelessWidget {
               case HomeTab.chats:
                 return ChatScreen();
               case HomeTab.add:
-                return ProjectDetailsScreen(
-                  projectName: 'Shippo',
-                  projectDescription:
-                      'Popout, Inc. develops mobile software. The Company offers a platform that helps aggregate shipping volumes and giving customers access to cheaper shipping providers.',
-                  about:
-                      'Shippo is an all-in-one shipping platform that offers real-time carrier rates, automated print labels, and powerful tools that allow businesses to manage their operations more efficiently.',
-                  industry: 'Logistics',
-                  businessModel: 'SaaS',
-                  customerModel: 'B2B',
-                  stage: 'Pre Seed',
-                  year: '2014',
-                  type: 'ST',
-                  raisedAmount: '\$25K',
-                  legalName: 'Shippo Inc.',
-                  slideshowFile:
-                      'https://drive.google.com/file/d/1Bx3mK8QhN3E1PkZFD8pBxoEW_fEFcZoX/preview?usp=drivesdk',
-                  // replace with actual file
-                  logoImage: 'https://logo.clearbit.com/https://zapata.ai',
-                  tags: const ['Logistics', 'Transportation', 'Retail'],
-                  website: 'goshippo.com',
-                  investors: const ['VC'],
+                return BlocProvider(
+                  create: (context) => getIt<ProjectCubit>(),
+                  child: UploadProjectScreen(),
                 );
               case HomeTab.chatbot:
                 return ChatbotPage();
@@ -58,19 +43,6 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Home Page'));
-  }
-}
-
-class ChatsPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Chats Page'));
-  }
-}
 
 class AddPage extends StatelessWidget {
   @override
