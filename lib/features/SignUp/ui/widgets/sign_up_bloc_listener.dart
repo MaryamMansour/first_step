@@ -33,7 +33,9 @@ class SignupBlocListener extends StatelessWidget {
           signupSuccess: (signupResponse) {
             print("Ay haga");
             context.pop();
-            showSuccessDialog(context);
+            // showSuccessDialog(context);
+            context.pushReplacementNamed(Routes.homeScreen);
+
           },
           signupError: (error) {
             setupErrorState(context, error);
@@ -63,7 +65,8 @@ class SignupBlocListener extends StatelessWidget {
                 foregroundColor: Colors.white, backgroundColor: Colors.blue, disabledForegroundColor: Colors.grey.withOpacity(0.38),
               ),
               onPressed: () {
-                context.pushNamed(Routes.homeScreen);
+                print("GOOO");
+                context.pushReplacementNamed(Routes.homeScreen);
               },
               child: const Text('Continue'),
             ),

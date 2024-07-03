@@ -66,13 +66,6 @@ class AppRouter {
         case Routes.chatbotScreen:
         return MaterialPageRoute(builder: (_) => ChatbotScreen(),);
 
-        case Routes.homeScreen:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => getIt<ProfileCubit>()..getProfile(),
-            child: ProfileDetailsScreen(),
-          ),
-        );
       case Routes.changePasswordScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
