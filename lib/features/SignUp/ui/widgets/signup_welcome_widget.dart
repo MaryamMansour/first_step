@@ -25,7 +25,7 @@ class WelcomeWidget extends StatelessWidget {
             )
           ],
         ),
-        Text("Registr Now",style: AppTextStyles.font24PrimaryBold),
+        Text("Register Now",style: AppTextStyles.font24PrimaryBold),
 
       ],
     );

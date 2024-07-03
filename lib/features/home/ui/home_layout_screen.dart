@@ -1,7 +1,9 @@
+import 'package:first_step/features/chatbot/ui/screen/selection_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/di/depndency_injection.dart';
 import '../../chat/ui/chat_screen.dart';
+import '../../chatbot/ui/screen/chatbot_screen.dart';
 import '../../profile/ui/screens/profile_screen.dart';
 import '../../project/logic/project_cubit.dart';
 import '../../project/ui/screens/home_page.dart';
@@ -52,7 +54,7 @@ class AddPage extends StatelessWidget {
 class ChatbotPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Chatbot Page'));
+    return SelectionScreen();
   }
 }
 

@@ -16,4 +16,5 @@ class SharedPrefKeys{
   static const String businessModel='businessModel';
   static const String customerModel='customerModel';
   static const String stage='stage';
+
 }
