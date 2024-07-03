@@ -6,6 +6,7 @@ class ApiConstants {
   static const String resetPassword = "profile/reset-password";
   static const String openAiBaseUrl = 'https://chatgpt-api.shn.hk/v1/';
   static const String openAiCompletion = '';
+  static const String GEMINI_API_KEY = "AIzaSyBsY__QnFC3le7r-P-FB5K9OdViM99HwXw";
 }
 
 class ApiErrors {

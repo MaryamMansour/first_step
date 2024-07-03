@@ -10,5 +10,7 @@ class Routes {
   static const String uploadScreen='/uploadScreen';
 
   static const String chatScreen='/chatScreen';
-  static const String chatGptScreen='/chatGptScreen';
+
+  static const String chatbotSelectionScreen='/chatbotSelectionScreen';
+  static const String chatbotScreen='/chatbotScreen';
 }

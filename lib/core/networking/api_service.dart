@@ -26,7 +26,6 @@ abstract class ApiService {
   Future<SignupResponse> signup(
       @Body() SignupRequestBody signupRequestBody,
       );
-
   // PROFILE
   @GET(ApiConstants.profile)
   Future<ProfileResponse> getProfile();
