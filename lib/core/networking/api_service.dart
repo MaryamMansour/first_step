@@ -58,4 +58,12 @@ abstract class ApiService {
 
   @POST("project/upload")
   Future<ProjectUploadResponse> uploadProject(@Body() ProjectUploadRequestBody projectRequestBody);
+
+
+  @GET("search")
+  Future<List<int>> irSearchProjects(@Query("query") String query);
+
+  @GET("project/searchID/{id}")
+  Future<ProjectResponse> getProjectById(@Path("id") int id);
+
 }
