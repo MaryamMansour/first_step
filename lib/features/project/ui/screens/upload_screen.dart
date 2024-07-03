@@ -28,17 +28,17 @@ class _UploadProjectScreenState extends State<UploadProjectScreen> {
   final TextEditingController _yearController = TextEditingController();
   final TextEditingController _stageController = TextEditingController();
   final TextEditingController _businessModelController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _imageURLController = TextEditingController();
   final TextEditingController _fullDescriptionController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _pdfURLController = TextEditingController();
   final TextEditingController _investorsController = TextEditingController();
   final TextEditingController _aboutController = TextEditingController();
   final TextEditingController _industryController = TextEditingController();
   final TextEditingController _tagsController = TextEditingController();
   final TextEditingController _customerModelController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _websiteController = TextEditingController();
   final TextEditingController _legalNameController = TextEditingController();
   final TextEditingController _typeController = TextEditingController();
@@ -149,190 +149,194 @@ class _UploadProjectScreenState extends State<UploadProjectScreen> {
         },
         child: SingleChildScrollView(
           child: Column(
-              children: [
+            children: [
+              verticalSpace(30),
+              Container(
+                decoration: BoxDecoration(color: AppColors.white),
+                child: Row(
+                  children: [
+                    horizontalSpace(20),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Upload Project",
+                        style: AppTextStyles.font12BlackBold
+                            .copyWith(fontSize: 24),
+                      ),
+                    ),
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                          height: 50, width: 50, 'assets/images/logo_dark.png'),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(color: AppColors.white),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: BuildUrlInputButton(
+                                label: 'PDF URL',
+                                controller: _pdfURLController,
+                                onPressed: () async {
+                                  String? url =
+                                      await showUrlInputDialog(context, 'PDF');
+                                  if (url != null && url.isNotEmpty) {
+                                    _pdfURLController.text = url;
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(width: 16),
+                            Expanded(
+                              child: BuildUrlInputButton(
+                                label: 'Image URL',
+                                controller: _imageURLController,
+                                onPressed: () async {
+                                  String? url = await showUrlInputDialog(
+                                      context, 'Image');
+                                  if (url != null && url.isNotEmpty) {
+                                    _imageURLController.text = url;
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        TextFormField(
+                          controller: _companyNameController,
+                          decoration:
+                              InputDecoration(labelText: 'Company Name'),
+                        ),
+                        TextFormField(
+                          controller: _sloganController,
+                          maxLines: 3,
+                          decoration: InputDecoration(labelText: 'Slogan'),
+                        ),
+                        TextFormField(
+                          controller: _amountRaisedController,
+                          decoration:
+                              InputDecoration(labelText: 'Amount Raised'),
+                        ),
+                        TextFormField(
+                          controller: _yearController,
+                          decoration: InputDecoration(labelText: 'Year'),
+                        ),
+                        TextFormField(
+                          controller: _stageController,
+                          decoration: InputDecoration(labelText: 'Stage'),
+                        ),
+                        TextFormField(
+                          controller: _businessModelController,
 
-                verticalSpace(30),
-          Container(
-          decoration:BoxDecoration(color: AppColors.white),
-          child: Row(children: [ horizontalSpace(20),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "Upload Project",
-              style:
-              AppTextStyles.font12BlackBold.copyWith(fontSize: 24),
-            ),
+                          decoration:
+                              InputDecoration(labelText: 'Business Model'),
+                        ),
+                        TextFormField(
+                          maxLines: 4,
+                          controller: _fullDescriptionController,
+                          decoration:
+                              InputDecoration(labelText: 'Full Description'),
+                        ),
+                        TextFormField(
+                          controller: _investorsController,
+                          decoration: InputDecoration(labelText: 'Investors'),
+                        ),
+                        TextFormField(
+                          controller: _aboutController,
+                          maxLines: 3,
+                          decoration: InputDecoration(labelText: 'About'),
+                        ),
+                        TextFormField(
+                          controller: _industryController,
+                          decoration: InputDecoration(labelText: 'Industry'),
+                        ),
+                        TextFormField(
+                          controller: _tagsController,
+                          decoration: InputDecoration(labelText: 'Tags'),
+                        ),
+                        TextFormField(
+                          controller: _customerModelController,
+                          decoration:
+                              InputDecoration(labelText: 'Customer Model'),
+                        ),
+                        TextFormField(
+                          controller: _websiteController,
+                          decoration: InputDecoration(labelText: 'Website'),
+                        ),
+                        TextFormField(
+                          controller: _legalNameController,
+                          decoration: InputDecoration(labelText: 'Legal Name'),
+                        ),
+                        TextFormField(
+                          controller: _typeController,
+                          decoration: InputDecoration(labelText: 'Type'),
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ElevatedButton(
+                              onPressed: _saveDraft,
+                              child: Text('Save Draft'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                DioFactory.setTokenIntoHeaderAfterLogin(
+                                    await SharedPrefHelper.getSecuredString(
+                                        SharedPrefKeys.userToken));
+                                print(
+                                    "KOKOOOO ${await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken)}");
+                                print("JJJJJJJJJJJJ");
+                                final projectRequestBody =
+                                    ProjectUploadRequestBody(
+                                  companyName: _companyNameController.text,
+                                  slogan: _sloganController.text,
+                                  amountRaised: _amountRaisedController.text,
+                                  year: _yearController.text,
+                                  stage: _stageController.text,
+                                  businessModel: _businessModelController.text,
+                                  imageURL: _imageURLController.text,
+                                  fullDescription:
+                                      _fullDescriptionController.text,
+                                  pdfURL: _pdfURLController.text,
+                                  investors: _investorsController.text,
+                                  about: _aboutController.text,
+                                  industry: _industryController.text,
+                                  tags: _tagsController.text,
+                                  customerModel: _customerModelController.text,
+                                  website: _websiteController.text,
+                                  legalName: _legalNameController.text,
+                                  type: _typeController.text,
+                                );
+
+                                context
+                                    .read<ProjectCubit>()
+                                    .uploadProject(projectRequestBody);
+                              },
+                              child: Text('Upload Project'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset(
-                height: 50, width: 50, 'assets/images/logo_dark.png'),
-          )
-          ],
-        ), ),
-    Container(
-    decoration: BoxDecoration(color: AppColors.white),
-    child: Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: Form(
-    key: _formKey,
-    child: Column(
-    children: [
-    Row(
-    children: [
-    Expanded(
-    child: BuildUrlInputButton(
-    label: 'PDF URL',
-    controller: _pdfURLController,
-    onPressed: () async {
-    String? url =
-    await showUrlInputDialog(context, 'PDF');
-    if (url != null && url.isNotEmpty) {
-    _pdfURLController.text = url;
-    }
-    },
-    ),
-    ),
-    SizedBox(width: 16),
-    Expanded(
-    child: BuildUrlInputButton(
-    label: 'Image URL',
-    controller: _imageURLController,
-    onPressed: () async {
-    String? url = await showUrlInputDialog(
-    context, 'Image');
-    if (url != null && url.isNotEmpty) {
-    _imageURLController.text = url;
-    }
-    },
-    ),
-    ),
-    ],
-    ),
-    SizedBox(height: 20),
-    TextFormField(
-    controller: _companyNameController,
-    decoration:
-    InputDecoration(labelText: 'Company Name'),
-    ),
-    TextFormField(
-    controller: _sloganController,
-    decoration: InputDecoration(labelText: 'Slogan'),
-    ),
-    TextFormField(
-    controller: _amountRaisedController,
-    decoration:
-    InputDecoration(labelText: 'Amount Raised'),
-    ),
-    TextFormField(
-    controller: _yearController,
-    decoration: InputDecoration(labelText: 'Year'),
-    ),
-    TextFormField(
-    controller: _stageController,
-    decoration: InputDecoration(labelText: 'Stage'),
-    ),
-    TextFormField(
-    controller: _businessModelController,
-    decoration:
-    InputDecoration(labelText: 'Business Model'),
-    ),
-    TextFormField(
-    controller: _fullDescriptionController,
-    decoration:
-    InputDecoration(labelText: 'Full Description'),
-    ),
-    TextFormField(
-    controller: _investorsController,
-    decoration: InputDecoration(labelText: 'Investors'),
-    ),
-    TextFormField(
-    controller: _aboutController,
-    decoration: InputDecoration(labelText: 'About'),
-    ),
-    TextFormField(
-    controller: _industryController,
-    decoration: InputDecoration(labelText: 'Industry'),
-    ),
-    TextFormField(
-    controller: _tagsController,
-    decoration: InputDecoration(labelText: 'Tags'),
-    ),
-    TextFormField(
-    controller: _customerModelController,
-    decoration:
-    InputDecoration(labelText: 'Customer Model'),
-    ),
-    TextFormField(
-    controller: _websiteController,
-    decoration: InputDecoration(labelText: 'Website'),
-    ),
-    TextFormField(
-    controller: _legalNameController,
-    decoration: InputDecoration(labelText: 'Legal Name'),
-    ),
-    TextFormField(
-    controller: _typeController,
-    decoration: InputDecoration(labelText: 'Type'),
-    ),
-    SizedBox(height: 20),
-    Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-    ElevatedButton(
-    onPressed: _saveDraft,
-    child: Text('Save Draft'),
-    ),
-    ElevatedButton(
-    onPressed: () async {
-    DioFactory.setTokenIntoHeaderAfterLogin(
-    await SharedPrefHelper.getSecuredString(
-    SharedPrefKeys.userToken));
-    print(
-    "KOKOOOO ${await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken)}");
-    print("JJJJJJJJJJJJ");
-    final projectRequestBody =
-    ProjectUploadRequestBody(
-    companyName: _companyNameController.text,
-    slogan: _sloganController.text,
-    amountRaised: _amountRaisedController.text,
-    year: _yearController.text,
-    stage: _stageController.text,
-    businessModel: _businessModelController.text,
-    imageURL: _imageURLController.text,
-    fullDescription:
-    _fullDescriptionController.text,
-    pdfURL: _pdfURLController.text,
-    investors: _investorsController.text,
-    about: _aboutController.text,
-    industry: _industryController.text,
-    tags: _tagsController.text,
-    customerModel: _customerModelController.text,
-    website: _websiteController.text,
-    legalName: _legalNameController.text,
-    type: _typeController.text,
-    );
-
-    context
-        .read<ProjectCubit>()
-        .uploadProject(projectRequestBody);
-    },
-    child: Text('Upload Project'),
-    ),
-    ],
-    ),
-    ],
-    ),
-    ),
-    ),
-    ),
-    ],
-    ),
-    )
-    ,
-    )
-    ,
+        ),
+      ),
     );
   }
 }
@@ -366,43 +370,43 @@ class BuildUrlInputButton extends StatelessWidget {
             ),
             child: Padding(
               padding:
-              const EdgeInsets.symmetric(horizontal: 8.0, vertical: 40),
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 40),
               child: controller.text.isEmpty
                   ? Column(
-                children: [
-                  Icon(Icons.file_copy, size: 30),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-                    child: Text(
-                      label,
-                      style: AppTextStyles.font15PrimaryBold,
-                    ),
-                  ),
-                  Text(
-                    "Upload High Quality visuals",
-                    style: AppTextStyles.font16GrayLight
-                        .copyWith(fontSize: 10),
-                  ),
-                  verticalSpace(10),
-                  Icon(Icons.file_upload_outlined, size: 20),
-                ],
-              )
+                      children: [
+                        Icon(Icons.file_copy, size: 30),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+                          child: Text(
+                            label,
+                            style: AppTextStyles.font15PrimaryBold,
+                          ),
+                        ),
+                        Text(
+                          "Upload High Quality visuals",
+                          style: AppTextStyles.font16GrayLight
+                              .copyWith(fontSize: 10),
+                        ),
+                        verticalSpace(10),
+                        Icon(Icons.file_upload_outlined, size: 20),
+                      ],
+                    )
                   : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.picture_as_pdf, size: 50, color: Colors.red),
-                  Text(
-                    "File URL:",
-                    style: AppTextStyles.font16GrayLight,
-                  ),
-                  Text(
-                    controller.text,
-                    style: AppTextStyles.font15PrimaryBold
-                        .copyWith(fontSize: 12),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.picture_as_pdf, size: 50, color: Colors.red),
+                        Text(
+                          "File URL:",
+                          style: AppTextStyles.font16GrayLight,
+                        ),
+                        Text(
+                          controller.text,
+                          style: AppTextStyles.font15PrimaryBold
+                              .copyWith(fontSize: 12),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
             ),
           ),
         ),

@@ -1,26 +1,33 @@
+
 class AddCommentRequest {
   final String content;
 
   AddCommentRequest({required this.content});
 
   Map<String, dynamic> toJson() {
-    return {
-      'content': content,
-    };
+    return {'content': content};
   }
 }
-class CommentResponse {
-  final int id;
-  final String content;
-  final String author;
 
-  CommentResponse({required this.id, required this.content, required this.author});
+class CommentResponse {
+  final int commentID;
+  final String content;
+  final String userName;
+  final int projectId;
+
+  CommentResponse({
+    required this.commentID,
+    required this.content,
+    required this.userName,
+    required this.projectId,
+  });
 
   factory CommentResponse.fromJson(Map<String, dynamic> json) {
     return CommentResponse(
-      id: json['id'],
+      commentID: json['commentID'],
       content: json['content'],
-      author: json['author'],
+      userName: json['userName'],
+      projectId: json['project']['projectID'],
     );
   }
 }

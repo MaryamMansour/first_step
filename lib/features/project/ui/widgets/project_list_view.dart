@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:first_step/core/di/depndency_injection.dart';
 import 'package:flutter/material.dart';
 import 'package:first_step/features/project/data/models/project_response.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,13 +8,15 @@ import 'package:first_step/core/helper/spacing.dart';
 import '../../../../core/theming/colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:first_step/features/project/logic/project_cubit.dart';
+import '../../logic/project_state.dart';
 import '../screens/project_details.dart';
+import 'comment_screen.dart';
 import 'tag_item.dart';
 
 class ProjectsListView extends StatefulWidget {
   final List<ProjectResponse?>? projectList;
 
-  const ProjectsListView({super.key, required this.projectList});
+  const ProjectsListView({Key? key, required this.projectList}) : super(key: key);
 
   @override
   _ProjectsListViewState createState() => _ProjectsListViewState();
@@ -53,6 +57,17 @@ class _ProjectsListViewState extends State<ProjectsListView> {
     });
   }
 
+  void _navigateToCommentsScreen(int projectId) {
+    Navigator.push(
+      context,
+         MaterialPageRoute(
+        builder: (_) => BlocProvider(
+      create: (context) => getIt<ProjectCubit>(),
+      child: CommentsScreen(projectId: projectId,),
+    ))
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -68,23 +83,26 @@ class _ProjectsListViewState extends State<ProjectsListView> {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProjectDetailsScreen(
-                    projectName: project?.companyName ?? '',
-                    projectDescription: project?.slogan ?? '',
-                    about: project?.about ?? '',
-                    industry: project?.industry ?? '',
-                    businessModel: project?.businessModel ?? '',
-                    customerModel: project?.customerModel ?? '',
-                    stage: project?.stage ?? '',
-                    year: project?.year ?? '',
-                    type: project?.type ?? '',
-                    legalName: project?.legalName ?? '',
-                    slideshowFile: project?.pdfURL,
-                    logoImage: project?.imageURL,
-                    tags: project?.tags?.split(',').map((tag) => tag.trim()).toList() ?? [],
-                    website: project?.website ?? '',
-                    raisedAmount: project?.amountRaised ?? '',
-                    investors: project?.investors?.split(',').map((investor) => investor.trim()).toList() ?? [],
+                  builder: (context) => BlocProvider(
+                    create: (context) => getIt<ProjectCubit>(),
+                    child: ProjectDetailsScreen(
+                      projectName: project?.companyName ?? '',
+                      projectDescription: project?.slogan ?? '',
+                      about: project?.about ?? '',
+                      industry: project?.industry ?? '',
+                      businessModel: project?.businessModel ?? '',
+                      customerModel: project?.customerModel ?? '',
+                      stage: project?.stage ?? '',
+                      year: project?.year ?? '',
+                      type: project?.type ?? '',
+                      legalName: project?.legalName ?? '',
+                      slideshowFile: project?.pdfURL,
+                      logoImage: project?.imageURL,
+                      tags: project?.tags?.split(',').map((tag) => tag.trim()).toList() ?? [],
+                      website: project?.website ?? '',
+                      raisedAmount: project?.amountRaised ?? '',
+                      investors: project?.investors?.split(',').map((investor) => investor.trim()).toList() ?? [],
+                    ),
                   ),
                 ),
               ),
@@ -117,13 +135,11 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                             ),
                           verticalSpace(20),
                           InkWell(
-                            onTap: (){
-                              /// Here show bottom modal sheet to display comments and text field to add one
-                            },
+                            onTap: () => _navigateToCommentsScreen(project?.projectID ?? 0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Text("${project!.comments.length.toString()} Comments", style: AppTextStyles.font12Blacklight.copyWith(fontSize: 8),),
+                                Text("Comments", style: AppTextStyles.font12Blacklight.copyWith(fontSize: 8)),
                               ],
                             ),
                           )
@@ -137,8 +153,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                         children: [
                           Text(
                             project?.companyName ?? '',
-                            style: AppTextStyles.font20BlackThin.copyWith(
-                                fontWeight: FontWeight.w400),
+                            style: AppTextStyles.font20BlackThin.copyWith(fontWeight: FontWeight.w400),
                             overflow: TextOverflow.ellipsis,
                           ),
                           verticalSpace(15),
@@ -156,16 +171,14 @@ class _ProjectsListViewState extends State<ProjectsListView> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
               child: Divider(
                 height: 0.7,
-
                 thickness: 0.5,
               ),
             ),
           ],
         );
-
       },
     );
   }

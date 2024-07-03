@@ -6,7 +6,7 @@ part of 'api_service.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
 
 class _ApiService implements ApiService {
   _ApiService(
@@ -44,8 +44,8 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = LoginResponse.fromJson(_result.data!);
-    return value;
+    final _value = LoginResponse.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -72,8 +72,8 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = SignupResponse.fromJson(_result.data!);
-    return value;
+    final _value = SignupResponse.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -99,8 +99,8 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ProfileResponse.fromJson(_result.data!);
-    return value;
+    final _value = ProfileResponse.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -128,8 +128,8 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ProfileResponse.fromJson(_result.data!);
-    return value;
+    final _value = ProfileResponse.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -157,8 +157,8 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ResetPasswordResponse.fromJson(_result.data!);
-    return value;
+    final _value = ResetPasswordResponse.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -184,10 +184,10 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
+    var _value = _result.data!
         .map((dynamic i) => ProjectResponse.fromJson(i as Map<String, dynamic>))
         .toList();
-    return value;
+    return _value;
   }
 
   @override
@@ -213,10 +213,10 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
+    var _value = _result.data!
         .map((dynamic i) => ProjectResponse.fromJson(i as Map<String, dynamic>))
         .toList();
-    return value;
+    return _value;
   }
 
   @override
@@ -233,7 +233,7 @@ class _ApiService implements ApiService {
     )
             .compose(
               _dio.options,
-              '/rest/project/getComments/${projectId}',
+              'project/getComments/${projectId}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -242,10 +242,10 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
+    var _value = _result.data!
         .map((dynamic i) => CommentResponse.fromJson(i as Map<String, dynamic>))
         .toList();
-    return value;
+    return _value;
   }
 
   @override
@@ -266,7 +266,7 @@ class _ApiService implements ApiService {
     )
             .compose(
               _dio.options,
-              '/rest/project/addComment/${projectId}',
+              'project/addComment/${projectId}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -275,8 +275,8 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = CommentResponse.fromJson(_result.data!);
-    return value;
+    final _value = CommentResponse.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -304,8 +304,8 @@ class _ApiService implements ApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ProjectUploadResponse.fromJson(_result.data!);
-    return value;
+    final _value = ProjectUploadResponse.fromJson(_result.data!);
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

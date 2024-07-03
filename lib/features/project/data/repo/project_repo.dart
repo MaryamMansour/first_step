@@ -5,6 +5,7 @@ import 'package:first_step/core/networking/api_error_handler.dart';
 import 'package:first_step/features/project/data/models/project_response.dart';
 import 'package:first_step/features/project/data/models/project_upload_response.dart';
 
+import '../models/comment_model.dart';
 import '../models/project_upload_request_body.dart';
 
 class ProjectRepo {
@@ -45,4 +46,25 @@ class ProjectRepo {
       return ApiResult.failure(ErrorHandler.handle(error));
     }
   }
+  Future<ApiResult<List<CommentResponse>>> getComments(int projectId) async {
+    try {
+      final response = await _apiService.getComments(projectId);
+      return ApiResult.success(response);
+    } catch (error) {
+      print(ErrorHandler.handle(error));
+      return ApiResult.failure(ErrorHandler.handle(error));
+    }
+  }
+
+
+  Future<ApiResult<CommentResponse>> addComment(int projectId, AddCommentRequest addCommentRequest) async {
+    try {
+      final response = await _apiService.addComment(projectId, addCommentRequest);
+      return ApiResult.success(response);
+    } catch (error) {
+      return ApiResult.failure(ErrorHandler.handle(error));
+    }
+  }
+
+
 }

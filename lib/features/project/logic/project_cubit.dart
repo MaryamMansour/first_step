@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:first_step/features/project/data/models/project_response.dart';
 import 'package:first_step/features/project/data/repo/project_repo.dart';
 import 'package:first_step/features/project/logic/project_state.dart';
+import '../data/models/comment_model.dart';
 import '../data/models/project_upload_request_body.dart';
 
 class ProjectCubit extends Cubit<ProjectState> {
@@ -92,5 +93,47 @@ class ProjectCubit extends Cubit<ProjectState> {
     final filteredProjects = allProjects?.where((project) => project?.type == type).toList();
     displayedProjects = filteredProjects;
     emit(ProjectState.projectsSuccess(displayedProjects));
+  }
+
+
+
+
+
+
+  List<CommentResponse> comments = [];
+  void getComments(int projectId) async {
+    emit(ProjectState.commentsLoading());
+    final response = await _projectRepo.getComments(projectId);
+    response.when(
+      success: (commentsResponse) {
+        comments = commentsResponse;
+        emit(ProjectState.commentsSuccess(comments));
+      },
+      failure: (errorHandler) {
+        emit(ProjectState.commentsError(errorHandler));
+      },
+    );
+  }
+
+
+  void addComment(int projectId, String content) async {
+    final addCommentRequest = AddCommentRequest(content: content);
+    final response = await _projectRepo.addComment(projectId, addCommentRequest);
+    response.when(
+      success: (commentResponse) {
+        state.maybeWhen(
+          commentsSuccess: (comments) {
+            final updatedComments = List<CommentResponse>.from(comments)..add(commentResponse);
+            emit(ProjectState.commentsSuccess(updatedComments));
+          },
+          orElse: () {
+            getComments(projectId);
+          },
+        );
+      },
+      failure: (errorHandler) {
+        emit(ProjectState.commentsError(errorHandler));
+      },
+    );
   }
 }
