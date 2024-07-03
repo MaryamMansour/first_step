@@ -4,6 +4,8 @@ import 'package:first_step/features/project/data/models/project_upload_response.
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:first_step/core/networking/api_error_handler.dart';
 
+import '../data/models/comment_model.dart';
+
 part 'project_state.freezed.dart';
 
 @freezed
@@ -15,4 +17,7 @@ class ProjectState with _$ProjectState {
   const factory ProjectState.projectsLoadingMore(List<ProjectResponse?>? projects) = _ProjectsLoadingMore;
   const factory ProjectState.projectUploadSuccess(ProjectUploadResponse project) = _ProjectUploadSuccess;
 
+  const factory ProjectState.commentsLoading() = _CommentsLoading;
+  const factory ProjectState.commentsSuccess(List<CommentResponse> comments) = _CommentsSuccess;
+  const factory ProjectState.commentsError(ErrorHandler errorHandler) = _CommentsError;
 }
