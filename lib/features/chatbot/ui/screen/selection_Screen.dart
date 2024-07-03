@@ -5,9 +5,13 @@ import 'package:first_step/features/chatbot/ui/screen/chatbot_screen.dart';
 import 'package:first_step/features/chatbot/ui/screen/project_chatbot.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/di/depndency_injection.dart';
 import '../../../../core/routing/routes.dart';
+import '../../../ir-chat/logic/ir_chat_cubit.dart';
+import '../../../ir-chat/ui/ir-chat_scree.dart';
 
 class SelectionScreen extends StatefulWidget {
   const SelectionScreen({super.key});
@@ -21,7 +25,7 @@ class _SelectionScreenState extends State<SelectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Chatbot',style:AppTextStyles.font20WhiteBold),
+        title: Text('Select Chatbot', style: AppTextStyles.font20WhiteBold),
         backgroundColor: AppColors.primaryColor,
         leading: IconButton(
           iconSize: 45,
@@ -36,7 +40,7 @@ class _SelectionScreenState extends State<SelectionScreen> {
       body: Center(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 100.h),
-         // color: AppColors.lightGreen,
+          // color: AppColors.lightGreen,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -48,17 +52,21 @@ class _SelectionScreenState extends State<SelectionScreen> {
                     MaterialPageRoute(builder: (context) => ChatbotScreen()),
                   );
                 },
-                child: Text('Chat with Gemini',style: AppTextStyles.font15PrimaryBold ),
+                child: Text('Chat with Gemini',
+                    style: AppTextStyles.font15PrimaryBold),
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProjectChatbot()),
-                  );
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BlocProvider(
+                              create: (context) => getIt<ProjectChatCubit>(),
+                              child: ProjectChatbot())));
                 },
-                child: Text('Chat with OtherBot',style:  AppTextStyles.font15PrimaryBold),
+                child: Text('Chat with OtherBot',
+                    style: AppTextStyles.font15PrimaryBold),
               ),
             ],
           ),
