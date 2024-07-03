@@ -106,13 +106,15 @@ class ProjectCubit extends Cubit<ProjectState> {
     final response = await _projectRepo.getComments(projectId);
     response.when(
       success: (commentsResponse) {
-        emit(ProjectState.commentsSuccess(commentsResponse));
+        comments = commentsResponse;
+        emit(ProjectState.commentsSuccess(comments));
       },
       failure: (errorHandler) {
         emit(ProjectState.commentsError(errorHandler));
       },
     );
   }
+
 
   void addComment(int projectId, String content) async {
     final addCommentRequest = AddCommentRequest(content: content);

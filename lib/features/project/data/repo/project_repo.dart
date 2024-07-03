@@ -46,15 +46,16 @@ class ProjectRepo {
       return ApiResult.failure(ErrorHandler.handle(error));
     }
   }
-
   Future<ApiResult<List<CommentResponse>>> getComments(int projectId) async {
     try {
       final response = await _apiService.getComments(projectId);
       return ApiResult.success(response);
     } catch (error) {
+      print(ErrorHandler.handle(error));
       return ApiResult.failure(ErrorHandler.handle(error));
     }
   }
+
 
   Future<ApiResult<CommentResponse>> addComment(int projectId, AddCommentRequest addCommentRequest) async {
     try {
