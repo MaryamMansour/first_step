@@ -1,3 +1,4 @@
+import 'package:first_step/core/helper/constants.dart';
 import 'package:first_step/core/helper/extensions.dart';
 import 'package:first_step/core/helper/shared_pref.dart';
 import 'package:first_step/core/helper/spacing.dart';
@@ -8,7 +9,27 @@ import 'package:flutter/material.dart';
 
 import '../widgets/list_tiles.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String? userName;
+
+  void loadUserName() async {
+    String? name = await SharedPrefHelper.getString(SharedPrefKeys.fName);
+    setState(() {
+      userName = name;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserName();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,22 +40,38 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             verticalSpace(100),
-            const CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.white,
-              child: CircleAvatar(
-                radius: 49,
-                backgroundImage: NetworkImage(
-                    'https://static01.nyt.com/newsgraphics/2020/11/12/fake-people/4b806cf591a8a76adfc88d19e90c8c634345bf3d/fallbacks/mobile-07.jpg'),
+            if (userName != null)
+              CircleAvatar(
+                radius: 50,
+                backgroundColor: Colors.white,
+                child: CircleAvatar(
+                  maxRadius: 48,
+                  backgroundColor: AppColors.lightGray,
+                  child: Text(
+                    userName![0].toUpperCase(),
+                    style: TextStyle(color: AppColors.primaryColor,
+                    fontSize: 25),
+                  ),
+                ),
+              )
+            else
+              const CircleAvatar(
+                radius: 50,
+                backgroundColor: Colors.white,
+                child: CircleAvatar(
+                  maxRadius: 25,
+                  backgroundColor: AppColors.lightGray,
+                  child: Text(
+                    "",
+                    style: TextStyle(color: AppColors.primaryColor),
+                  ),
+                ),
               ),
-            ),
             verticalSpace(40),
             const ListTiles(),
-
           ],
         ),
       ),
-
     );
   }
 }

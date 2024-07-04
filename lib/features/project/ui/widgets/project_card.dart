@@ -8,7 +8,7 @@ import 'package:first_step/core/helper/spacing.dart';
 import '../../../../core/di/depndency_injection.dart';
 import '../../logic/project_cubit.dart';
 import '../screens/project_details.dart';
-import 'comment_screen.dart';
+import '../screens/comment_screen.dart';
 import 'tag_item.dart';
 
 class ProjectCard extends StatelessWidget {

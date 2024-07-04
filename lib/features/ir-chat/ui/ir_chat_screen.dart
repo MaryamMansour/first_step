@@ -1,11 +1,12 @@
 import 'package:first_step/core/theming/colors.dart';
+import 'package:first_step/core/theming/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:first_step/features/project/data/models/project_response.dart';
 
 import '../../../core/di/depndency_injection.dart';
 import '../../project/logic/project_cubit.dart';
-import '../../project/ui/widgets/comment_screen.dart';
+import '../../project/ui/screens/comment_screen.dart';
 import '../../project/ui/widgets/project_card.dart';
 import '../../project/ui/widgets/tag_item.dart';
 import '../logic/ir_chat_cubit.dart';
@@ -36,7 +37,11 @@ class _ProjectChatbotState extends State<ProjectChatbot> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Project Chatbot'),
+        backgroundColor: AppColors.primaryColor,
+        title: Text(
+          'Project Chatbot',
+          style: AppTextStyles.font20WhiteBold,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -65,8 +70,6 @@ class _ProjectChatbotState extends State<ProjectChatbot> {
                       } else if (message['type'] == 'bot') {
                         if (message['message'] is List<ProjectResponse>) {
                           return _buildBotProjectsMessage(message['message']);
-                        } else {
-                          return _buildBotMessage(message['message']);
                         }
                       }
                       return SizedBox.shrink();
@@ -83,7 +86,8 @@ class _ProjectChatbotState extends State<ProjectChatbot> {
                     child: TextField(
                       controller: _queryController,
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
                       ),
                     ),
                   ),
@@ -101,42 +105,40 @@ class _ProjectChatbotState extends State<ProjectChatbot> {
   }
 
   Widget _buildUserMessage(String message) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 5.0),
-        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-        decoration: BoxDecoration(
-          color: AppColors.lightGray,
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        child: Text(message),
-      ),
-    );
-  }
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30.0),
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: Container(
 
-  Widget _buildBotMessage(String message) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 5.0),
-        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-        decoration: BoxDecoration(
-          color: Colors.grey[300],
-          borderRadius: BorderRadius.circular(10.0),
+          margin: EdgeInsets.symmetric(vertical: 5.0),
+          padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+          decoration: BoxDecoration(
+            color: AppColors.lightGray,
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: Text(message),
         ),
-        child: Text(message),
       ),
     );
   }
 
   Widget _buildBotProjectsMessage(List<ProjectResponse> projects) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: projects.map((project) => ProjectCard(project: project)).toList(),
+      children: [
+        Align(
+            alignment: Alignment.topLeft,
+            child: CircleAvatar(
+              radius: 20,
+              backgroundColor: AppColors.lightGray,
+              backgroundImage: AssetImage("assets/images/chatbot.png"),
+            )),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children:
+              projects.map((project) => ProjectCard(project: project)).toList(),
+        ),
+      ],
     );
   }
 }
-
-
-

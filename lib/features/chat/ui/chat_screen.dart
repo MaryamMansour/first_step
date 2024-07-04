@@ -227,7 +227,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: AppColors.primaryColor,
-          child: Icon(Icons.group_add),
+          child: Icon(Icons.group_add,color: AppColors.white,),
           onPressed: () {
             Navigator.push(
               context,

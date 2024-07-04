@@ -3,6 +3,7 @@ import 'package:first_step/core/networking/api_result.dart';
 import 'package:first_step/features/project/data/models/project_response.dart';
 
 import '../data/repo/ir_chat_repo.dart';
+import '../../project/data/models/project_response.dart';
 
 abstract class ProjectChatState {}
 
@@ -19,6 +20,10 @@ class ProjectChatQueryResult extends ProjectChatState {
   final List<ProjectResponse> projects;
   ProjectChatQueryResult(this.projects);
 }
+
+
+
+
 
 class ProjectChatCubit extends Cubit<ProjectChatState> {
   final ProjectChatRepo _projectChatRepo;

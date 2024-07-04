@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:first_step/features/project/logic/project_cubit.dart';
 import '../../logic/project_state.dart';
 import '../screens/project_details.dart';
-import 'comment_screen.dart';
+import '../screens/comment_screen.dart';
 import 'tag_item.dart';
 
 class ProjectsListView extends StatefulWidget {
@@ -130,7 +130,7 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                             borderRadius: BorderRadius.circular(12),
                             child: _buildImage(project?.imageURL),
                           ),
-                          verticalSpace(10),
+                          verticalSpace(20),
                           if (project?.tags != null && project!.tags!
                               .isNotEmpty)
                             Wrap(
@@ -143,19 +143,8 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                               ],
                             ),
                           verticalSpace(20),
-                          InkWell(
-                            onTap: () =>
-                                _navigateToCommentsScreen(
-                                    project?.projectID ?? 0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text("Comments",
-                                    style: AppTextStyles.font12Blacklight
-                                        .copyWith(fontSize: 8)),
-                              ],
-                            ),
-                          )
+
+
                         ],
                       ),
                     ),
@@ -177,16 +166,48 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                             overflow: TextOverflow.ellipsis,
                             maxLines: isExpanded ? null : 3,
                           ),
+                          verticalSpace(40),
+                          Row(
+                            children: [
+                              Text(
+                                '${project?.year} ● ${project?.stage}',
+                                style: AppTextStyles.font16GrayLight.copyWith(
+                                    fontSize: 10,
+                                    color: AppColors.gray, fontWeight: FontWeight.w400),
+                              ),
+                              horizontalSpace(5),
+                              const Icon(
+                                Icons.stairs_outlined,
+                                size: 10,
+                                color: AppColors.gray,
+                              )
+                            ],
+                          ),
+                          verticalSpace(10),
+                          InkWell(
+                            onTap: () =>
+                                _navigateToCommentsScreen(
+                                    project?.projectID ?? 0),
+                            child: Row(
+                              children: [
+                                Text("Comments",
+                                    style: AppTextStyles.font12Blacklight
+                                        .copyWith(fontSize: 10, color: AppColors.primaryColor)),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
+
                   ],
+
                 ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0, vertical: 10),
+                  horizontal: 20.0, vertical: 5),
               child: Divider(
                 height: 0.7,
                 thickness: 0.5,

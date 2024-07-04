@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/di/depndency_injection.dart';
 import '../../../../core/routing/routes.dart';
 import '../../../ir-chat/logic/ir_chat_cubit.dart';
-import '../../../ir-chat/ui/ir-chat_scree.dart';
+import '../../../ir-chat/ui/ir_chat_screen.dart';
 
 class SelectionScreen extends StatefulWidget {
   const SelectionScreen({super.key});
