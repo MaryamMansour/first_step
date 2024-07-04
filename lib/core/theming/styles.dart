@@ -32,6 +32,12 @@ class AppTextStyles{
      color: AppColors.white,
      fontWeight: FontWeightHelper.bold,
    );
+   static TextStyle font15WhiteBold = TextStyle(
+     fontSize: 15.sp,
+     color: AppColors.white,
+     fontWeight: FontWeightHelper.bold,
+   );
+
    static TextStyle font15PrimaryBold = TextStyle(
     fontSize: 15.sp,
      color: AppColors.primaryColor,

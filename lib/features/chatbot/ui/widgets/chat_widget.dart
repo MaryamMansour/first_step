@@ -2,6 +2,7 @@ import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/theming/colors.dart';
 import 'chatbot_appbar.dart';
@@ -30,48 +31,61 @@ class _AppDashChatState extends State<AppDashChat> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body:  DashChat(
-        currentUser: currentUser,
-        onSend: _sendMessage,
-        messages: messages,
+      body:  Center(
+        child: DashChat(
+          currentUser: currentUser,
+          onSend: _sendMessage,
+          messages: messages,
 
+          inputOptions: InputOptions(
+            inputToolbarPadding: EdgeInsets.only(left: 40.0,bottom: 20.0,right: 20.0),
+            alwaysShowSend: true,
+            sendButtonBuilder: (function) {
+              return Container(
+                margin: EdgeInsets.only(left: 5.h),
+                decoration: const BoxDecoration(
+                    color: AppColors.lightGray,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(50),
+                    )),
+                child: IconButton(
+                  icon: Icon(Icons.send, color: AppColors.white),
+                  onPressed: function,
+                ),
+              );
+            },
+            inputDecoration: InputDecoration(
+              hintText: 'Enter Message...',
+              hintStyle: TextStyle(color: Colors.grey),
 
-        inputOptions: InputOptions(
-          alwaysShowSend: false,
-          sendButtonBuilder: (function) {
-            return IconButton(
-              icon: Icon(Icons.send, color: AppColors.primaryColor),
-              onPressed: function,
-            );
-          },
-          inputDecoration: InputDecoration(
-            hintText: 'Type a message...',
-            hintStyle: TextStyle(color: Colors.grey),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors.primaryColor, width: 2.0),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
 
-
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor, width: 2.0),
-              borderRadius: BorderRadius.circular(50.0),
+              focusedBorder:OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors.primaryColor, width: 2.0),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
             ),
+          ),
 
-            focusedBorder:OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primaryColor, width: 2.0),
-              borderRadius: BorderRadius.circular(50.0),
-            ),
-
+          messageOptions:  MessageOptions(
+            currentUserContainerColor: AppColors.primaryColor,
+            containerColor: AppColors.gray,
+            currentUserTextColor: Colors.white,
+            textColor: Colors.black,
+            borderRadius: 30.0,
+            showCurrentUserAvatar: false,
+            currentUserTimeTextColor: Colors.black,
+            messageTextBuilder: (ChatMessage message, ChatMessage? previousMessage, ChatMessage? nextMessage) {
+              return Text(
+                message.text,
+                style:  TextStyle(color: Colors.white, fontSize: 16),
+              );
+            },
           ),
         ),
-
-        messageOptions: const MessageOptions(
-          currentUserContainerColor: AppColors.lightGreen,
-          containerColor: AppColors.lightGray,
-          currentUserTextColor: Colors.black,
-          textColor: Colors.black,
-          borderRadius: 30.0,
-          showCurrentUserAvatar: false,
-          currentUserTimeTextColor: Colors.black,
-        ),
-
       ),
     );
   }

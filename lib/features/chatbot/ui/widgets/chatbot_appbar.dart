@@ -29,6 +29,21 @@ class ChatbotAppbar extends StatelessWidget implements PreferredSizeWidget{
           Navigator.pop(context);
         },
       ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 20.0),
+          child: Container(
+              height: 25,
+              width: 25,
+              child: Image.asset('assets/images/logo_light.png')),
+        ),
+      ],
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+        ),
+      ),
     );
   }
 

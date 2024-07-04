@@ -1,8 +1,10 @@
 import 'package:first_step/core/helper/extensions.dart';
+import 'package:first_step/core/helper/spacing.dart';
 import 'package:first_step/core/theming/colors.dart';
 import 'package:first_step/core/theming/styles.dart';
 import 'package:first_step/features/chatbot/ui/screen/chatbot_screen.dart';
 import 'package:first_step/features/chatbot/ui/screen/project_chatbot.dart';
+import 'package:first_step/features/chatbot/ui/widgets/select_chatbot.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,38 +38,45 @@ class _SelectionScreenState extends State<SelectionScreen> {
             context.pushNamed(Routes.homeScreen);
           },
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: Container(
+                height: 25,
+                width: 25,
+                child: Image.asset('assets/images/logo_light.png')),
+          ),
+        ],
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
+        ),
       ),
+      backgroundColor: Color.fromRGBO(250, 252, 251, 1.0),
       body: Center(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 100.h),
-          // color: AppColors.lightGreen,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 30.h),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ChatbotScreen()),
-                  );
-                },
-                child: Text('Chat with Gemini',
-                    style: AppTextStyles.font15PrimaryBold),
+              Text(
+                'Welcome to our Chatbot!',
+                textAlign: TextAlign.center,
+                style: AppTextStyles.font24PrimaryBold,
               ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BlocProvider(
-                              create: (context) => getIt<ProjectChatCubit>(),
-                              child: ProjectChatbot())));
-                },
-                child: Text('Chat with OtherBot',
-                    style: AppTextStyles.font15PrimaryBold),
+              SizedBox(
+                height: 250.h,
+                width: 250.h,
+                child: Image.asset(
+                  'assets/images/chatbot.gif',
+                  fit: BoxFit.cover,
+                ),
               ),
+              SizedBox(height: 100.h),
+              SelectChatbot(),
             ],
           ),
         ),
