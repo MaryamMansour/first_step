@@ -238,7 +238,6 @@ class _UploadProjectScreenState extends State<UploadProjectScreen> {
                         ),
                         TextFormField(
                           controller: _businessModelController,
-
                           decoration:
                               InputDecoration(labelText: 'Business Model'),
                         ),
@@ -287,10 +286,19 @@ class _UploadProjectScreenState extends State<UploadProjectScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    AppColors.primaryColor),
+                              ),
                               onPressed: _saveDraft,
-                              child: Text('Save Draft'),
+                              child: Text('Save Draft', style: AppTextStyles.font20WhiteBold
+                                  .copyWith(fontSize: 12),),
                             ),
                             ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    AppColors.primaryColor),
+                              ),
                               onPressed: () async {
                                 DioFactory.setTokenIntoHeaderAfterLogin(
                                     await SharedPrefHelper.getSecuredString(
@@ -324,7 +332,11 @@ class _UploadProjectScreenState extends State<UploadProjectScreen> {
                                     .read<ProjectCubit>()
                                     .uploadProject(projectRequestBody);
                               },
-                              child: Text('Upload Project'),
+                              child: Text(
+                                'Upload Project',
+                                style: AppTextStyles.font20WhiteBold
+                                    .copyWith(fontSize: 12),
+                              ),
                             ),
                           ],
                         ),

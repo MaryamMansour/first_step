@@ -10,6 +10,8 @@ import 'package:first_step/features/profile/logic/profile_cubit.dart';
 import 'package:first_step/features/project/logic/project_cubit.dart';
 import '../../features/SignUp/data/repos/sign_up_repo.dart';
 import '../../features/SignUp/logic/cubit/sign_up_cubit.dart';
+import '../../features/ir-chat/data/repo/ir_chat_repo.dart';
+import '../../features/ir-chat/logic/ir_chat_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -34,4 +36,9 @@ Future<void> setupGetIt() async {
   // project
   getIt.registerLazySingleton<ProjectRepo>(() => ProjectRepo(getIt()));
   getIt.registerFactory<ProjectCubit>(() => ProjectCubit(getIt()));
+
+
+  // ir chat
+  getIt.registerLazySingleton<ProjectChatRepo>(() => ProjectChatRepo(getIt()));
+  getIt.registerFactory<ProjectChatCubit>(() => ProjectChatCubit(getIt()));
 }
