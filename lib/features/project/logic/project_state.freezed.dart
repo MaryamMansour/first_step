@@ -29,6 +29,7 @@ mixin _$ProjectState {
     required TResult Function() commentsLoading,
     required TResult Function(List<CommentResponse> comments) commentsSuccess,
     required TResult Function(ErrorHandler errorHandler) commentsError,
+    required TResult Function(ProjectUploadResponse project) projectLiked,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -42,6 +43,7 @@ mixin _$ProjectState {
     TResult? Function()? commentsLoading,
     TResult? Function(List<CommentResponse> comments)? commentsSuccess,
     TResult? Function(ErrorHandler errorHandler)? commentsError,
+    TResult? Function(ProjectUploadResponse project)? projectLiked,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -55,6 +57,7 @@ mixin _$ProjectState {
     TResult Function()? commentsLoading,
     TResult Function(List<CommentResponse> comments)? commentsSuccess,
     TResult Function(ErrorHandler errorHandler)? commentsError,
+    TResult Function(ProjectUploadResponse project)? projectLiked,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -69,6 +72,7 @@ mixin _$ProjectState {
     required TResult Function(_CommentsLoading value) commentsLoading,
     required TResult Function(_CommentsSuccess value) commentsSuccess,
     required TResult Function(_CommentsError value) commentsError,
+    required TResult Function(_ProjectLiked value) projectLiked,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -82,6 +86,7 @@ mixin _$ProjectState {
     TResult? Function(_CommentsLoading value)? commentsLoading,
     TResult? Function(_CommentsSuccess value)? commentsSuccess,
     TResult? Function(_CommentsError value)? commentsError,
+    TResult? Function(_ProjectLiked value)? projectLiked,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -95,6 +100,7 @@ mixin _$ProjectState {
     TResult Function(_CommentsLoading value)? commentsLoading,
     TResult Function(_CommentsSuccess value)? commentsSuccess,
     TResult Function(_CommentsError value)? commentsError,
+    TResult Function(_ProjectLiked value)? projectLiked,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -167,6 +173,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function() commentsLoading,
     required TResult Function(List<CommentResponse> comments) commentsSuccess,
     required TResult Function(ErrorHandler errorHandler) commentsError,
+    required TResult Function(ProjectUploadResponse project) projectLiked,
   }) {
     return initial();
   }
@@ -183,6 +190,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? commentsLoading,
     TResult? Function(List<CommentResponse> comments)? commentsSuccess,
     TResult? Function(ErrorHandler errorHandler)? commentsError,
+    TResult? Function(ProjectUploadResponse project)? projectLiked,
   }) {
     return initial?.call();
   }
@@ -199,6 +207,7 @@ class _$InitialImpl implements _Initial {
     TResult Function()? commentsLoading,
     TResult Function(List<CommentResponse> comments)? commentsSuccess,
     TResult Function(ErrorHandler errorHandler)? commentsError,
+    TResult Function(ProjectUploadResponse project)? projectLiked,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -219,6 +228,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function(_CommentsLoading value) commentsLoading,
     required TResult Function(_CommentsSuccess value) commentsSuccess,
     required TResult Function(_CommentsError value) commentsError,
+    required TResult Function(_ProjectLiked value) projectLiked,
   }) {
     return initial(this);
   }
@@ -235,6 +245,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_CommentsLoading value)? commentsLoading,
     TResult? Function(_CommentsSuccess value)? commentsSuccess,
     TResult? Function(_CommentsError value)? commentsError,
+    TResult? Function(_ProjectLiked value)? projectLiked,
   }) {
     return initial?.call(this);
   }
@@ -251,6 +262,7 @@ class _$InitialImpl implements _Initial {
     TResult Function(_CommentsLoading value)? commentsLoading,
     TResult Function(_CommentsSuccess value)? commentsSuccess,
     TResult Function(_CommentsError value)? commentsError,
+    TResult Function(_ProjectLiked value)? projectLiked,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -313,6 +325,7 @@ class _$ProjectsLoadingImpl implements _ProjectsLoading {
     required TResult Function() commentsLoading,
     required TResult Function(List<CommentResponse> comments) commentsSuccess,
     required TResult Function(ErrorHandler errorHandler) commentsError,
+    required TResult Function(ProjectUploadResponse project) projectLiked,
   }) {
     return projectsLoading();
   }
@@ -329,6 +342,7 @@ class _$ProjectsLoadingImpl implements _ProjectsLoading {
     TResult? Function()? commentsLoading,
     TResult? Function(List<CommentResponse> comments)? commentsSuccess,
     TResult? Function(ErrorHandler errorHandler)? commentsError,
+    TResult? Function(ProjectUploadResponse project)? projectLiked,
   }) {
     return projectsLoading?.call();
   }
@@ -345,6 +359,7 @@ class _$ProjectsLoadingImpl implements _ProjectsLoading {
     TResult Function()? commentsLoading,
     TResult Function(List<CommentResponse> comments)? commentsSuccess,
     TResult Function(ErrorHandler errorHandler)? commentsError,
+    TResult Function(ProjectUploadResponse project)? projectLiked,
     required TResult orElse(),
   }) {
     if (projectsLoading != null) {
@@ -365,6 +380,7 @@ class _$ProjectsLoadingImpl implements _ProjectsLoading {
     required TResult Function(_CommentsLoading value) commentsLoading,
     required TResult Function(_CommentsSuccess value) commentsSuccess,
     required TResult Function(_CommentsError value) commentsError,
+    required TResult Function(_ProjectLiked value) projectLiked,
   }) {
     return projectsLoading(this);
   }
@@ -381,6 +397,7 @@ class _$ProjectsLoadingImpl implements _ProjectsLoading {
     TResult? Function(_CommentsLoading value)? commentsLoading,
     TResult? Function(_CommentsSuccess value)? commentsSuccess,
     TResult? Function(_CommentsError value)? commentsError,
+    TResult? Function(_ProjectLiked value)? projectLiked,
   }) {
     return projectsLoading?.call(this);
   }
@@ -397,6 +414,7 @@ class _$ProjectsLoadingImpl implements _ProjectsLoading {
     TResult Function(_CommentsLoading value)? commentsLoading,
     TResult Function(_CommentsSuccess value)? commentsSuccess,
     TResult Function(_CommentsError value)? commentsError,
+    TResult Function(_ProjectLiked value)? projectLiked,
     required TResult orElse(),
   }) {
     if (projectsLoading != null) {
@@ -495,6 +513,7 @@ class _$ProjectsSuccessImpl implements _ProjectsSuccess {
     required TResult Function() commentsLoading,
     required TResult Function(List<CommentResponse> comments) commentsSuccess,
     required TResult Function(ErrorHandler errorHandler) commentsError,
+    required TResult Function(ProjectUploadResponse project) projectLiked,
   }) {
     return projectsSuccess(projects);
   }
@@ -511,6 +530,7 @@ class _$ProjectsSuccessImpl implements _ProjectsSuccess {
     TResult? Function()? commentsLoading,
     TResult? Function(List<CommentResponse> comments)? commentsSuccess,
     TResult? Function(ErrorHandler errorHandler)? commentsError,
+    TResult? Function(ProjectUploadResponse project)? projectLiked,
   }) {
     return projectsSuccess?.call(projects);
   }
@@ -527,6 +547,7 @@ class _$ProjectsSuccessImpl implements _ProjectsSuccess {
     TResult Function()? commentsLoading,
     TResult Function(List<CommentResponse> comments)? commentsSuccess,
     TResult Function(ErrorHandler errorHandler)? commentsError,
+    TResult Function(ProjectUploadResponse project)? projectLiked,
     required TResult orElse(),
   }) {
     if (projectsSuccess != null) {
@@ -547,6 +568,7 @@ class _$ProjectsSuccessImpl implements _ProjectsSuccess {
     required TResult Function(_CommentsLoading value) commentsLoading,
     required TResult Function(_CommentsSuccess value) commentsSuccess,
     required TResult Function(_CommentsError value) commentsError,
+    required TResult Function(_ProjectLiked value) projectLiked,
   }) {
     return projectsSuccess(this);
   }
@@ -563,6 +585,7 @@ class _$ProjectsSuccessImpl implements _ProjectsSuccess {
     TResult? Function(_CommentsLoading value)? commentsLoading,
     TResult? Function(_CommentsSuccess value)? commentsSuccess,
     TResult? Function(_CommentsError value)? commentsError,
+    TResult? Function(_ProjectLiked value)? projectLiked,
   }) {
     return projectsSuccess?.call(this);
   }
@@ -579,6 +602,7 @@ class _$ProjectsSuccessImpl implements _ProjectsSuccess {
     TResult Function(_CommentsLoading value)? commentsLoading,
     TResult Function(_CommentsSuccess value)? commentsSuccess,
     TResult Function(_CommentsError value)? commentsError,
+    TResult Function(_ProjectLiked value)? projectLiked,
     required TResult orElse(),
   }) {
     if (projectsSuccess != null) {
@@ -674,6 +698,7 @@ class _$ProjectsErrorImpl implements _ProjectsError {
     required TResult Function() commentsLoading,
     required TResult Function(List<CommentResponse> comments) commentsSuccess,
     required TResult Function(ErrorHandler errorHandler) commentsError,
+    required TResult Function(ProjectUploadResponse project) projectLiked,
   }) {
     return projectsError(errorHandler);
   }
@@ -690,6 +715,7 @@ class _$ProjectsErrorImpl implements _ProjectsError {
     TResult? Function()? commentsLoading,
     TResult? Function(List<CommentResponse> comments)? commentsSuccess,
     TResult? Function(ErrorHandler errorHandler)? commentsError,
+    TResult? Function(ProjectUploadResponse project)? projectLiked,
   }) {
     return projectsError?.call(errorHandler);
   }
@@ -706,6 +732,7 @@ class _$ProjectsErrorImpl implements _ProjectsError {
     TResult Function()? commentsLoading,
     TResult Function(List<CommentResponse> comments)? commentsSuccess,
     TResult Function(ErrorHandler errorHandler)? commentsError,
+    TResult Function(ProjectUploadResponse project)? projectLiked,
     required TResult orElse(),
   }) {
     if (projectsError != null) {
@@ -726,6 +753,7 @@ class _$ProjectsErrorImpl implements _ProjectsError {
     required TResult Function(_CommentsLoading value) commentsLoading,
     required TResult Function(_CommentsSuccess value) commentsSuccess,
     required TResult Function(_CommentsError value) commentsError,
+    required TResult Function(_ProjectLiked value) projectLiked,
   }) {
     return projectsError(this);
   }
@@ -742,6 +770,7 @@ class _$ProjectsErrorImpl implements _ProjectsError {
     TResult? Function(_CommentsLoading value)? commentsLoading,
     TResult? Function(_CommentsSuccess value)? commentsSuccess,
     TResult? Function(_CommentsError value)? commentsError,
+    TResult? Function(_ProjectLiked value)? projectLiked,
   }) {
     return projectsError?.call(this);
   }
@@ -758,6 +787,7 @@ class _$ProjectsErrorImpl implements _ProjectsError {
     TResult Function(_CommentsLoading value)? commentsLoading,
     TResult Function(_CommentsSuccess value)? commentsSuccess,
     TResult Function(_CommentsError value)? commentsError,
+    TResult Function(_ProjectLiked value)? projectLiked,
     required TResult orElse(),
   }) {
     if (projectsError != null) {
@@ -862,6 +892,7 @@ class _$ProjectsLoadingMoreImpl implements _ProjectsLoadingMore {
     required TResult Function() commentsLoading,
     required TResult Function(List<CommentResponse> comments) commentsSuccess,
     required TResult Function(ErrorHandler errorHandler) commentsError,
+    required TResult Function(ProjectUploadResponse project) projectLiked,
   }) {
     return projectsLoadingMore(projects);
   }
@@ -878,6 +909,7 @@ class _$ProjectsLoadingMoreImpl implements _ProjectsLoadingMore {
     TResult? Function()? commentsLoading,
     TResult? Function(List<CommentResponse> comments)? commentsSuccess,
     TResult? Function(ErrorHandler errorHandler)? commentsError,
+    TResult? Function(ProjectUploadResponse project)? projectLiked,
   }) {
     return projectsLoadingMore?.call(projects);
   }
@@ -894,6 +926,7 @@ class _$ProjectsLoadingMoreImpl implements _ProjectsLoadingMore {
     TResult Function()? commentsLoading,
     TResult Function(List<CommentResponse> comments)? commentsSuccess,
     TResult Function(ErrorHandler errorHandler)? commentsError,
+    TResult Function(ProjectUploadResponse project)? projectLiked,
     required TResult orElse(),
   }) {
     if (projectsLoadingMore != null) {
@@ -914,6 +947,7 @@ class _$ProjectsLoadingMoreImpl implements _ProjectsLoadingMore {
     required TResult Function(_CommentsLoading value) commentsLoading,
     required TResult Function(_CommentsSuccess value) commentsSuccess,
     required TResult Function(_CommentsError value) commentsError,
+    required TResult Function(_ProjectLiked value) projectLiked,
   }) {
     return projectsLoadingMore(this);
   }
@@ -930,6 +964,7 @@ class _$ProjectsLoadingMoreImpl implements _ProjectsLoadingMore {
     TResult? Function(_CommentsLoading value)? commentsLoading,
     TResult? Function(_CommentsSuccess value)? commentsSuccess,
     TResult? Function(_CommentsError value)? commentsError,
+    TResult? Function(_ProjectLiked value)? projectLiked,
   }) {
     return projectsLoadingMore?.call(this);
   }
@@ -946,6 +981,7 @@ class _$ProjectsLoadingMoreImpl implements _ProjectsLoadingMore {
     TResult Function(_CommentsLoading value)? commentsLoading,
     TResult Function(_CommentsSuccess value)? commentsSuccess,
     TResult Function(_CommentsError value)? commentsError,
+    TResult Function(_ProjectLiked value)? projectLiked,
     required TResult orElse(),
   }) {
     if (projectsLoadingMore != null) {
@@ -1042,6 +1078,7 @@ class _$ProjectUploadSuccessImpl implements _ProjectUploadSuccess {
     required TResult Function() commentsLoading,
     required TResult Function(List<CommentResponse> comments) commentsSuccess,
     required TResult Function(ErrorHandler errorHandler) commentsError,
+    required TResult Function(ProjectUploadResponse project) projectLiked,
   }) {
     return projectUploadSuccess(project);
   }
@@ -1058,6 +1095,7 @@ class _$ProjectUploadSuccessImpl implements _ProjectUploadSuccess {
     TResult? Function()? commentsLoading,
     TResult? Function(List<CommentResponse> comments)? commentsSuccess,
     TResult? Function(ErrorHandler errorHandler)? commentsError,
+    TResult? Function(ProjectUploadResponse project)? projectLiked,
   }) {
     return projectUploadSuccess?.call(project);
   }
@@ -1074,6 +1112,7 @@ class _$ProjectUploadSuccessImpl implements _ProjectUploadSuccess {
     TResult Function()? commentsLoading,
     TResult Function(List<CommentResponse> comments)? commentsSuccess,
     TResult Function(ErrorHandler errorHandler)? commentsError,
+    TResult Function(ProjectUploadResponse project)? projectLiked,
     required TResult orElse(),
   }) {
     if (projectUploadSuccess != null) {
@@ -1094,6 +1133,7 @@ class _$ProjectUploadSuccessImpl implements _ProjectUploadSuccess {
     required TResult Function(_CommentsLoading value) commentsLoading,
     required TResult Function(_CommentsSuccess value) commentsSuccess,
     required TResult Function(_CommentsError value) commentsError,
+    required TResult Function(_ProjectLiked value) projectLiked,
   }) {
     return projectUploadSuccess(this);
   }
@@ -1110,6 +1150,7 @@ class _$ProjectUploadSuccessImpl implements _ProjectUploadSuccess {
     TResult? Function(_CommentsLoading value)? commentsLoading,
     TResult? Function(_CommentsSuccess value)? commentsSuccess,
     TResult? Function(_CommentsError value)? commentsError,
+    TResult? Function(_ProjectLiked value)? projectLiked,
   }) {
     return projectUploadSuccess?.call(this);
   }
@@ -1126,6 +1167,7 @@ class _$ProjectUploadSuccessImpl implements _ProjectUploadSuccess {
     TResult Function(_CommentsLoading value)? commentsLoading,
     TResult Function(_CommentsSuccess value)? commentsSuccess,
     TResult Function(_CommentsError value)? commentsError,
+    TResult Function(_ProjectLiked value)? projectLiked,
     required TResult orElse(),
   }) {
     if (projectUploadSuccess != null) {
@@ -1194,6 +1236,7 @@ class _$CommentsLoadingImpl implements _CommentsLoading {
     required TResult Function() commentsLoading,
     required TResult Function(List<CommentResponse> comments) commentsSuccess,
     required TResult Function(ErrorHandler errorHandler) commentsError,
+    required TResult Function(ProjectUploadResponse project) projectLiked,
   }) {
     return commentsLoading();
   }
@@ -1210,6 +1253,7 @@ class _$CommentsLoadingImpl implements _CommentsLoading {
     TResult? Function()? commentsLoading,
     TResult? Function(List<CommentResponse> comments)? commentsSuccess,
     TResult? Function(ErrorHandler errorHandler)? commentsError,
+    TResult? Function(ProjectUploadResponse project)? projectLiked,
   }) {
     return commentsLoading?.call();
   }
@@ -1226,6 +1270,7 @@ class _$CommentsLoadingImpl implements _CommentsLoading {
     TResult Function()? commentsLoading,
     TResult Function(List<CommentResponse> comments)? commentsSuccess,
     TResult Function(ErrorHandler errorHandler)? commentsError,
+    TResult Function(ProjectUploadResponse project)? projectLiked,
     required TResult orElse(),
   }) {
     if (commentsLoading != null) {
@@ -1246,6 +1291,7 @@ class _$CommentsLoadingImpl implements _CommentsLoading {
     required TResult Function(_CommentsLoading value) commentsLoading,
     required TResult Function(_CommentsSuccess value) commentsSuccess,
     required TResult Function(_CommentsError value) commentsError,
+    required TResult Function(_ProjectLiked value) projectLiked,
   }) {
     return commentsLoading(this);
   }
@@ -1262,6 +1308,7 @@ class _$CommentsLoadingImpl implements _CommentsLoading {
     TResult? Function(_CommentsLoading value)? commentsLoading,
     TResult? Function(_CommentsSuccess value)? commentsSuccess,
     TResult? Function(_CommentsError value)? commentsError,
+    TResult? Function(_ProjectLiked value)? projectLiked,
   }) {
     return commentsLoading?.call(this);
   }
@@ -1278,6 +1325,7 @@ class _$CommentsLoadingImpl implements _CommentsLoading {
     TResult Function(_CommentsLoading value)? commentsLoading,
     TResult Function(_CommentsSuccess value)? commentsSuccess,
     TResult Function(_CommentsError value)? commentsError,
+    TResult Function(_ProjectLiked value)? projectLiked,
     required TResult orElse(),
   }) {
     if (commentsLoading != null) {
@@ -1374,6 +1422,7 @@ class _$CommentsSuccessImpl implements _CommentsSuccess {
     required TResult Function() commentsLoading,
     required TResult Function(List<CommentResponse> comments) commentsSuccess,
     required TResult Function(ErrorHandler errorHandler) commentsError,
+    required TResult Function(ProjectUploadResponse project) projectLiked,
   }) {
     return commentsSuccess(comments);
   }
@@ -1390,6 +1439,7 @@ class _$CommentsSuccessImpl implements _CommentsSuccess {
     TResult? Function()? commentsLoading,
     TResult? Function(List<CommentResponse> comments)? commentsSuccess,
     TResult? Function(ErrorHandler errorHandler)? commentsError,
+    TResult? Function(ProjectUploadResponse project)? projectLiked,
   }) {
     return commentsSuccess?.call(comments);
   }
@@ -1406,6 +1456,7 @@ class _$CommentsSuccessImpl implements _CommentsSuccess {
     TResult Function()? commentsLoading,
     TResult Function(List<CommentResponse> comments)? commentsSuccess,
     TResult Function(ErrorHandler errorHandler)? commentsError,
+    TResult Function(ProjectUploadResponse project)? projectLiked,
     required TResult orElse(),
   }) {
     if (commentsSuccess != null) {
@@ -1426,6 +1477,7 @@ class _$CommentsSuccessImpl implements _CommentsSuccess {
     required TResult Function(_CommentsLoading value) commentsLoading,
     required TResult Function(_CommentsSuccess value) commentsSuccess,
     required TResult Function(_CommentsError value) commentsError,
+    required TResult Function(_ProjectLiked value) projectLiked,
   }) {
     return commentsSuccess(this);
   }
@@ -1442,6 +1494,7 @@ class _$CommentsSuccessImpl implements _CommentsSuccess {
     TResult? Function(_CommentsLoading value)? commentsLoading,
     TResult? Function(_CommentsSuccess value)? commentsSuccess,
     TResult? Function(_CommentsError value)? commentsError,
+    TResult? Function(_ProjectLiked value)? projectLiked,
   }) {
     return commentsSuccess?.call(this);
   }
@@ -1458,6 +1511,7 @@ class _$CommentsSuccessImpl implements _CommentsSuccess {
     TResult Function(_CommentsLoading value)? commentsLoading,
     TResult Function(_CommentsSuccess value)? commentsSuccess,
     TResult Function(_CommentsError value)? commentsError,
+    TResult Function(_ProjectLiked value)? projectLiked,
     required TResult orElse(),
   }) {
     if (commentsSuccess != null) {
@@ -1553,6 +1607,7 @@ class _$CommentsErrorImpl implements _CommentsError {
     required TResult Function() commentsLoading,
     required TResult Function(List<CommentResponse> comments) commentsSuccess,
     required TResult Function(ErrorHandler errorHandler) commentsError,
+    required TResult Function(ProjectUploadResponse project) projectLiked,
   }) {
     return commentsError(errorHandler);
   }
@@ -1569,6 +1624,7 @@ class _$CommentsErrorImpl implements _CommentsError {
     TResult? Function()? commentsLoading,
     TResult? Function(List<CommentResponse> comments)? commentsSuccess,
     TResult? Function(ErrorHandler errorHandler)? commentsError,
+    TResult? Function(ProjectUploadResponse project)? projectLiked,
   }) {
     return commentsError?.call(errorHandler);
   }
@@ -1585,6 +1641,7 @@ class _$CommentsErrorImpl implements _CommentsError {
     TResult Function()? commentsLoading,
     TResult Function(List<CommentResponse> comments)? commentsSuccess,
     TResult Function(ErrorHandler errorHandler)? commentsError,
+    TResult Function(ProjectUploadResponse project)? projectLiked,
     required TResult orElse(),
   }) {
     if (commentsError != null) {
@@ -1605,6 +1662,7 @@ class _$CommentsErrorImpl implements _CommentsError {
     required TResult Function(_CommentsLoading value) commentsLoading,
     required TResult Function(_CommentsSuccess value) commentsSuccess,
     required TResult Function(_CommentsError value) commentsError,
+    required TResult Function(_ProjectLiked value) projectLiked,
   }) {
     return commentsError(this);
   }
@@ -1621,6 +1679,7 @@ class _$CommentsErrorImpl implements _CommentsError {
     TResult? Function(_CommentsLoading value)? commentsLoading,
     TResult? Function(_CommentsSuccess value)? commentsSuccess,
     TResult? Function(_CommentsError value)? commentsError,
+    TResult? Function(_ProjectLiked value)? projectLiked,
   }) {
     return commentsError?.call(this);
   }
@@ -1637,6 +1696,7 @@ class _$CommentsErrorImpl implements _CommentsError {
     TResult Function(_CommentsLoading value)? commentsLoading,
     TResult Function(_CommentsSuccess value)? commentsSuccess,
     TResult Function(_CommentsError value)? commentsError,
+    TResult Function(_ProjectLiked value)? projectLiked,
     required TResult orElse(),
   }) {
     if (commentsError != null) {
@@ -1653,5 +1713,189 @@ abstract class _CommentsError implements ProjectState {
   ErrorHandler get errorHandler;
   @JsonKey(ignore: true)
   _$$CommentsErrorImplCopyWith<_$CommentsErrorImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ProjectLikedImplCopyWith<$Res> {
+  factory _$$ProjectLikedImplCopyWith(
+          _$ProjectLikedImpl value, $Res Function(_$ProjectLikedImpl) then) =
+      __$$ProjectLikedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({ProjectUploadResponse project});
+}
+
+/// @nodoc
+class __$$ProjectLikedImplCopyWithImpl<$Res>
+    extends _$ProjectStateCopyWithImpl<$Res, _$ProjectLikedImpl>
+    implements _$$ProjectLikedImplCopyWith<$Res> {
+  __$$ProjectLikedImplCopyWithImpl(
+      _$ProjectLikedImpl _value, $Res Function(_$ProjectLikedImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? project = null,
+  }) {
+    return _then(_$ProjectLikedImpl(
+      null == project
+          ? _value.project
+          : project // ignore: cast_nullable_to_non_nullable
+              as ProjectUploadResponse,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ProjectLikedImpl implements _ProjectLiked {
+  const _$ProjectLikedImpl(this.project);
+
+  @override
+  final ProjectUploadResponse project;
+
+  @override
+  String toString() {
+    return 'ProjectState.projectLiked(project: $project)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ProjectLikedImpl &&
+            (identical(other.project, project) || other.project == project));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, project);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ProjectLikedImplCopyWith<_$ProjectLikedImpl> get copyWith =>
+      __$$ProjectLikedImplCopyWithImpl<_$ProjectLikedImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() projectsLoading,
+    required TResult Function(List<ProjectResponse?>? projects) projectsSuccess,
+    required TResult Function(ErrorHandler errorHandler) projectsError,
+    required TResult Function(List<ProjectResponse?>? projects)
+        projectsLoadingMore,
+    required TResult Function(ProjectUploadResponse project)
+        projectUploadSuccess,
+    required TResult Function() commentsLoading,
+    required TResult Function(List<CommentResponse> comments) commentsSuccess,
+    required TResult Function(ErrorHandler errorHandler) commentsError,
+    required TResult Function(ProjectUploadResponse project) projectLiked,
+  }) {
+    return projectLiked(project);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? projectsLoading,
+    TResult? Function(List<ProjectResponse?>? projects)? projectsSuccess,
+    TResult? Function(ErrorHandler errorHandler)? projectsError,
+    TResult? Function(List<ProjectResponse?>? projects)? projectsLoadingMore,
+    TResult? Function(ProjectUploadResponse project)? projectUploadSuccess,
+    TResult? Function()? commentsLoading,
+    TResult? Function(List<CommentResponse> comments)? commentsSuccess,
+    TResult? Function(ErrorHandler errorHandler)? commentsError,
+    TResult? Function(ProjectUploadResponse project)? projectLiked,
+  }) {
+    return projectLiked?.call(project);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? projectsLoading,
+    TResult Function(List<ProjectResponse?>? projects)? projectsSuccess,
+    TResult Function(ErrorHandler errorHandler)? projectsError,
+    TResult Function(List<ProjectResponse?>? projects)? projectsLoadingMore,
+    TResult Function(ProjectUploadResponse project)? projectUploadSuccess,
+    TResult Function()? commentsLoading,
+    TResult Function(List<CommentResponse> comments)? commentsSuccess,
+    TResult Function(ErrorHandler errorHandler)? commentsError,
+    TResult Function(ProjectUploadResponse project)? projectLiked,
+    required TResult orElse(),
+  }) {
+    if (projectLiked != null) {
+      return projectLiked(project);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_ProjectsLoading value) projectsLoading,
+    required TResult Function(_ProjectsSuccess value) projectsSuccess,
+    required TResult Function(_ProjectsError value) projectsError,
+    required TResult Function(_ProjectsLoadingMore value) projectsLoadingMore,
+    required TResult Function(_ProjectUploadSuccess value) projectUploadSuccess,
+    required TResult Function(_CommentsLoading value) commentsLoading,
+    required TResult Function(_CommentsSuccess value) commentsSuccess,
+    required TResult Function(_CommentsError value) commentsError,
+    required TResult Function(_ProjectLiked value) projectLiked,
+  }) {
+    return projectLiked(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_ProjectsLoading value)? projectsLoading,
+    TResult? Function(_ProjectsSuccess value)? projectsSuccess,
+    TResult? Function(_ProjectsError value)? projectsError,
+    TResult? Function(_ProjectsLoadingMore value)? projectsLoadingMore,
+    TResult? Function(_ProjectUploadSuccess value)? projectUploadSuccess,
+    TResult? Function(_CommentsLoading value)? commentsLoading,
+    TResult? Function(_CommentsSuccess value)? commentsSuccess,
+    TResult? Function(_CommentsError value)? commentsError,
+    TResult? Function(_ProjectLiked value)? projectLiked,
+  }) {
+    return projectLiked?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_ProjectsLoading value)? projectsLoading,
+    TResult Function(_ProjectsSuccess value)? projectsSuccess,
+    TResult Function(_ProjectsError value)? projectsError,
+    TResult Function(_ProjectsLoadingMore value)? projectsLoadingMore,
+    TResult Function(_ProjectUploadSuccess value)? projectUploadSuccess,
+    TResult Function(_CommentsLoading value)? commentsLoading,
+    TResult Function(_CommentsSuccess value)? commentsSuccess,
+    TResult Function(_CommentsError value)? commentsError,
+    TResult Function(_ProjectLiked value)? projectLiked,
+    required TResult orElse(),
+  }) {
+    if (projectLiked != null) {
+      return projectLiked(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ProjectLiked implements ProjectState {
+  const factory _ProjectLiked(final ProjectUploadResponse project) =
+      _$ProjectLikedImpl;
+
+  ProjectUploadResponse get project;
+  @JsonKey(ignore: true)
+  _$$ProjectLikedImplCopyWith<_$ProjectLikedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

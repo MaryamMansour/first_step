@@ -66,4 +66,18 @@ abstract class ApiService {
   @GET("project/searchID/{id}")
   Future<ProjectResponse> getProjectById(@Path("id") int id);
 
+
+  @GET("project/userID/{userId}")
+  Future<List<ProjectResponse>> getProjectsByUserId(@Path("userId") int userId);
+
+  @PUT("project/update/{projectId}")
+  Future<ProjectUploadResponse> updateProject(@Path("projectId") int projectId, @Body() ProjectUploadRequestBody projectRequestBody);
+
+  @DELETE("project/delete/{projectId}")
+  Future<void> deleteProject(@Path("projectId") int projectId);
+
+
+  @PUT("project/like/{projectId}")
+  Future<ProjectUploadResponse> likeProject(@Path("projectId") int projectId);
+
 }

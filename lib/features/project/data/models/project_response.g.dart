@@ -29,8 +29,9 @@ ProjectResponse _$ProjectResponseFromJson(Map<String, dynamic> json) =>
       website: json['website'] as String?,
       legalName: json['legalName'] as String?,
       type: json['type'] as String?,
-      comments:
-          (json['likes'] as List<dynamic>).map((e) => e as String?).toList(),
+      likes: (json['likes'] as List<dynamic>)
+          .map((e) => (e as num?)?.toInt())
+          .toList(),
       numberOfLikes: (json['numberOfLikes'] as num?)?.toInt(),
     );
 
@@ -55,7 +56,7 @@ Map<String, dynamic> _$ProjectResponseToJson(ProjectResponse instance) =>
       'website': instance.website,
       'legalName': instance.legalName,
       'type': instance.type,
-      'likes': instance.comments,
+      'likes': instance.likes,
       'numberOfLikes': instance.numberOfLikes,
     };
 

@@ -20,4 +20,6 @@ class ProjectState with _$ProjectState {
   const factory ProjectState.commentsLoading() = _CommentsLoading;
   const factory ProjectState.commentsSuccess(List<CommentResponse> comments) = _CommentsSuccess;
   const factory ProjectState.commentsError(ErrorHandler errorHandler) = _CommentsError;
+  const factory ProjectState.projectLiked(ProjectUploadResponse project) = _ProjectLiked;
+
 }

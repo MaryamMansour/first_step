@@ -25,7 +25,7 @@ class ProjectResponse {
   final String? legalName;
   final String? type;
   @JsonKey(name: 'likes')
-  final List<String?> comments;
+  final List<int?> likes;
   final int? numberOfLikes;
 
   ProjectResponse({
@@ -48,7 +48,7 @@ class ProjectResponse {
     required this.website,
     required this.legalName,
     required this.type,
-    required this.comments,
+    required this.likes,
     required this.numberOfLikes,
   });
 

@@ -47,7 +47,9 @@ ProjectData _$ProjectDataFromJson(Map<String, dynamic> json) => ProjectData(
       type: json['type'] as String?,
       projectID: (json['projectID'] as num?)?.toInt(),
       numberOfLikes: (json['numberOfLikes'] as num?)?.toInt(),
-      likes: (json['likes'] as List<dynamic>).map((e) => e as String?).toList(),
+      likes: (json['likes'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList(),
     );
 
 Map<String, dynamic> _$ProjectDataToJson(ProjectData instance) =>

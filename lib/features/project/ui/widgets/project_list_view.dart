@@ -5,6 +5,7 @@ import 'package:first_step/features/project/data/models/project_response.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:first_step/core/theming/styles.dart';
 import 'package:first_step/core/helper/spacing.dart';
+import '../../../../core/helper/constants.dart';
 import '../../../../core/theming/colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:first_step/features/project/logic/project_cubit.dart';
@@ -12,6 +13,7 @@ import '../../logic/project_state.dart';
 import '../screens/project_details.dart';
 import '../screens/comment_screen.dart';
 import 'tag_item.dart';
+import 'package:first_step/core/helper/shared_pref.dart';
 
 class ProjectsListView extends StatefulWidget {
   final List<ProjectResponse?>? projectList;
@@ -26,12 +28,21 @@ class ProjectsListView extends StatefulWidget {
 class _ProjectsListViewState extends State<ProjectsListView> {
   late ScrollController _scrollController;
   Set<int> _expandedProjects = {};
+  int? userId;
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
+    _loadUserId();
+  }
+
+  Future<void> _loadUserId() async {
+
+    String? tempId = await SharedPrefHelper.getString(SharedPrefKeys.id);
+    userId = int.parse(tempId ?? '0');
+
   }
 
   @override
@@ -70,6 +81,11 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                 ))
     );
   }
+
+  void _likeProject(int? projectId) {
+    context.read<ProjectCubit>().likeProject(projectId!);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -143,8 +159,6 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                               ],
                             ),
                           verticalSpace(20),
-
-
                         ],
                       ),
                     ),
@@ -196,12 +210,29 @@ class _ProjectsListViewState extends State<ProjectsListView> {
                               ],
                             ),
                           ),
+                          verticalSpace(10),
+                          InkWell(
+                            onTap: () => _likeProject(project.projectID),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  project!.likes.contains(userId) ? Icons.favorite : Icons.favorite_border,
+                                  color: project.likes.contains(userId) ? Colors.red : Colors.grey,
+                                  size: 20,
+                                ),
+                                horizontalSpace(5),
+                                Text(
+                                  "${project.numberOfLikes ?? 0} likes",
+                                  style: AppTextStyles.font12Blacklight.copyWith(fontSize: 10),
+                                ),
+                              ],
+                            ),
+                          ),
+
                         ],
                       ),
                     ),
-
                   ],
-
                 ),
               ),
             ),

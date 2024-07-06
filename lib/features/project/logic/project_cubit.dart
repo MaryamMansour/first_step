@@ -92,29 +92,21 @@ class ProjectCubit extends Cubit<ProjectState> {
     emit(const ProjectState.projectsLoading());
     final filteredProjects = allProjects?.where((project) => project?.type == type).toList();
     displayedProjects = filteredProjects;
-    emit(ProjectState.projectsSuccess(displayedProjects));
+    emit(ProjectState.projectsSuccess(filteredProjects));
   }
 
-
-
-
-
-
-  List<CommentResponse> comments = [];
   void getComments(int projectId) async {
     emit(ProjectState.commentsLoading());
     final response = await _projectRepo.getComments(projectId);
     response.when(
       success: (commentsResponse) {
-        comments = commentsResponse;
-        emit(ProjectState.commentsSuccess(comments));
+        emit(ProjectState.commentsSuccess(commentsResponse));
       },
       failure: (errorHandler) {
         emit(ProjectState.commentsError(errorHandler));
       },
     );
   }
-
 
   void addComment(int projectId, String content) async {
     final addCommentRequest = AddCommentRequest(content: content);
@@ -136,4 +128,61 @@ class ProjectCubit extends Cubit<ProjectState> {
       },
     );
   }
+
+  void getProjectsByUserId(int userId) async {
+    emit(const ProjectState.projectsLoading());
+    final response = await _projectRepo.getProjectsByUserId(userId);
+    response.when(
+      success: (projectResponse) {
+        allProjects = projectResponse;
+        emit(ProjectState.projectsSuccess(projectResponse));
+      },
+      failure: (errorHandler) {
+        emit(ProjectState.projectsError(errorHandler));
+      },
+    );
+  }
+
+  void updateProject(int projectId, ProjectUploadRequestBody projectRequestBody) async {
+    emit(const ProjectState.projectsLoading());
+    final response = await _projectRepo.updateProject(projectId, projectRequestBody);
+    response.when(
+      success: (projectUploadResponse) {
+        emit(ProjectState.projectUploadSuccess(projectUploadResponse));
+      },
+      failure: (errorHandler) {
+        emit(ProjectState.projectsError(errorHandler));
+      },
+    );
+  }
+
+  void deleteProject(int projectId) async {
+    emit(const ProjectState.projectsLoading());
+    final response = await _projectRepo.deleteProject(projectId);
+    response.when(
+      success: (_) {
+        allProjects = allProjects?.where((project) => project?.projectID != projectId).toList();
+        emit(ProjectState.projectsSuccess(allProjects));
+      },
+      failure: (errorHandler) {
+        emit(ProjectState.projectsError(errorHandler));
+      },
+    );
+  }
+
+
+  void likeProject(int projectId) async {
+    print("Liking project with ID: $projectId");
+    final response = await _projectRepo.likeProject(projectId);
+    response.when(
+      success: (projectResponse) {
+        print("Project liked successfully: $projectResponse");
+      },
+      failure: (errorHandler) {
+        print("Failed to like project: ${errorHandler.apiErrorModel.message}");
+        emit(ProjectState.projectsError(errorHandler));
+      },
+    );
+  }
+
 }

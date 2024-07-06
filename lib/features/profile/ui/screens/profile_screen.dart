@@ -39,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         child: Column(
           children: [
-            verticalSpace(100),
+            verticalSpace(200),
             if (userName != null)
               CircleAvatar(
                 radius: 50,

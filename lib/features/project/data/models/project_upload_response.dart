@@ -1,5 +1,3 @@
-// file path: lib/features/project/data/models/project_response.dart
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'project_upload_response.g.dart';
@@ -16,7 +14,8 @@ class ProjectUploadResponse {
     required this.data,
   });
 
-  factory ProjectUploadResponse.fromJson(Map<String, dynamic> json) => _$ProjectUploadResponseFromJson(json);
+  factory ProjectUploadResponse.fromJson(Map<String, dynamic> json) =>
+      _$ProjectUploadResponseFromJson(json);
   Map<String, dynamic> toJson() => _$ProjectUploadResponseToJson(this);
 }
 
@@ -42,7 +41,7 @@ class ProjectData {
   final String? type;
   final int? projectID;
   final int? numberOfLikes;
-  final List<String?> likes;  // Change the type as needed based on your data
+  final List<int>? likes;
 
   ProjectData({
     required this.user,
@@ -68,7 +67,8 @@ class ProjectData {
     required this.likes,
   });
 
-  factory ProjectData.fromJson(Map<String, dynamic> json) => _$ProjectDataFromJson(json);
+  factory ProjectData.fromJson(Map<String, dynamic> json) =>
+      _$ProjectDataFromJson(json);
   Map<String, dynamic> toJson() => _$ProjectDataToJson(this);
 }
 

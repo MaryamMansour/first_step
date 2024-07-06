@@ -6,7 +6,7 @@ import 'package:first_step/features/project/logic/project_state.dart';
 import 'package:first_step/features/project/ui/widgets/projects_shimmer_loading.dart';
 
 class ProjectsBlocBuilder extends StatelessWidget {
-  const ProjectsBlocBuilder({super.key});
+  const ProjectsBlocBuilder({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +27,12 @@ class ProjectsBlocBuilder extends StatelessWidget {
               ],
             ),
           ),
+
           projectsError: (errorHandler) => const Center(child: Text("Failed to load projects")),
-          orElse: () => Center(child: Text("Unknown state")),
+          orElse: () {
+            print("Unknown state: $state");
+            return const Center(child: Text("Unknown state"));
+          },
         );
       },
     );

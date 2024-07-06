@@ -1,15 +1,25 @@
-import 'package:first_step/core/helper/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:first_step/core/helper/extensions.dart';
 import 'package:first_step/core/helper/shared_pref.dart';
 import 'package:first_step/core/helper/spacing.dart';
 import 'package:first_step/core/routing/routes.dart';
 import 'package:first_step/core/theming/colors.dart';
-import 'package:first_step/features/chat/ui/chat_screen.dart';
+import 'package:first_step/features/project/logic/project_cubit.dart';
+import 'package:first_step/features/project/data/repo/project_repo.dart';
 
-import '../../../project/ui/screens/upload_screen.dart';
+import '../../../../core/di/depndency_injection.dart';
+import '../../../../core/helper/constants.dart';
+import '../screens/user_projects_screen.dart';
 
 class ListTiles extends StatelessWidget {
   const ListTiles({super.key});
+
+  Future<String> getUserId() async {
+    // This function assumes that you have a method to get the user ID from shared preferences.
+    // Update this method as per your implementation.
+    return await SharedPrefHelper.getString(SharedPrefKeys.id) ?? "";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,33 +40,29 @@ class ListTiles extends StatelessWidget {
                 context.pushNamed(Routes.profileDetailsScreen);
               },
             ),
-            // ListTile(
-            //   leading: const Icon(Icons.computer_sharp, color: AppColors.primaryColor),
-            //   title: const Text('My Project'),
-            //   onTap: () {
-            //     context.pushNamed(Routes.uploadScreen);
-            //   },
-            // ),
             ListTile(
-              leading: const Icon(Icons.settings, color: AppColors.primaryColor),
-              title: const Text('Settings'),
-              onTap: () {
-                //TODO
+              leading: const Icon(Icons.computer_sharp, color: AppColors.primaryColor),
+              title: const Text('My Projects'),
+              onTap: () async {
+                print("H");
+                String userId = await getUserId();
+                int stringUserId =int.parse(userId);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => BlocProvider(
+                      create: (context) => ProjectCubit(getIt()),
+                      child: UserProfileProjectsScreen(userId: stringUserId),
+                    ),
+                  ),
+                );
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.share, color: AppColors.primaryColor),
-              title: const Text('Share with friends'),
-              onTap: () {
-                // TODO Share app with friends
-              },
-            ),
+
             ListTile(
               leading: const Icon(Icons.help, color: AppColors.primaryColor),
               title: const Text('Help and support'),
-              onTap: () {
-                // TODO Navigate to Help and Support
-              },
+              onTap: () {},
             ),
             ListTile(
               leading: const Icon(Icons.logout, color: AppColors.primaryColor),
@@ -64,7 +70,6 @@ class ListTiles extends StatelessWidget {
               onTap: () async {
                 await SharedPrefHelper.clearAllSecuredData();
                 await SharedPrefHelper.clearAllData();
-                print("Cleared all shared preferences data");
                 context.pushNamed(Routes.loginScreen);
               },
             ),

@@ -96,12 +96,10 @@ class FilterButtons extends StatelessWidget {
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: [
+          horizontalSpace(5),
           FilterButton(text: 'Graduation projects', type: 'GP'),
           FilterButton(text: 'Start Ups', type: 'ST'),
-          IconButton(
-            icon: Icon(Icons.tune, color: AppColors.white),
-            onPressed: () {},
-          ),
+
         ],
       ),
     );
