@@ -226,65 +226,155 @@ class _UploadProjectScreenState extends State<UploadProjectScreen> {
                         TextFormField(
                           controller: _companyNameController,
                           decoration: InputDecoration(labelText: 'Company Name'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter company name';
+                            }
+                            return null;
+                          },
                         ),
                         TextFormField(
                           controller: _sloganController,
                           maxLines: 3,
                           decoration: InputDecoration(labelText: 'Slogan'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter slogan';
+                            }
+                            return null;
+                          },
                         ),
                         TextFormField(
                           controller: _amountRaisedController,
                           decoration: InputDecoration(labelText: 'Amount Raised'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter amount raised';
+                            }
+                            return null;
+                          },
                         ),
                         TextFormField(
                           controller: _yearController,
                           decoration: InputDecoration(labelText: 'Year'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter year';
+                            }
+                            return null;
+                          },
                         ),
                         TextFormField(
                           controller: _stageController,
                           decoration: InputDecoration(labelText: 'Stage'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter stage';
+                            }
+                            return null;
+                          },
                         ),
                         TextFormField(
                           controller: _businessModelController,
                           decoration: InputDecoration(labelText: 'Business Model'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter business model';
+                            }
+                            return null;
+                          },
                         ),
                         TextFormField(
                           maxLines: 4,
                           controller: _fullDescriptionController,
                           decoration: InputDecoration(labelText: 'Full Description'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter full description';
+                            }
+                            return null;
+                          },
                         ),
                         TextFormField(
                           controller: _investorsController,
                           decoration: InputDecoration(labelText: 'Investors'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter investors';
+                            }
+                            return null;
+                          },
                         ),
                         TextFormField(
                           controller: _aboutController,
                           maxLines: 3,
                           decoration: InputDecoration(labelText: 'About'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter about';
+                            }
+                            return null;
+                          },
                         ),
                         TextFormField(
                           controller: _industryController,
                           decoration: InputDecoration(labelText: 'Industry'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter industry';
+                            }
+                            return null;
+                          },
                         ),
                         TextFormField(
                           controller: _tagsController,
                           decoration: InputDecoration(labelText: 'Tags'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter tags';
+                            }
+                            return null;
+                          },
                         ),
                         TextFormField(
                           controller: _customerModelController,
                           decoration: InputDecoration(labelText: 'Customer Model'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter customer model';
+                            }
+                            return null;
+                          },
                         ),
                         TextFormField(
                           controller: _websiteController,
                           decoration: InputDecoration(labelText: 'Website'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter website';
+                            }
+                            return null;
+                          },
                         ),
                         TextFormField(
                           controller: _legalNameController,
                           decoration: InputDecoration(labelText: 'Legal Name'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter legal name';
+                            }
+                            return null;
+                          },
                         ),
                         TextFormField(
                           controller: _typeController,
                           decoration: InputDecoration(labelText: 'Type'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter type';
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(height: 20),
                         Row(
@@ -302,34 +392,36 @@ class _UploadProjectScreenState extends State<UploadProjectScreen> {
                                 backgroundColor: MaterialStateProperty.all(AppColors.primaryColor),
                               ),
                               onPressed: () async {
-                                DioFactory.setTokenIntoHeaderAfterLogin(
-                                  await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken),
-                                );
-                                final projectRequestBody = ProjectUploadRequestBody(
-                                  companyName: _companyNameController.text,
-                                  slogan: _sloganController.text,
-                                  amountRaised: _amountRaisedController.text,
-                                  year: _yearController.text,
-                                  stage: _stageController.text,
-                                  businessModel: _businessModelController.text,
-                                  imageURL: _imageURLController.text,
-                                  fullDescription: _fullDescriptionController.text,
-                                  pdfURL: _pdfURLController.text,
-                                  investors: _investorsController.text,
-                                  about: _aboutController.text,
-                                  industry: _industryController.text,
-                                  tags: _tagsController.text,
-                                  customerModel: _customerModelController.text,
-                                  website: _websiteController.text,
-                                  legalName: _legalNameController.text,
-                                  type: _typeController.text,
-                                );
+                                if (_formKey.currentState?.validate() ?? false) {
+                                  DioFactory.setTokenIntoHeaderAfterLogin(
+                                    await SharedPrefHelper.getSecuredString(SharedPrefKeys.userToken),
+                                  );
+                                  final projectRequestBody = ProjectUploadRequestBody(
+                                    companyName: _companyNameController.text,
+                                    slogan: _sloganController.text,
+                                    amountRaised: _amountRaisedController.text,
+                                    year: _yearController.text,
+                                    stage: _stageController.text,
+                                    businessModel: _businessModelController.text,
+                                    imageURL: _imageURLController.text,
+                                    fullDescription: _fullDescriptionController.text,
+                                    pdfURL: _pdfURLController.text,
+                                    investors: _investorsController.text,
+                                    about: _aboutController.text,
+                                    industry: _industryController.text,
+                                    tags: _tagsController.text,
+                                    customerModel: _customerModelController.text,
+                                    website: _websiteController.text,
+                                    legalName: _legalNameController.text,
+                                    type: _typeController.text,
+                                  );
 
-                                if (widget.project == null) {
-                                  context.read<ProjectCubit>().uploadProject(projectRequestBody);
-                                } else {
-                                  print("projectRequestBody: $projectRequestBody");
-                                  context.read<ProjectCubit>().updateProject(widget.project!.projectID??0, projectRequestBody);
+                                  if (widget.project == null) {
+                                    context.read<ProjectCubit>().uploadProject(projectRequestBody);
+                                  } else {
+                                    print("projectRequestBody: $projectRequestBody");
+                                    context.read<ProjectCubit>().updateProject(widget.project!.projectID ?? 0, projectRequestBody);
+                                  }
                                 }
                               },
                               child: Text(
@@ -403,14 +495,11 @@ class BuildUrlInputButton extends StatelessWidget {
                   : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.picture_as_pdf, size: 50, color: Colors.red),
+                  Icon(Icons.file_present, size: 50, color: AppColors.primaryColor),
+                  SizedBox(height: 8),
                   Text(
-                    "File URL:",
+                    "$label URL Set",
                     style: AppTextStyles.font16GrayLight,
-                  ),
-                  Text(
-                    controller.text,
-                    style: AppTextStyles.font15PrimaryBold.copyWith(fontSize: 12),
                     textAlign: TextAlign.center,
                   ),
                 ],

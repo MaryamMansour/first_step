@@ -70,7 +70,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
-        title: Text("Create Group"),
+        title: Text("Create Group", style: TextStyle(color: AppColors.white)),
       ),
       body: isLoading
           ? Container(
@@ -79,45 +79,49 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         alignment: Alignment.center,
         child: CircularProgressIndicator(),
       )
-          : Column(
-        children: [
-          SizedBox(height: size.height / 10),
-          Container(
-            height: size.height / 14,
-            width: size.width,
-            alignment: Alignment.center,
-            child: Container(
+          : Container(
+        color: Colors.white,
+            child: Column(
+                    children: [
+            SizedBox(height: size.height / 10),
+            Container(
+
               height: size.height / 14,
-              width: size.width / 1.15,
-              child: AppTextFormField(
-                controller: _groupName,
-                hintText: 'Group Name',
-                validator: (value) {  },
+              width: size.width,
+              alignment: Alignment.center,
+              child: Container(
+                height: size.height / 14,
+                width: size.width / 1.15,
+                child: AppTextFormField(
+                  controller: _groupName,
+                  hintText: 'Group Name',
+                  validator: (value) {  },
+                ),
               ),
             ),
-          ),
-          verticalSpace(size.height / 12),
-          Container(
-            height: size.height / 14,
-            width: size.width,
-            alignment: Alignment.center,
-            child: Container(
+            verticalSpace(size.height / 12),
+            Container(
               height: size.height / 14,
-              width: size.width / 1.15,
-              child: AppTextFormField(
-                controller: _groupDescription,
-                hintText: "Group Description", validator: (value) {  },
+              width: size.width,
+              alignment: Alignment.center,
+              child: Container(
+                height: size.height / 14,
+                width: size.width / 1.15,
+                child: AppTextFormField(
+                  controller: _groupDescription,
+                  hintText: "Group Description", validator: (value) {  },
+                ),
               ),
             ),
+            verticalSpace( size.height / 16),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: AppColors.gray),
+              onPressed: createGroup,
+              child: const Text("Create Group", style: TextStyle(color: AppColors.white)),
+            ),
+                    ],
+                  ),
           ),
-          verticalSpace( size.height / 16),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.gray),
-            onPressed: createGroup,
-            child: const Text("Create Group"),
-          ),
-        ],
-      ),
     );
   }
 }

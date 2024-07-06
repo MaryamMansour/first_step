@@ -552,13 +552,13 @@ class _ChatScreenState extends State<ChatScreen> {
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryColor),
                       onPressed: () => leaveChannel(channel['id']),
-                      child: Text('Leave'),
+                      child: Text('Leave', style: TextStyle(color: AppColors.white)),
                     )
                   : ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.gray),
                       onPressed: () => joinChannel(channel['id']),
-                      child: Text('Join'),
+                      child: Text('Join', style: TextStyle(color: AppColors.white),),
                     ),
               onTap: isMember
                   ? () {

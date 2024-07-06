@@ -39,10 +39,8 @@ class _ProjectsListViewState extends State<ProjectsListView> {
   }
 
   Future<void> _loadUserId() async {
-
     String? tempId = await SharedPrefHelper.getString(SharedPrefKeys.id);
     userId = int.parse(tempId ?? '0');
-
   }
 
   @override
@@ -74,186 +72,199 @@ class _ProjectsListViewState extends State<ProjectsListView> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (_) =>
-                BlocProvider(
-                  create: (context) => getIt<ProjectCubit>(),
-                  child: CommentsScreen(projectId: projectId,),
-                ))
-    );
+            builder: (_) => BlocProvider(
+              create: (context) => getIt<ProjectCubit>(),
+              child: CommentsScreen(
+                projectId: projectId,
+              ),
+            )));
   }
 
   void _likeProject(int? projectId) {
     context.read<ProjectCubit>().likeProject(projectId!);
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      controller: _scrollController,
-      itemCount: widget.projectList?.length ?? 0,
-      itemBuilder: (context, index) {
-        final project = widget.projectList![index];
-        final isExpanded = _expandedProjects.contains(index);
+    return BlocBuilder<ProjectCubit, ProjectState>(
+      builder: (context, state) {
+        final projectList = state.maybeWhen(
+          projectsSuccess: (projects) => projects,
+          orElse: () => widget.projectList,
+        );
 
-        return Column(
-          children: [
-            GestureDetector(
-              onTap: () =>
-                  Navigator.push(
+        return ListView.builder(
+          controller: _scrollController,
+          itemCount: projectList?.length ?? 0,
+          itemBuilder: (context, index) {
+            final project = projectList![index];
+            final isExpanded = _expandedProjects.contains(index);
+
+            return Column(
+              children: [
+                GestureDetector(
+                  onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          BlocProvider(
-                            create: (context) => getIt<ProjectCubit>(),
-                            child: ProjectDetailsScreen(
-                              projectName: project?.companyName ?? '',
-                              projectDescription: project?.slogan ?? '',
-                              about: project?.about ?? '',
-                              industry: project?.industry ?? '',
-                              businessModel: project?.businessModel ?? '',
-                              customerModel: project?.customerModel ?? '',
-                              stage: project?.stage ?? '',
-                              year: project?.year ?? '',
-                              type: project?.type ?? '',
-                              legalName: project?.legalName ?? '',
-                              slideshowFile: project?.pdfURL,
-                              logoImage: project?.imageURL,
-                              tags: project?.tags?.split(',').map((tag) =>
-                                  tag.trim()).toList() ?? [],
-                              website: project?.website ?? '',
-                              raisedAmount: project?.amountRaised ?? '',
-                              investors: project?.investors?.split(',').map((
-                                  investor) => investor.trim()).toList() ?? [],
-                              userId: project?.user?.id.toString() ?? '', userName: project?.user?.firstName ?? '',
-                            ),
-                          ),
+                      builder: (context) => BlocProvider(
+                        create: (context) => getIt<ProjectCubit>(),
+                        child: ProjectDetailsScreen(
+                          projectName: project?.companyName ?? '',
+                          projectDescription: project?.slogan ?? '',
+                          about: project?.about ?? '',
+                          industry: project?.industry ?? '',
+                          businessModel: project?.businessModel ?? '',
+                          customerModel: project?.customerModel ?? '',
+                          stage: project?.stage ?? '',
+                          year: project?.year ?? '',
+                          type: project?.type ?? '',
+                          legalName: project?.legalName ?? '',
+                          slideshowFile: project?.pdfURL,
+                          logoImage: project?.imageURL,
+                          tags: project?.tags?.split(',').map((tag) => tag.trim()).toList() ?? [],
+                          website: project?.website ?? '',
+                          raisedAmount: project?.amountRaised ?? '',
+                          investors: project?.investors?.split(',').map((investor) => investor.trim()).toList() ?? [],
+                          userId: project?.user?.id.toString() ?? '',
+                          userName: project?.user?.firstName ?? '',
+                        ),
+                      ),
                     ),
                   ),
-              child: Container(
-                margin: EdgeInsets.only(bottom: 16.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: _buildImage(project?.imageURL),
-                          ),
-                          verticalSpace(20),
-                          if (project?.tags != null && project!.tags!
-                              .isNotEmpty)
-                            Wrap(
-                              spacing: 2.0,
-                              runSpacing: 3.0,
-                              children: [
-                                ...?project.tags?.split(',').take(2).map((tag) {
-                                  return TagItem(text: tag.trim());
-                                }).toList(),
-                              ],
-                            ),
-                          verticalSpace(20),
-                        ],
-                      ),
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 16.h),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    horizontalSpace(16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            project?.companyName ?? '',
-                            style: AppTextStyles.font20BlackThin.copyWith(
-                                fontWeight: FontWeight.w400),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          verticalSpace(15),
-                          Text(
-                            "Description: ${project?.slogan ?? ''}",
-                            style: AppTextStyles.font16PrimaryLight,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: isExpanded ? null : 3,
-                          ),
-                          verticalSpace(40),
-                          Row(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
                             children: [
-                              Text(
-                                '${project?.year} ● ${project?.stage}',
-                                style: AppTextStyles.font16GrayLight.copyWith(
-                                    fontSize: 10,
-                                    color: AppColors.gray, fontWeight: FontWeight.w400),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: _buildImage(project?.imageURL),
                               ),
-                              horizontalSpace(5),
-                              const Icon(
-                                Icons.stairs_outlined,
-                                size: 10,
-                                color: AppColors.gray,
-                              )
+                              verticalSpace(20),
+                              if (project?.tags != null && project!.tags!.isNotEmpty)
+                                Wrap(
+                                  spacing: 2.0,
+                                  runSpacing: 3.0,
+                                  children: [
+                                    ...?project.tags?.split(',').take(2).map((tag) {
+                                      return TagItem(text: tag.trim());
+                                    }).toList(),
+                                  ],
+                                ),
+                              verticalSpace(20),
                             ],
                           ),
-                          verticalSpace(10),
-                          InkWell(
-                            onTap: () =>
-                                _navigateToCommentsScreen(
-                                    project?.projectID ?? 0),
-                            child: Row(
-                              children: [
-                                Text("Comments",
-                                    style: AppTextStyles.font12Blacklight
-                                        .copyWith(fontSize: 10, color: AppColors.primaryColor)),
-                              ],
-                            ),
-                          ),
-                          verticalSpace(10),
-                          InkWell(
-                            onTap: () => _likeProject(project.projectID),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  project!.likes.contains(userId) ? Icons.favorite : Icons.favorite_border,
-                                  color: project.likes.contains(userId) ? Colors.red : Colors.grey,
-                                  size: 20,
-                                ),
-                                horizontalSpace(5),
-                                Text(
-                                  "${project.numberOfLikes ?? 0} likes",
-                                  style: AppTextStyles.font12Blacklight.copyWith(fontSize: 10),
-                                ),
-                              ],
-                            ),
-                          ),
+                        ),
+                        horizontalSpace(16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                project?.companyName ?? '',
+                                style: AppTextStyles.font20BlackThin.copyWith(fontWeight: FontWeight.w400),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              verticalSpace(15),
+                              Text(
+                                "Description: ${project?.slogan ?? ''}",
+                                style: AppTextStyles.font16PrimaryLight,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: isExpanded ? null : 3,
+                              ),
+                              verticalSpace(40),
+                              Row(
+                                children: [
+                                Expanded(
+                                  child: Row(children: [  Text(
+                                    '${project?.year} ● ${project?.stage}',
+                                    style: AppTextStyles.font16GrayLight.copyWith(
+                                        fontSize: 10, color: AppColors.gray, fontWeight: FontWeight.w400),
+                                  ),
 
-                        ],
-                      ),
+                                    const Icon(
+                                      Icons.stairs_outlined,
+                                      size: 10,
+                                      color: AppColors.gray,
+                                    ),],),
+                                ),
+
+                                ],
+
+                              ),
+                              verticalSpace(10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: () => _navigateToCommentsScreen(project?.projectID ?? 0),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "Comments",
+                                            style: AppTextStyles.font12Blacklight.copyWith(
+                                                fontSize: 10, color: AppColors.primaryColor),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: () => _likeProject(project.projectID),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            project!.likes.contains(userId)
+                                                ? Icons.favorite
+                                                : Icons.favorite_border,
+                                            color: project.likes.contains(userId) ? Colors.red : Colors.grey,
+                                            size: 20,
+                                          ),
+                                          horizontalSpace(5),
+                                          Text(
+                                            "${project.numberOfLikes ?? 0} likes",
+                                            style: AppTextStyles.font12Blacklight.copyWith(fontSize: 10),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              verticalSpace(10),
+
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0, vertical: 5),
-              child: Divider(
-                height: 0.7,
-                thickness: 0.5,
-              ),
-            ),
-          ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+                  child: Divider(
+                    height: 0.7,
+                    thickness: 0.5,
+                  ),
+                ),
+              ],
+            );
+          },
         );
       },
     );
   }
 
   Widget _buildImage(String? url) {
-    if (url == null || url.isEmpty || !Uri
-        .parse(url)
-        .hasAbsolutePath) {
+    if (url == null || url.isEmpty || !Uri.parse(url).hasAbsolutePath) {
       return Image.network(
         'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg',
         height: 120.h,

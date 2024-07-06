@@ -1,15 +1,13 @@
 import 'package:first_step/core/theming/colors.dart';
-import 'package:first_step/core/theming/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:first_step/features/project/data/models/project_response.dart';
 import 'package:first_step/features/project/logic/project_cubit.dart';
 import 'package:first_step/features/project/logic/project_state.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../core/di/depndency_injection.dart';
+import '../../../../core/helper/spacing.dart';
 import '../../../project/ui/screens/upload_screen.dart';
-import '../../../project/ui/screens/project_details.dart'; // Import your ProjectDetailsScreen
+import '../../../project/ui/screens/project_details.dart';
 
 class UserProfileProjectsScreen extends StatefulWidget {
   final int userId;
@@ -32,7 +30,7 @@ class _UserProfileProjectsScreenState extends State<UserProfileProjectsScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
-        title: Text('My Projects', style:TextStyle(color: Colors.white),),
+        title: Text('My Projects', style: TextStyle(color: Colors.white)),
       ),
       body: BlocBuilder<ProjectCubit, ProjectState>(
         builder: (context, state) {
@@ -76,99 +74,89 @@ class _UserProfileProjectsScreenState extends State<UserProfileProjectsScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12.0),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Stack(
-                            children: [
-                              _buildImage(project?.imageURL),
-                              Positioned(
-                                bottom: 0,
-                                left: 0,
-                                right: 0,
-                                child: Container(
-                                  padding: EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black54,
-                                    borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(12.0),
-                                      bottomRight: Radius.circular(12.0),
-                                    ),
-                                  ),
-                                  child: Text(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
                                     project?.companyName ?? '',
                                     style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16.0,
+                                      color: AppColors.primaryColor,
+                                      fontSize: 18.0,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                    maxLines: 1,
+                                  ),
+                                  verticalSpace(10),
+                                  Text(
+                                    project?.slogan ?? '',
+                                    style: TextStyle(fontSize: 14.0),
+                                    maxLines: 3,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                            child: Text(
-                              project?.slogan ?? '',
-                              style: TextStyle(fontSize: 14.0),
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.edit),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => BlocProvider(
-                                        create: (context) => ProjectCubit(getIt()),
-                                        child: UploadProjectScreen(project: project),
+                                  verticalSpace(20),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.edit, color: AppColors.primaryColor),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => BlocProvider(
+                                                create: (context) => ProjectCubit(getIt()),
+                                                child: UploadProjectScreen(project: project),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
-                                    ),
-                                  );
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.delete),
-                                onPressed: () async {
-                                  final confirm = await showDialog<bool>(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: Text('Delete Project'),
-                                        content: Text(
-                                            'Are you sure you want to delete this project?'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () => Navigator.pop(context, false),
-                                            child: Text('Cancel'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () => Navigator.pop(context, true),
-                                            child: Text('Delete'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
+                                      IconButton(
+                                        icon: Icon(Icons.delete, color: Colors.red),
+                                        onPressed: () async {
+                                          final confirm = await showDialog<bool>(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text('Delete Project'),
+                                                content: Text(
+                                                    'Are you sure you want to delete this project?'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () => Navigator.pop(context, false),
+                                                    child: Text('Cancel'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () => Navigator.pop(context, true),
+                                                    child: Text('Delete'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
 
-                                  if (confirm == true) {
-                                    context
-                                        .read<ProjectCubit>()
-                                        .deleteProject(project?.projectID ?? 1);
-                                  }
-                                },
+                                          if (confirm == true) {
+                                            context.read<ProjectCubit>().deleteProject(project?.projectID ?? 1);
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ],
+                            ),
+                            SizedBox(width: 16.0),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12.0),
+                              child: _buildImage(project?.imageURL),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -188,22 +176,22 @@ class _UserProfileProjectsScreenState extends State<UserProfileProjectsScreen> {
     if (url == null || url.isEmpty || !Uri.parse(url).hasAbsolutePath) {
       return Image.network(
         'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg',
-        height: 200.h,
-        width: double.infinity,
+        height: 100.h,
+        width: 100.h,
         fit: BoxFit.cover,
       );
     }
 
     return Image.network(
       url,
-      height: 200.h,
-      width: double.infinity,
+      height: 100.h,
+      width: 100.h,
       fit: BoxFit.cover,
       errorBuilder: (context, error, stackTrace) {
         return Image.network(
           'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg',
-          height: 200.h,
-          width: double.infinity,
+          height: 100.h,
+          width: 100.h,
           fit: BoxFit.cover,
         );
       },

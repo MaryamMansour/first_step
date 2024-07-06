@@ -42,22 +42,10 @@ class _LoginContainerWidgetState extends State<LoginContainerWidget> {
             verticalSpace(60),
             const EmailAndPassword(),
             verticalSpace(20),
-            Row(children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 220),
-                child: Text(
-                  "Forgot Password?",
-                  style: AppTextStyles.font12PrimaryRegular,
-                ),
-              )
-            ]),
+
             verticalSpace(50),
            const LoginButton(),
-            verticalSpace(10),
-            const DividerWidget(),
-            verticalSpace(10),
-            const SocialMediaIcon(),
-            verticalSpace(10),
+            verticalSpace(30),
             const DontHaveAccount(),
             const LoginBlocListener(),
           ],

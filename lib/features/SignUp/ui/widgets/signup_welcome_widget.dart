@@ -19,7 +19,7 @@ class WelcomeWidget extends StatelessWidget {
             Image.asset(width: 100,height: 175,'assets/images/logo_First_Step.png'),
             Column(
               children: [
-                verticalSpace(40),
+                verticalSpace(20),
                 Text("Your first Step to Success!",style: AppTextStyles.font12PrimaryRegular,),
               ],
             )

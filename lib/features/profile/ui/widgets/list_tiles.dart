@@ -10,14 +10,13 @@ import 'package:first_step/features/project/data/repo/project_repo.dart';
 
 import '../../../../core/di/depndency_injection.dart';
 import '../../../../core/helper/constants.dart';
+import '../screens/help_support_screen.dart';
 import '../screens/user_projects_screen.dart';
 
 class ListTiles extends StatelessWidget {
   const ListTiles({super.key});
 
   Future<String> getUserId() async {
-    // This function assumes that you have a method to get the user ID from shared preferences.
-    // Update this method as per your implementation.
     return await SharedPrefHelper.getString(SharedPrefKeys.id) ?? "";
   }
 
@@ -44,9 +43,8 @@ class ListTiles extends StatelessWidget {
               leading: const Icon(Icons.computer_sharp, color: AppColors.primaryColor),
               title: const Text('My Projects'),
               onTap: () async {
-                print("H");
                 String userId = await getUserId();
-                int stringUserId =int.parse(userId);
+                int stringUserId = int.parse(userId);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -58,11 +56,17 @@ class ListTiles extends StatelessWidget {
                 );
               },
             ),
-
             ListTile(
               leading: const Icon(Icons.help, color: AppColors.primaryColor),
               title: const Text('Help and support'),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HelpAndSupportScreen(),
+                  ),
+                );
+              },
             ),
             ListTile(
               leading: const Icon(Icons.logout, color: AppColors.primaryColor),

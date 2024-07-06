@@ -54,11 +54,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   void sendMessage() async {
     if (_messagesController.text.isNotEmpty && userId != null) {
       if (widget.isGroup) {
-
         await FireStoreServices.sendGroupMessage(
             widget.receiverUserID, _messagesController.text);
       } else if (widget.isChannel) {
-        print("HIIII");
         await FireStoreServices.sendChannelMessage(
             widget.receiverUserID, _messagesController.text);
       } else {
@@ -98,7 +96,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
         actions: [
           if (widget.isGroup)
             IconButton(
-              icon: Icon(Icons.add),
+              icon: Icon(Icons.add, color: AppColors.white,),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -106,7 +104,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                     builder: (context) => AddMembersInGroup(
                       name: widget.receiverName,
                       groupChatId: widget.receiverUserID,
-                      membersList: widget.receiverUserEmails, // Pass the actual members list
+                      membersList: widget.receiverUserEmails,
                     ),
                   ),
                 );

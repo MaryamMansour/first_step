@@ -30,18 +30,14 @@ class SignupScreen extends StatelessWidget {
             child: Column(
               children: [
               const WelcomeWidget(),
+              verticalSpace(30),
               const SignupTextFields(),
                // Radio(value: , groupValue: groupValue, onChanged: onChanged)
-                verticalSpace(10),
-                UserType(),
-                verticalSpace(10),
+                // UserType(),
                 const SignupButton(),
-                const DividerWidget(),
-                verticalSpace(10),
-                const SocialMediaIcon(),
-                verticalSpace(10),
+               verticalSpace(40),
                const HaveAccount(),
-                verticalSpace(10),
+                verticalSpace(50),
                 const SignupBlocListener(),
               ],
             )

@@ -24,7 +24,7 @@ class ChatbotAppbar extends StatelessWidget implements PreferredSizeWidget{
       leading: IconButton(
         iconSize: 45,
         color: AppColors.white,
-        icon: Icon(Icons.arrow_back_ios_new_outlined),
+        icon: Icon(Icons.arrow_back_ios_new_outlined,size: 20,),
         onPressed: () {
           Navigator.pop(context);
         },

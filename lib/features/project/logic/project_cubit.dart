@@ -40,21 +40,19 @@ class ProjectCubit extends Cubit<ProjectState> {
   }
 
   void _loadNextPage() {
-    if (_isLoadingMore) return;
+    if (_isLoadingMore || allProjects == null || allProjects!.isEmpty) return;
     _isLoadingMore = true;
 
-    if (allProjects != null && allProjects!.isNotEmpty) {
-      final nextPageItems = allProjects!.skip(_currentPage * _pageSize).take(_pageSize).toList();
-      displayedProjects = [...displayedProjects!, ...nextPageItems];
-      _currentPage++;
-      emit(ProjectState.projectsSuccess(displayedProjects));
-    }
+    final nextPageItems = allProjects!.skip(_currentPage * _pageSize).take(_pageSize).toList();
+    displayedProjects = [...displayedProjects!, ...nextPageItems];
+    _currentPage++;
+    emit(ProjectState.projectsSuccess(displayedProjects));
 
     _isLoadingMore = false;
   }
 
   void loadMoreProjects() {
-    if (displayedProjects?.length == allProjects?.length) {
+    if (_isLoadingMore || displayedProjects?.length == allProjects?.length) {
       return;
     }
     emit(ProjectState.projectsLoadingMore(displayedProjects));
@@ -162,6 +160,7 @@ class ProjectCubit extends Cubit<ProjectState> {
     response.when(
       success: (_) {
         allProjects = allProjects?.where((project) => project?.projectID != projectId).toList();
+        displayedProjects = displayedProjects?.where((project) => project?.projectID != projectId).toList();
         emit(ProjectState.projectsSuccess(allProjects));
       },
       failure: (errorHandler) {
@@ -170,19 +169,37 @@ class ProjectCubit extends Cubit<ProjectState> {
     );
   }
 
-
   void likeProject(int projectId) async {
-    print("Liking project with ID: $projectId");
     final response = await _projectRepo.likeProject(projectId);
     response.when(
       success: (projectResponse) {
-        print("Project liked successfully: $projectResponse");
+        final updatedProjects = allProjects?.map((project) {
+          if (project?.projectID == projectId) {
+            return project?.copyWith(
+              likes: projectResponse.data?.likes ?? [],
+              numberOfLikes: projectResponse.data?.numberOfLikes,
+            );
+          }
+          return project;
+        }).toList();
+
+        final updatedDisplayedProjects = displayedProjects?.map((project) {
+          if (project?.projectID == projectId) {
+            return project?.copyWith(
+              likes: projectResponse.data?.likes ?? [],
+              numberOfLikes: projectResponse.data?.numberOfLikes,
+            );
+          }
+          return project;
+        }).toList();
+
+        allProjects = updatedProjects;
+        displayedProjects = updatedDisplayedProjects;
+        emit(ProjectState.projectsSuccess(displayedProjects));
       },
       failure: (errorHandler) {
-        print("Failed to like project: ${errorHandler.apiErrorModel.message}");
         emit(ProjectState.projectsError(errorHandler));
       },
     );
   }
-
 }

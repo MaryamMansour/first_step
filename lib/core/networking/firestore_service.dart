@@ -161,7 +161,7 @@ class FireStoreServices {
         .collection("chat_rooms")
         .doc(chatRoomId)
         .collection("messages")
-        .orderBy("timestamp", descending: false)
+        .orderBy("timestamp", descending: false) // Ensure messages are sorted by timestamp
         .snapshots();
   }
 
@@ -170,7 +170,7 @@ class FireStoreServices {
         .collection("groups")
         .doc(groupId)
         .collection("messages")
-        .orderBy("timestamp", descending: false)
+        .orderBy("timestamp", descending: false) // Ensure messages are sorted by timestamp
         .snapshots();
   }
 
@@ -179,7 +179,7 @@ class FireStoreServices {
         .collection("channels")
         .doc(channelId)
         .collection("messages")
-        .orderBy("timestamp", descending: false)
+        .orderBy("timestamp", descending: false) // Ensure messages are sorted by timestamp
         .snapshots();
   }
 

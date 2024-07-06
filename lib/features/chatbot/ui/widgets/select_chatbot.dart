@@ -69,7 +69,7 @@ class SelectChatbot extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'Ask about our projects',
+                    'Ask about projects',
                     textAlign: TextAlign.center,
                     style: AppTextStyles.font15WhiteBold,
                   ),
