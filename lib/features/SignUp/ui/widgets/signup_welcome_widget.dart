@@ -16,7 +16,7 @@ class WelcomeWidget extends StatelessWidget {
 
           children: [
             horizontalSpace(20), // space before the image
-            Image.asset(width: 100,height: 175,'assets/images/logo_First_Step.png'),
+            Image.asset(width: 100,height: 175,'assets/images/logo_dark.png'),
             Column(
               children: [
                 verticalSpace(20),
