@@ -1,4 +1,4 @@
-# FirstStep Mobile App
+# FirstStep 
 
 A Cross-Platform Solution for Connecting Startups with Investors
 
@@ -23,18 +23,18 @@ FirstStep is a mobile application designed to support startups by connecting the
 - **Framework:** Flutter - Cross-platform compatibility for both mobile and web applications.
 - **Programming Language:** Dart
 - **Dependency Injection:**  Manages dependencies for organized, scalable code.
-- **Push Notifications:** [Firebase Cloud Messaging (FCM)](https://firebase.google.com/docs/cloud-messaging) - Provides real-time notifications to keep users engaged.
+- **Push Notifications:** FCM: Provides real-time notifications to keep users engaged.
 - **Pagination:** Enhances data loading performance by dynamically displaying content as needed, reducing load times by up to 50%.
--
+
 The following key packages are used in the project, along with their primary usage:
 
-  - flutter_bloc:  # State management using the BLoC pattern.
-  - get_it:  # Dependency injection framework for managing service instances.
-  - flutter_secure_storage:  # Secure storage for sensitive data like authentication tokens.
-  - dio:  # Powerful HTTP client for network requests.
-  - retrofit:  # API client for making RESTful calls.
-  - json_serializable:  # JSON serialization utilities for converting Dart objects.
-  - shared_preferences:  # Local storage for saving user preferences.
+  - flutter_bloc:  State management using the BLoC pattern.
+  - get_it:   Dependency injection framework for managing service instances.
+  - flutter_secure_storage:   Secure storage for sensitive data like authentication tokens.
+  - dio:   Powerful HTTP client for network requests.
+  - retrofit:   API client for making RESTful calls.
+  - json_serializable:   JSON serialization utilities for converting Dart objects.
+  - shared_preferences:   Local storage for saving user preferences.
 
 
 ### Backend (API Integration)
@@ -55,9 +55,11 @@ The following key packages are used in the project, along with their primary usa
 The mobile app follows a modular, layered architecture to promote scalability and maintainability:
 
 1. **Presentation Layer:** Developed in Flutter to ensure a responsive and intuitive user interface.
-2. **Business Logic Layer:** Utilizes the [flutter_bloc](https://pub.dev/packages/flutter_bloc) package for state management, which keeps the codebase organized and modular.
+2. **Business Logic Layer:** Utilizes the flutter_bloc package for state management, which keeps the codebase organized and modular.
 3. **Data Layer:** Firebase and Azure manage real-time data handling, with pagination ensuring efficient access to large datasets.
 4. **Integrated Real-World Data:** Project data collected from real-world sources via a Python web scraping script is incorporated directly into the platform. This data enhances the search functionality and provides users with up-to-date information on trending startups and project ideas.
 
 This architecture enables independent management of each component, making the mobile app scalable and maintainable across platforms.
+
+# For Full Documentation about the project [Here](https://docs.google.com/document/d/1xAtpBVCKmW0jkHlYsKmSrE94uBzMT5Hp/edit?usp=sharing&ouid=112704548038309970121&rtpof=true&sd=true) 
 
