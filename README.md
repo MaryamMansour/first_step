@@ -57,7 +57,6 @@ The mobile app follows a modular, layered architecture to promote scalability an
 1. **Presentation Layer:** Developed in Flutter to ensure a responsive and intuitive user interface.
 2. **Business Logic Layer:** Utilizes the flutter_bloc package for state management, which keeps the codebase organized and modular.
 3. **Data Layer:** Firebase and Azure manage real-time data handling, with pagination ensuring efficient access to large datasets.
-4. **Integrated Real-World Data:** Project data collected from real-world sources via a Python web scraping script is incorporated directly into the platform. This data enhances the search functionality and provides users with up-to-date information on trending startups and project ideas.
 
 This architecture enables independent management of each component, making the mobile app scalable and maintainable across platforms.
 
