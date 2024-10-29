@@ -61,4 +61,6 @@ The mobile app follows a modular, layered architecture to promote scalability an
 This architecture enables independent management of each component, making the mobile app scalable and maintainable across platforms.
 
 # For Full Documentation about the project [Here](https://docs.google.com/document/d/1xAtpBVCKmW0jkHlYsKmSrE94uBzMT5Hp/edit?usp=sharing&ouid=112704548038309970121&rtpof=true&sd=true) 
+# For Demo Video of the project [Here](https://drive.google.com/file/d/17tbNJ3KNGglrh-O3wHoiPvgt28EXHIKJ/view?usp=sharing)
+
 
